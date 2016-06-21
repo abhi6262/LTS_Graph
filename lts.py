@@ -68,12 +68,21 @@ for x in range(1,len(Protocols)):
 print "number of nodes:", len(sysnodes)
 print "sysnodes: ", sysnodes
 print "\n"
+
+adj = [[0 for j in range(len(sysnodes))] for i in range(len(sysnodes))]
 for i in sysnodes:
     #print i
     print i, ":", sys[i], "\n"
+    for j in sys.get(i):
+        #print "j", j, "\n"
+        for l in sys[i].get(j):
+            adj[sysnodes.index(i)][sysnodes.index(l)] = 1
+
+print "adj:", adj, "\n"    
 
 with open('ltsdump', 'wb') as f:
     pickle.dump(sysnodes, f)
     pickle.dump(sys, f)
+    pickle.dump(adj,f)
 
 f.close()
