@@ -26,8 +26,8 @@ with open('msgdump', 'rb') as f:
 f.close()
 
 
-#sample_path = [('far', '0'), ('far', '1'), ('near', '1'), ('near', '2'), ('near', '3'), ('near', '0'), ('in', '0'), ('in', '1'), ('in', '2'), ('in', '3')]
-sample_path = [('a', 'd'), ('b', 'd'), ('b', 'e'), ('b', 'f'), ('c', 'f')]
+sample_path = [('far', '0'), ('far', '1'), ('near', '1'), ('near', '2'), ('near', '3'), ('near', '0'), ('in', '0'), ('in', '1'), ('in', '2'), ('in', '3')]
+#sample_path = [('a', 'd'), ('b', 'd'), ('b', 'e'), ('b', 'f'), ('c', 'f')]
 all_msg = []
 obs_msg = []
 
@@ -38,7 +38,7 @@ for next_node in sample_path[1:]:
     for j in i:
         if next_node in i.get(j):
             all_msg.append(j)
-            if j in max_candidate:
+            if j in max_candidate[max(max_candidate)]:
                 obs_msg.append(j)
     node = next_node
 

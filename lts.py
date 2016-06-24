@@ -19,7 +19,6 @@ config.read('config.cfg')
 listsysdict = [] #list of all dictionaries, where each sys dictionary corresponds to one protocol
 listsysnodes = []
 Protocols = ast.literal_eval(config.get('Configuration','Protocols')) #list of protocols, user input
-Budget = config.getint('Configuration','Budget')
 
 for i in range(len(Protocols)):
     listsysnodes.append(ast.literal_eval(config.get(Protocols[i],'protocolnodes')))

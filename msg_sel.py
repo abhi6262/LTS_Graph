@@ -18,7 +18,10 @@ os.system('cls' if os.name == 'nt' else 'clear')
 
 config = ConfigParser.RawConfigParser()
 config.read('config.cfg')
-Budget = config.getint('Configuration','Budget')
+message_width = ast.literal_eval(config.get('Configuration','Message_width'))
+buffer_width = config.getint('Configuration','Buffer_width')
+print "message width:", message_width, "\n"
+print "buffer width in bits:", buffer_width, "\n"
 
 with open('ltsdump', 'rb') as f:
     sysnodes = pickle.load(f)
@@ -74,16 +77,28 @@ print "list of messages:", listmsg, "\n"
 print "count of messages:", countlistmsg, "\n"
 candidates = []
 info_candidates = {}
-for i in itertools.combinations(listmsg, Budget):
-    candidates.append(i)
+msg_width_sum = 0
 
-#print candidates
-max_info = 0
+for j in range(2,len(listmsg)+1):
+    for i in itertools.combinations(listmsg, j):
+        print "i:", i, "\n"
+        for k in i:
+            msg_width_sum += message_width[k]
+        if (msg_width_sum <= buffer_width):
+            candidates.append(i)
+        msg_width_sum = 0
+
+print "candidates:", candidates, "\n"
+max_info = {}
+max_candidate = {}
 
 for c in candidates:
+    if len(c) not in max_info:
+        max_candidate[len(c)] = c
+        max_info[len(c)] = 0
     print "=================================================================\n"
     print candidates.index(c)+1, ":candidate:", c, "\n"
-    y = [0 for i in range(Budget)]
+    y = [0 for i in range(len(c))]
     xy = [[0 for i in range(len(c))] for j in range(len(sysnodes))]
     tempsum = 0
     for m in c:
@@ -106,14 +121,14 @@ for c in candidates:
 
     info_candidates[c] = mut_info(x, y, xy)
     print "info_candidate:", info_candidates[c], "\n"
-    if (info_candidates[c] > max_info):
-        max_info = info_candidates[c]
-        max_candidate = c
+    if (info_candidates[c] > max_info[len(c)]):
+        max_info[len(c)] = info_candidates[c]
+        max_candidate[len(c)] = c
 
 print "================================================================="
 print "*****************************************************************"
 print "================================================================="
-print "max_info:", max_info, "max_candidate:", max_candidate, "\n"
+print "max_info:", max_info, "\nmax_candidate:", max_candidate, "\n"
     
 with open('msgdump', 'wb') as f:
     pickle.dump(listmsg, f)
