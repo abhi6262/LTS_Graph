@@ -103,6 +103,7 @@ for c in candidates:
             xy[i][c.index(m)] = (x_y[i][listmsg.index(m)]/float(countlistmsg[listmsg.index(m)])) * y[c.index(m)]
 
     print "xy:", xy, "\n"
+
     info_candidates[c] = mut_info(x, y, xy)
     print "info_candidate:", info_candidates[c], "\n"
     if (info_candidates[c] > max_info):
