@@ -11,6 +11,8 @@ import sys
 import ConfigParser
 import ast
 import pickle
+from matplotlib import pyplot as plt
+import networkx as nx
 
 os.system('cls' if os.name == 'nt' else 'clear')
 
@@ -90,3 +92,23 @@ with open('ltsdump', 'wb') as f:
     pickle.dump(adj,f)
 
 f.close()
+
+G = nx.DiGraph()
+for i in sysnodes:
+    G.add_node(sysnodes.index(i))
+    G.node[sysnodes.index(i)]['state'] = i
+
+for i in sysnodes:
+    for j in sys[i]:
+        for k in sys[i][j]:
+            G.add_edge(sysnodes.index(i),sysnodes.index(k))
+            G.edge[sysnodes.index(i)][sysnodes.index(k)]['msg'] = j
+
+pos = nx.spring_layout(G)
+nx.draw(G,pos)
+node_labels = nx.get_node_attributes(G,'state')
+nx.draw_networkx_labels(G, pos, labels = node_labels)
+edge_labels = nx.get_edge_attributes(G,'msg')
+nx.draw_networkx_edge_labels(G, pos, labels = edge_labels)
+plt.savefig('lts.png')
+plt.show()
