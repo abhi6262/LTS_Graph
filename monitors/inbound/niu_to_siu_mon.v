@@ -10,7 +10,6 @@ module niu_to_siu_mon();
 
 reg enabled;
 reg write_payload_cycle_detected;
-integer N;
 initial begin
     enabled = 1'b1;
     write_payload_cycle_detected = 1'b0;
