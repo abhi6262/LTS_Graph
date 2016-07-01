@@ -56,6 +56,8 @@ end
 /* L2 protocols are running at the same frequency as that of the core */
 
 wire cmp_clk = `CPU.l2clk & enabled;
+/* Not sure if this signal is needed. We will see TODO  */
+wire cmp_rst_l = `CPU.rst_l2_por_; 
 
 
 /* There are 8 L2 Banks and 4 MCUs. Each two L2s are connected with one MCU */
@@ -106,37 +108,37 @@ wire pcx_l2t7_atm_px1 = `L2T7.pcx_l2t_atm_px1;
 //                                                          //
 //////////////////////////////////////////////////////////////
 
-wire l2t0_cpx_req_cq = `L2T0.l2t_cpx_req_cq;
-wire l2t0_cpx_data_ca = `L2T0.l2t_cpx_data_ca;
-wire cpx_l2t0_grant_cx = `L2T0.cpx_l2t_grant_cx;
+wire [7:0] l2t0_cpx_req_cq = `L2T0.l2t_cpx_req_cq;
+wire [145:0] l2t0_cpx_data_ca = `L2T0.l2t_cpx_data_ca;
+wire [7:0] cpx_l2t0_grant_cx = `L2T0.cpx_l2t_grant_cx;
 
-wire l2t1_cpx_req_cq = `L2T1.l2t_cpx_req_cq;
-wire l2t1_cpx_data_ca = `L2T1.l2t_cpx_data_ca;
-wire cpx_l2t1_grant_cx = `L2T1.cpx_l2t_grant_cx;
+wire [7:0] l2t1_cpx_req_cq = `L2T1.l2t_cpx_req_cq;
+wire [145:0] l2t1_cpx_data_ca = `L2T1.l2t_cpx_data_ca;
+wire [7:0] cpx_l2t1_grant_cx = `L2T1.cpx_l2t_grant_cx;
 
-wire l2t2_cpx_req_cq = `L2T2.l2t_cpx_req_cq;
-wire l2t2_cpx_data_ca = `L2T2.l2t_cpx_data_ca;
-wire cpx_l2t2_grant_cx = `L2T2.cpx_l2t_grant_cx;
+wire [7:0] l2t2_cpx_req_cq = `L2T2.l2t_cpx_req_cq;
+wire [145:0] l2t2_cpx_data_ca = `L2T2.l2t_cpx_data_ca;
+wire [7:0] cpx_l2t2_grant_cx = `L2T2.cpx_l2t_grant_cx;
 
-wire l2t3_cpx_req_cq = `L2T3.l2t_cpx_req_cq;
-wire l2t3_cpx_data_ca = `L2T3.l2t_cpx_data_ca;
-wire cpx_l2t3_grant_cx = `L2T3.cpx_l2t_grant_cx;
+wire [7:0] l2t3_cpx_req_cq = `L2T3.l2t_cpx_req_cq;
+wire [145:0] l2t3_cpx_data_ca = `L2T3.l2t_cpx_data_ca;
+wire [7:0] cpx_l2t3_grant_cx = `L2T3.cpx_l2t_grant_cx;
 
-wire l2t4_cpx_req_cq = `L2T4.l2t_cpx_req_cq;
-wire l2t4_cpx_data_ca = `L2T4.l2t_cpx_data_ca;
-wire cpx_l2t4_grant_cx = `L2T4.cpx_l2t_grant_cx;
+wire [7:0] l2t4_cpx_req_cq = `L2T4.l2t_cpx_req_cq;
+wire [145:0] l2t4_cpx_data_ca = `L2T4.l2t_cpx_data_ca;
+wire [7:0] cpx_l2t4_grant_cx = `L2T4.cpx_l2t_grant_cx;
 
-wire l2t5_cpx_req_cq = `L2T5.l2t_cpx_req_cq;
-wire l2t5_cpx_data_ca = `L2T5.l2t_cpx_data_ca;
-wire cpx_l2t5_grant_cx = `L2T5.cpx_l2t_grant_cx;
+wire [7:0] l2t5_cpx_req_cq = `L2T5.l2t_cpx_req_cq;
+wire [145:0] l2t5_cpx_data_ca = `L2T5.l2t_cpx_data_ca;
+wire [7:0] cpx_l2t5_grant_cx = `L2T5.cpx_l2t_grant_cx;
 
-wire l2t6_cpx_req_cq = `L2T6.l2t_cpx_req_cq;
-wire l2t6_cpx_data_ca = `L2T6.l2t_cpx_data_ca;
-wire cpx_l2t6_grant_cx = `L2T6.cpx_l2t_grant_cx;
+wire [7:0] l2t6_cpx_req_cq = `L2T6.l2t_cpx_req_cq;
+wire [145:0] l2t6_cpx_data_ca = `L2T6.l2t_cpx_data_ca;
+wire [7:0] cpx_l2t6_grant_cx = `L2T6.cpx_l2t_grant_cx;
 
-wire l2t7_cpx_req_cq = `L2T7.l2t_cpx_req_cq;
-wire l2t7_cpx_data_ca = `L2T7.l2t_cpx_data_ca;
-wire cpx_l2t7_grant_cx = `L2T7.cpx_l2t_grant_cx;
+wire [7:0] l2t7_cpx_req_cq = `L2T7.l2t_cpx_req_cq;
+wire [145:0] l2t7_cpx_data_ca = `L2T7.l2t_cpx_data_ca;
+wire [7:0] cpx_l2t7_grant_cx = `L2T7.cpx_l2t_grant_cx;
 
 
 //////////////////////////////////////////////////////////////
@@ -345,6 +347,409 @@ wire [39:7] l2t7_mcu3_addr = `L2T7.l2t_mcu_addr;
 wire mcu3_l2t7_rd_ack = `L2T7.mcu_l2t_rd_ack;
 wire l2b7_mcu3_data_vld_r5 = `L2B7.evict_l2b_mcu_data_vld_r5;
 wire [63:0] l2b7_mcu3_wr_data_r5 = `L2B7.evict_l2b_mcu_wr_data_r5;
+
+
+/* Monitors for receiving a request from the crossbar Section 2.1.2.1 Manual Vol 1 */
+
+reg pcx_l2t0_data_rdy_px1_d;
+always @(posedge (cmp_clk && enabled))
+begin
+    pcx_l2t0_data_rdy_px1_d <= pcx_l2t0_data_rdy_px1;
+    if(pcx_l2t0_data_rdy_px1)
+        `PR_ALWAYS("l2_proto_mon", `ALWAYS, "L2T0 receiving a Request from PCX");
+        if(pcx_l2t0_atm_px1)
+            `PR_INFO("l2_proto_mon", `INFO, "Atomic Request Received at L2T0 from PCX");
+        else
+            `PR_INFO("l2_proto_mon", `INFO, "Non-Atomic Request Received at L2T0 from PCX");
+end
+always @(posedge (cmp_clk && enabled))
+begin
+    if(pcx_l2t0_data_rdy_px1_d)
+        `PR_ALWAYS("l2_proto_mon", `ALWAYS, "DATA Cycle started at L2T0 from PCX");
+end
+
+reg pcx_l2t1_data_rdy_px1_d;
+always @(posedge (cmp_clk && enabled))
+begin
+    pcx_l2t1_data_rdy_px1_d <= pcx_l2t1_data_rdy_px1;
+    if(pcx_l2t1_data_rdy_px1)
+        `PR_ALWAYS("l2_proto_mon", `ALWAYS, "L2T1 receiving a Request from PCX");
+        if(pcx_l2t1_atm_px1)
+            `PR_INFO("l2_proto_mon", `INFO, "Atomic Request Received at L2T1 from PCX");
+        else
+            `PR_INFO("l2_proto_mon", `INFO, "Non-Atomic Request Received at L2T1 from PCX");
+end
+always @(posedge (cmp_clk && enabled))
+begin
+    if(pcx_l2t1_data_rdy_px1_d)
+        `PR_ALWAYS("l2_proto_mon", `ALWAYS, "DATA Cycle started at L2T1 from PCX");
+end
+
+reg pcx_l2t2_data_rdy_px1_d;
+always @(posedge (cmp_clk && enabled))
+begin
+    pcx_l2t2_data_rdy_px1_d <= pcx_l2t2_data_rdy_px1;
+    if(pcx_l2t2_data_rdy_px1)
+        `PR_ALWAYS("l2_proto_mon", `ALWAYS, "L2T2 receiving a Request from PCX");
+        if(pcx_l2t2_atm_px1)
+            `PR_INFO("l2_proto_mon", `INFO, "Atomic Request Received at L2T2 from PCX");
+        else
+            `PR_INFO("l2_proto_mon", `INFO, "Non-Atomic Request Received at L2T2 from PCX");
+end
+always @(posedge (cmp_clk && enabled))
+begin
+    if(pcx_l2t2_data_rdy_px1_d)
+        `PR_ALWAYS("l2_proto_mon", `ALWAYS, "DATA Cycle started at L2T2 from PCX");
+end
+
+reg pcx_l2t3_data_rdy_px1_d;
+always @(posedge (cmp_clk && enabled))
+begin
+    pcx_l2t3_data_rdy_px1_d <= pcx_l2t3_data_rdy_px1;
+    if(pcx_l2t3_data_rdy_px1)
+        `PR_ALWAYS("l2_proto_mon", `ALWAYS, "L2T3 receiving a Request from PCX");
+        if(pcx_l2t3_atm_px1)
+            `PR_INFO("l2_proto_mon", `INFO, "Atomic Request Received at L2T3 from PCX");
+        else
+            `PR_INFO("l2_proto_mon", `INFO, "Non-Atomic Request Received at L2T3 from PCX");
+end
+always @(posedge (cmp_clk && enabled))
+begin
+    if(pcx_l2t3_data_rdy_px1_d)
+        `PR_ALWAYS("l2_proto_mon", `ALWAYS, "DATA Cycle started at L2T3 from PCX");
+end
+
+reg pcx_l2t4_data_rdy_px1_d;
+always @(posedge (cmp_clk && enabled))
+begin
+    pcx_l2t4_data_rdy_px1_d <= pcx_l2t4_data_rdy_px1;
+    if(pcx_l2t4_data_rdy_px1)
+        `PR_ALWAYS("l2_proto_mon", `ALWAYS, "L2T4 receiving a Request from PCX");
+        if(pcx_l2t4_atm_px1)
+            `PR_INFO("l2_proto_mon", `INFO, "Atomic Request Received at L2T4 from PCX");
+        else
+            `PR_INFO("l2_proto_mon", `INFO, "Non-Atomic Request Received at L2T4 from PCX");
+end
+always @(posedge (cmp_clk && enabled))
+begin
+    if(pcx_l2t4_data_rdy_px1_d)
+        `PR_ALWAYS("l2_proto_mon", `ALWAYS, "DATA Cycle started at L2T4 from PCX");
+end
+
+reg pcx_l2t5_data_rdy_px1_d;
+always @(posedge (cmp_clk && enabled))
+begin
+    pcx_l2t5_data_rdy_px1_d <= pcx_l2t5_data_rdy_px1;
+    if(pcx_l2t5_data_rdy_px1)
+        `PR_ALWAYS("l2_proto_mon", `ALWAYS, "L2T5 receiving a Request from PCX");
+        if(pcx_l2t5_atm_px1)
+            `PR_INFO("l2_proto_mon", `INFO, "Atomic Request Received at L2T5 from PCX");
+        else
+            `PR_INFO("l2_proto_mon", `INFO, "Non-Atomic Request Received at L2T5 from PCX");
+end
+always @(posedge (cmp_clk && enabled))
+begin
+    if(pcx_l2t5_data_rdy_px1_d)
+        `PR_ALWAYS("l2_proto_mon", `ALWAYS, "DATA Cycle started at L2T5 from PCX");
+end
+
+reg pcx_l2t6_data_rdy_px1_d;
+always @(posedge (cmp_clk && enabled))
+begin
+    pcx_l2t6_data_rdy_px1_d <= pcx_l2t6_data_rdy_px1;
+    if(pcx_l2t6_data_rdy_px1)
+        `PR_ALWAYS("l2_proto_mon", `ALWAYS, "L2T6 receiving a Request from PCX");
+        if(pcx_l2t6_atm_px1)
+            `PR_INFO("l2_proto_mon", `INFO, "Atomic Request Received at L2T6 from PCX");
+        else
+            `PR_INFO("l2_proto_mon", `INFO, "Non-Atomic Request Received at L2T6 from PCX");
+end
+always @(posedge (cmp_clk && enabled))
+begin
+    if(pcx_l2t6_data_rdy_px1_d)
+        `PR_ALWAYS("l2_proto_mon", `ALWAYS, "DATA Cycle started at L2T6 from PCX");
+end
+
+reg pcx_l2t7_data_rdy_px1_d;
+always @(posedge (cmp_clk && enabled))
+begin
+    pcx_l2t7_data_rdy_px1_d <= pcx_l2t7_data_rdy_px1;
+    if(pcx_l2t7_data_rdy_px1)
+        `PR_ALWAYS("l2_proto_mon", `ALWAYS, "L2T7 receiving a Request from PCX");
+        if(pcx_l2t7_atm_px1)
+            `PR_INFO("l2_proto_mon", `INFO, "Atomic Request Received at L2T7 from PCX");
+        else
+            `PR_INFO("l2_proto_mon", `INFO, "Non-Atomic Request Received at L2T7 from PCX");
+end
+always @(posedge (cmp_clk && enabled))
+begin
+    if(pcx_l2t7_data_rdy_px1_d)
+        `PR_ALWAYS("l2_proto_mon", `ALWAYS, "DATA Cycle started at L2T7 from PCX");
+end
+
+
+/* Monitors for sending a request to the crossbar Section 2.1.2.1 Manual Vol 1 */
+
+reg l2t0_cpx_req_cq_d;
+reg l2t0_cpx_req_cq_d;
+reg cpx_l2t0_grant_cx_d;
+reg l2t0_detected = 1'b1;
+always@(posedge (cmp_clk && enabled))
+begin
+    l2t0_cpx_req_cq_d <= l2t0_cpx_req_cq;
+    cpx_l2t0_grant_cx_d <= cpx_l2t0_grant_cx;
+    /* l2t0_cpx_req_cq is a low enabled signal from Figure 2-4 Manual Vol 1 */
+    if(l2t0_cpx_req_cq)
+    begin
+        `PR_ALWAYS("l2_proto_mon", `ALWAYS, "L2T0 sending request to CPX");
+    end
+end
+
+always @(posedge (cmp_clk && enabled))
+begin
+    if(l2t0_cpx_req_cq_d)
+    begin
+        `PR_ALWAYS("l2_proto_mon", `ALWAYS, "Data Cycle started from L2T0 to CPX");
+        repeat(2) @(posedge (cmp_clk && l2t0_detected))
+        begin
+            if(cpx_l2t0_grant_cx_d != cpx_l2t0_grant_cx)
+            begin
+                `PR_ALWAYS("l2_proto_mon", `ALWAYS, "ACKNOWLEDGE from CPX Detected");
+                l2t0_detected = 1'b0;
+            end
+        end
+    end
+end
+
+
+reg l2t1_cpx_req_cq_d;
+reg l2t1_cpx_req_cq_d;
+reg cpx_l2t1_grant_cx_d;
+reg l2t1_detected = 1'b1;
+always@(posedge (cmp_clk && enabled))
+begin
+    l2t1_cpx_req_cq_d <= l2t1_cpx_req_cq;
+    cpx_l2t1_grant_cx_d <= cpx_l2t1_grant_cx;
+    /* l2t1_cpx_req_cq is a low enabled signal from Figure 2-4 Manual Vol 1 */
+    if(l2t1_cpx_req_cq)
+    begin
+        `PR_ALWAYS("l2_proto_mon", `ALWAYS, "L2T1 sending request to CPX");
+    end
+end
+
+always @(posedge (cmp_clk && enabled))
+begin
+    if(l2t1_cpx_req_cq_d)
+    begin
+        `PR_ALWAYS("l2_proto_mon", `ALWAYS, "Data Cycle started from L2T1 to CPX");
+        repeat(2) @(posedge (cmp_clk && l2t1_detected))
+        begin
+            if(cpx_l2t1_grant_cx_d != cpx_l2t1_grant_cx)
+            begin
+                `PR_ALWAYS("l2_proto_mon", `ALWAYS, "ACKNOWLEDGE from CPX Detected");
+                l2t1_detected = 1'b0;
+            end
+        end
+    end
+end
+
+
+reg l2t2_cpx_req_cq_d;
+reg l2t2_cpx_req_cq_d;
+reg cpx_l2t2_grant_cx_d;
+reg l2t2_detected = 1'b1;
+always@(posedge (cmp_clk && enabled))
+begin
+    l2t2_cpx_req_cq_d <= l2t2_cpx_req_cq;
+    cpx_l2t2_grant_cx_d <= cpx_l2t2_grant_cx;
+    /* l2t2_cpx_req_cq is a low enabled signal from Figure 2-4 Manual Vol 1 */
+    if(l2t2_cpx_req_cq)
+    begin
+        `PR_ALWAYS("l2_proto_mon", `ALWAYS, "L2T2 sending request to CPX");
+    end
+end
+
+
+always @(posedge (cmp_clk && enabled))
+begin
+    if(l2t2_cpx_req_cq_d)
+    begin
+        `PR_ALWAYS("l2_proto_mon", `ALWAYS, "Data Cycle started from L2T2 to CPX");
+        repeat(2) @(posedge (cmp_clk && l2t2_detected))
+        begin
+            if(cpx_l2t2_grant_cx_d != cpx_l2t2_grant_cx)
+            begin
+                `PR_ALWAYS("l2_proto_mon", `ALWAYS, "ACKNOWLEDGE from CPX Detected");
+                l2t2_detected = 1'b0;
+            end
+        end
+    end
+end
+
+
+
+reg l2t3_cpx_req_cq_d;
+reg l2t3_cpx_req_cq_d;
+reg cpx_l2t3_grant_cx_d;
+reg l2t3_detected = 1'b1;
+always@(posedge (cmp_clk && enabled))
+begin
+    l2t3_cpx_req_cq_d <= l2t3_cpx_req_cq;
+    cpx_l2t3_grant_cx_d <= cpx_l2t3_grant_cx;
+    /* l2t3_cpx_req_cq is a low enabled signal from Figure 2-4 Manual Vol 1 */
+    if(l2t3_cpx_req_cq)
+    begin
+        `PR_ALWAYS("l2_proto_mon", `ALWAYS, "L2T3 sending request to CPX");
+    end
+end
+
+always @(posedge (cmp_clk && enabled))
+begin
+    if(l2t3_cpx_req_cq_d)
+    begin
+        `PR_ALWAYS("l2_proto_mon", `ALWAYS, "Data Cycle started from L2T3 to CPX");
+        repeat(2) @(posedge (cmp_clk && l2t3_detected))
+        begin
+            if(cpx_l2t3_grant_cx_d != cpx_l2t3_grant_cx)
+            begin
+                `PR_ALWAYS("l2_proto_mon", `ALWAYS, "ACKNOWLEDGE from CPX Detected");
+                l2t3_detected = 1'b0;
+            end
+        end
+    end
+end
+
+
+
+reg l2t4_cpx_req_cq_d;
+reg l2t4_cpx_req_cq_d;
+reg cpx_l2t4_grant_cx_d;
+reg l2t4_detected = 1'b1;
+always@(posedge (cmp_clk && enabled))
+begin
+    l2t4_cpx_req_cq_d <= l2t4_cpx_req_cq;
+    cpx_l2t4_grant_cx_d <= cpx_l2t4_grant_cx;
+    /* l2t4_cpx_req_cq is a low enabled signal from Figure 2-4 Manual Vol 1 */
+    if(l2t4_cpx_req_cq)
+    begin
+        `PR_ALWAYS("l2_proto_mon", `ALWAYS, "L2T4 sending request to CPX");
+    end
+end
+
+always @(posedge (cmp_clk && enabled))
+begin
+    if(l2t4_cpx_req_cq_d)
+    begin
+        `PR_ALWAYS("l2_proto_mon", `ALWAYS, "Data Cycle started from L2T4 to CPX");
+        repeat(2) @(posedge (cmp_clk && l2t4_detected))
+        begin
+            if(cpx_l2t4_grant_cx_d != cpx_l2t4_grant_cx)
+            begin
+                `PR_ALWAYS("l2_proto_mon", `ALWAYS, "ACKNOWLEDGE from CPX Detected");
+                l2t4_detected = 1'b0;
+            end
+        end
+    end
+end
+
+
+
+reg l2t5_cpx_req_cq_d;
+reg l2t5_cpx_req_cq_d;
+reg cpx_l2t5_grant_cx_d;
+reg l2t5_detected = 1'b1;
+always@(posedge (cmp_clk && enabled))
+begin
+    l2t5_cpx_req_cq_d <= l2t5_cpx_req_cq;
+    cpx_l2t5_grant_cx_d <= cpx_l2t5_grant_cx;
+    /* l2t5_cpx_req_cq is a low enabled signal from Figure 2-4 Manual Vol 1 */
+    if(l2t5_cpx_req_cq)
+    begin
+        `PR_ALWAYS("l2_proto_mon", `ALWAYS, "L2T5 sending request to CPX");
+    end
+end
+
+always @(posedge (cmp_clk && enabled))
+begin
+    if(l2t5_cpx_req_cq_d)
+    begin
+        `PR_ALWAYS("l2_proto_mon", `ALWAYS, "Data Cycle started from L2T5 to CPX");
+        repeat(2) @(posedge (cmp_clk && l2t5_detected))
+        begin
+            if(cpx_l2t5_grant_cx_d != cpx_l2t5_grant_cx)
+            begin
+                `PR_ALWAYS("l2_proto_mon", `ALWAYS, "ACKNOWLEDGE from CPX Detected");
+                l2t5_detected = 1'b0;
+            end
+        end
+    end
+end
+
+
+
+reg l2t6_cpx_req_cq_d;
+reg l2t6_cpx_req_cq_d;
+reg cpx_l2t6_grant_cx_d;
+reg l2t6_detected = 1'b1;
+always@(posedge (cmp_clk && enabled))
+begin
+    l2t6_cpx_req_cq_d <= l2t6_cpx_req_cq;
+    cpx_l2t6_grant_cx_d <= cpx_l2t6_grant_cx;
+    /* l2t6_cpx_req_cq is a low enabled signal from Figure 2-4 Manual Vol 1 */
+    if(l2t6_cpx_req_cq)
+    begin
+        `PR_ALWAYS("l2_proto_mon", `ALWAYS, "L2T6 sending request to CPX");
+    end
+end
+
+always @(posedge (cmp_clk && enabled))
+begin
+    if(l2t6_cpx_req_cq_d)
+    begin
+        `PR_ALWAYS("l2_proto_mon", `ALWAYS, "Data Cycle started from L2T6 to CPX");
+        repeat(2) @(posedge (cmp_clk && l2t6_detected))
+        begin
+            if(cpx_l2t6_grant_cx_d != cpx_l2t6_grant_cx)
+            begin
+                `PR_ALWAYS("l2_proto_mon", `ALWAYS, "ACKNOWLEDGE from CPX Detected");
+                l2t6_detected = 1'b0;
+            end
+        end
+    end
+end
+
+
+
+reg l2t7_cpx_req_cq_d;
+reg cpx_l2t7_grant_cx_d;
+reg l2t7_detected = 1'b1;
+always@(posedge (cmp_clk && enabled))
+begin
+    l2t7_cpx_req_cq_d <= l2t7_cpx_req_cq;
+    cpx_l2t7_grant_cx_d <= cpx_l2t7_grant_cx;
+    /* l2t7_cpx_req_cq is a low enabled signal from Figure 2-4 Manual Vol 1 */
+    if(l2t7_cpx_req_cq)
+    begin
+        `PR_ALWAYS("l2_proto_mon", `ALWAYS, "L2T7 sending request to CPX");
+    end
+end
+
+always @(posedge (cmp_clk && enabled))
+begin
+    if(l2t7_cpx_req_cq_d)
+    begin
+        `PR_ALWAYS("l2_proto_mon", `ALWAYS, "Data Cycle started from L2T7 to CPX");
+        repeat(2) @(posedge (cmp_clk && l2t7_detected))
+        begin
+            if(cpx_l2t7_grant_cx_d != cpx_l2t7_grant_cx)
+            begin
+                `PR_ALWAYS("l2_proto_mon", `ALWAYS, "ACKNOWLEDGE from CPX Detected");
+                l2t7_detected = 1'b0;
+            end
+        end
+    end
+end
+
 
 
 endmodule
