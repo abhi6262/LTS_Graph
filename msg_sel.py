@@ -17,7 +17,7 @@ import math
 os.system('cls' if os.name == 'nt' else 'clear')
 
 config = ConfigParser.RawConfigParser()
-config.read('config.cfg')
+config.read('../config.cfg')
 message_width = ast.literal_eval(config.get('Configuration','Message_width'))
 buffer_width = config.getint('Configuration','Buffer_width')
 print "message width:", message_width, "\n"
