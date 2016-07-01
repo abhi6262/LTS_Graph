@@ -4,6 +4,9 @@ Monitor written by : Debjit Pal
 Email ID: dpal2@illinois.edu
 Institute: Univerisity of Illinois at Urbana-Champaign
 
+Modified by: Abhishek Sharma
+Email ID: sharma53@illinois.edu
+
 */
 
 /* Define the modules */
@@ -348,9 +351,9 @@ wire mcu3_l2t7_wr_ack = `L2T7.mcu_l2t_wr_ack;
 wire l2b7_mcu3_data_vld_r5 = `L2B7.evict_l2b_mcu_data_vld_r5;
 wire [63:0] l2b7_mcu3_wr_data_r5 = `L2B7.evict_l2b_mcu_wr_data_r5;
 
-/* Section 3.4.1 and 3.4.2 Manual Vol 1 */
 
-/* L2 to MCU Read Request */
+/* Monitors for sending a Read Request from L2 to MCU Section 2.1.2.2 Section 3.4.1 Manual Vol 1 */
+
 always @(posedge (cmp_clk && enabled))
 begin
     if(l2t0_mcu0_rd_req)
@@ -360,6 +363,23 @@ begin
         `PR_INFO("l2_proto_mon", `INFO, "L2T0 to MCU0 Read Request ID = %x", l2t0_mcu0_rd_req_id);
     end
 end
+
+always @(posedge (cmp_clk && enabled))
+begin
+    if(mcu0_l2t0_rd_ack)
+        `PR_ALWAYS("l2_proto_mon", `ALWAYS, "MCU0 to L2T0 Read Request Acknowledgement");
+end
+
+always @(posedge (cmp_clk && enabled))
+begin
+    if(mcu0_l2t0_data_vld_r0)
+    begin
+        repeat (3) @(posedge cmp_clk);
+        `PR_INFO("l2_proto_mon", `INFO, "MCU0 to L2B0 Read Data = %x",  mcu0_l2b0_data_r2);
+        `PR_INFO("l2_proto_mon", `INFO, "MCU0 to L2B0 Read Data ECC = %x",  mcu0_l2b0_ecc_r2);
+    end
+end
+
 
 always @(posedge (cmp_clk && enabled))
 begin
@@ -373,6 +393,23 @@ end
 
 always @(posedge (cmp_clk && enabled))
 begin
+    if(mcu0_l2t1_rd_ack)
+        `PR_ALWAYS("l2_proto_mon", `ALWAYS, "MCU0 to L2T1 Read Request Acknowledgement");
+end
+
+always @(posedge (cmp_clk && enabled))
+begin
+    if(mcu0_l2t1_data_vld_r0)
+    begin
+        repeat(3) @(posedge cmp_clk);
+        `PR_INFO("l2_proto_mon", `INFO, "MCU0 to L2B1 Read Data = %x",  mcu0_l2b1_data_r2);
+        `PR_INFO("l2_proto_mon", `INFO, "MCU0 to L2B1 Read Data ECC = %x",  mcu0_l2b1_ecc_r2);
+    end
+end
+
+
+always @(posedge (cmp_clk && enabled))
+begin
     if(l2t2_mcu1_rd_req)
     begin
         `PR_ALWAYS("l2_proto_mon", `ALWAYS, "L2T2 Read Request to MCU1");
@@ -380,6 +417,24 @@ begin
         `PR_INFO("l2_proto_mon", `INFO, "L2T2 to MCU1 Read Request ID = %x", l2t2_mcu1_rd_req_id);
     end
 end
+
+always @(posedge (cmp_clk && enabled))
+begin
+    if(mcu1_l2t2_rd_ack)
+        `PR_ALWAYS("l2_proto_mon", `ALWAYS, "MCU1 to L2T2 Read Request Acknowledgement");
+end
+
+always @(posedge (cmp_clk && enabled))
+begin
+    if(mcu1_l2t2_data_vld_r0)
+    begin
+        repeat(3) @(posedge cmp_clk);
+        `PR_INFO("l2_proto_mon", `INFO, "MCU1 to L2B2 Read Data = %x", mcu1_l2b2_data_r2);
+        `PR_INFO("l2_proto_mon", `INFO, "MCU1 to L2B2 Read Data ECC = %x",  mcu1_l2b2_ecc_r2);
+    end
+end
+
+
 
 always @(posedge (cmp_clk && enabled))
 begin
@@ -393,6 +448,23 @@ end
 
 always @(posedge (cmp_clk && enabled))
 begin
+    if(mcu1_l2t3_rd_ack)
+        `PR_ALWAYS("l2_proto_mon", `ALWAYS, "MCU1 to L2T3 Read Request Acknowledgement");
+end
+
+always @(posedge (cmp_clk && enabled))
+begin
+    if(mcu1_l2t3_data_vld_r0)
+    begin
+        repeat(3) @(posedge cmp_clk);
+        `PR_INFO("l2_proto_mon", `INFO, "MCU1 to L2B3 Read Data = %x",  mcu1_l2b3_data_r2);
+        `PR_INFO("l2_proto_mon", `INFO, "MCU1 to L2B3 Read Data ECC = %x",  mcu1_l2b3_ecc_r2);
+    end
+end
+
+
+always @(posedge (cmp_clk && enabled))
+begin
     if(l2t4_mcu2_rd_req)
     begin
         `PR_ALWAYS("l2_proto_mon", `ALWAYS, "L2T4 Read Request to MCU2");
@@ -400,6 +472,23 @@ begin
         `PR_INFO("l2_proto_mon", `INFO, "L2T4 to MCU2 Read Request ID = %x", l2t4_mcu2_rd_req_id);
     end
 end
+
+always @(posedge (cmp_clk && enabled))
+begin
+    if(mcu2_l2t4_rd_ack)
+        `PR_ALWAYS("l2_proto_mon", `ALWAYS, "MCU2 to L2T4 Read Request Acknowledgement");
+end
+
+always @(posedge (cmp_clk && enabled))
+begin
+    if(mcu2_l2t4_data_vld_r0)
+    begin
+        repeat(3) @(posedge cmp_clk);
+        `PR_INFO("l2_proto_mon", `INFO, "MCU2 to L2B4 Read Data = %x", mcu2_l2b4_data_r2);
+        `PR_INFO("l2_proto_mon", `INFO, "MCU2 to L2B4 Read Data ECC = %x",  mcu2_l2b4_ecc_r2);
+    end
+end
+
 
 always @(posedge (cmp_clk && enabled))
 begin
@@ -413,6 +502,23 @@ end
 
 always @(posedge (cmp_clk && enabled))
 begin
+    if(mcu2_l2t5_rd_ack)
+        `PR_ALWAYS("l2_proto_mon", `ALWAYS, "MCU2 to L2T5 Read Request Acknowledgement");
+end
+
+always @(posedge (cmp_clk && enabled))
+begin
+    if(mcu2_l2t5_data_vld_r0)
+    begin
+        repeat(3) @(posedge cmp_clk);
+        `PR_INFO("l2_proto_mon", `INFO, "MCU2 to L2B5 Read Data = %x", mcu2_l2b5_data_r2);
+        `PR_INFO("l2_proto_mon", `INFO, "MCU2 to L2B5 Read Data ECC = %x", mcu2_l2b5_ecc_r2);
+    end
+end
+
+
+always @(posedge (cmp_clk && enabled))
+begin
     if(l2t6_mcu3_rd_req)
     begin
         `PR_ALWAYS("l2_proto_mon", `ALWAYS, "L2T6 Read Request to MCU3");
@@ -420,6 +526,24 @@ begin
         `PR_INFO("l2_proto_mon", `INFO, "L2T6 to MCU3 Read Request ID = %x", l2t6_mcu3_rd_req_id);
     end
 end
+
+always @(posedge (cmp_clk && enabled))
+begin
+    if(mcu3_l2t6_rd_ack)
+        `PR_ALWAYS("l2_proto_mon", `ALWAYS, "MCU3 to L2T6 Read Request Acknowledgement");
+end
+
+always @(posedge (cmp_clk && enabled))
+begin
+    if(mcu3_l2t6_data_vld_r0)
+    begin
+        repeat(3) @(posedge cmp_clk);
+        `PR_INFO("l2_proto_mon", `INFO, "MCU3 to L2B6 Read Data = %x", mcu3_l2b6_data_r2);
+        `PR_INFO("l2_proto_mon", `INFO, "MCU3 to L2B6 Read Data ECC = %x", mcu3_l2b6_ecc_r2);
+    end
+end
+
+
 
 always @(posedge (cmp_clk && enabled))
 begin
@@ -431,135 +555,25 @@ begin
     end
 end
 
-
-
-/* MCU to L2 Read Request Acknowledgement */
-always @(posedge (cmp_clk && enabled))
-begin
-    if(mcu0_l2t0_rd_ack)
-        `PR_ALWAYS("l2_proto_mon", `ALWAYS, "MCU0 to L2T0 Read Request Acknowledgement");
-end
-
-always @(posedge (cmp_clk && enabled))
-begin
-    if(mcu0_l2t1_rd_ack)
-        `PR_ALWAYS("l2_proto_mon", `ALWAYS, "MCU0 to L2T1 Read Request Acknowledgement");
-end
-
-always @(posedge (cmp_clk && enabled))
-begin
-    if(mcu1_l2t2_rd_ack)
-        `PR_ALWAYS("l2_proto_mon", `ALWAYS, "MCU1 to L2T2 Read Request Acknowledgement");
-end
-
-always @(posedge (cmp_clk && enabled))
-begin
-    if(mcu1_l2t3_rd_ack)
-        `PR_ALWAYS("l2_proto_mon", `ALWAYS, "MCU1 to L2T3 Read Request Acknowledgement");
-end
-
-always @(posedge (cmp_clk && enabled))
-begin
-    if(mcu2_l2t4_rd_ack)
-        `PR_ALWAYS("l2_proto_mon", `ALWAYS, "MCU2 to L2T4 Read Request Acknowledgement");
-end
-
-always @(posedge (cmp_clk && enabled))
-begin
-    if(mcu2_l2t5_rd_ack)
-        `PR_ALWAYS("l2_proto_mon", `ALWAYS, "MCU2 to L2T5 Read Request Acknowledgement");
-end
-
-always @(posedge (cmp_clk && enabled))
-begin
-    if(mcu3_l2t6_rd_ack)
-        `PR_ALWAYS("l2_proto_mon", `ALWAYS, "MCU3 to L2T6 Read Request Acknowledgement");
-end
-
 always @(posedge (cmp_clk && enabled))
 begin
     if(mcu3_l2t7_rd_ack)
         `PR_ALWAYS("l2_proto_mon", `ALWAYS, "MCU3 to L2T7 Read Request Acknowledgement");
 end
 
-
-/* MCU to L2 Read Rquest Data */
-always @(posedge (cmp_clk && enabled))
-begin
-    if(mcu0_l2t0_data_vld_r0)
-    begin
-        `PR_INFO("l2_proto_mon", `INFO, "MCU0 to L2B0 Read Data = %x", ##3 mcu0_l2b0_data_r2);
-        `PR_INFO("l2_proto_mon", `INFO, "MCU0 to L2B0 Read Data ECC = %x", ##3 mcu0_l2b0_ecc_r2);
-    end
-end
-
-always @(posedge (cmp_clk && enabled))
-begin
-    if(mcu0_l2t1_data_vld_r0)
-    begin
-        `PR_INFO("l2_proto_mon", `INFO, "MCU0 to L2B1 Read Data = %x", ##3 mcu0_l2b1_data_r2);
-        `PR_INFO("l2_proto_mon", `INFO, "MCU0 to L2B1 Read Data ECC = %x", ##3 mcu0_l2b1_ecc_r2);
-    end
-end
-
-always @(posedge (cmp_clk && enabled))
-begin
-    if(mcu1_l2t2_data_vld_r0)
-    begin
-        `PR_INFO("l2_proto_mon", `INFO, "MCU1 to L2B2 Read Data = %x", ##3 mcu1_l2b2_data_r2);
-        `PR_INFO("l2_proto_mon", `INFO, "MCU1 to L2B2 Read Data ECC = %x", ##3 mcu1_l2b2_ecc_r2);
-    end
-end
-
-always @(posedge (cmp_clk && enabled))
-begin
-    if(mcu1_l2t3_data_vld_r0)
-    begin
-        `PR_INFO("l2_proto_mon", `INFO, "MCU1 to L2B3 Read Data = %x", ##3 mcu1_l2b3_data_r2);
-        `PR_INFO("l2_proto_mon", `INFO, "MCU1 to L2B3 Read Data ECC = %x", ##3 mcu1_l2b3_ecc_r2);
-    end
-end
-
-always @(posedge (cmp_clk && enabled))
-begin
-    if(mcu2_l2t4_data_vld_r0)
-    begin
-        `PR_INFO("l2_proto_mon", `INFO, "MCU2 to L2B4 Read Data = %x", ##3 mcu2_l2b4_data_r2);
-        `PR_INFO("l2_proto_mon", `INFO, "MCU2 to L2B4 Read Data ECC = %x", ##3 mcu2_l2b4_ecc_r2);
-    end
-end
-
-always @(posedge (cmp_clk && enabled))
-begin
-    if(mcu2_l2t5_data_vld_r0)
-    begin
-        `PR_INFO("l2_proto_mon", `INFO, "MCU2 to L2B5 Read Data = %x", ##3 mcu2_l2b5_data_r2);
-        `PR_INFO("l2_proto_mon", `INFO, "MCU2 to L2B5 Read Data ECC = %x", ##3 mcu2_l2b5_ecc_r2);
-    end
-end
-
-always @(posedge (cmp_clk && enabled))
-begin
-    if(mcu3_l2t6_data_vld_r0)
-    begin
-        `PR_INFO("l2_proto_mon", `INFO, "MCU3 to L2B6 Read Data = %x", ##3 mcu3_l2b6_data_r2);
-        `PR_INFO("l2_proto_mon", `INFO, "MCU3 to L2B6 Read Data ECC = %x", ##3 mcu3_l2b6_ecc_r2);
-    end
-end
-
 always @(posedge (cmp_clk && enabled))
 begin
     if(mcu3_l2t7_data_vld_r0)
     begin
-        `PR_INFO("l2_proto_mon", `INFO, "MCU3 to L2B7 Read Data = %x", ##3 mcu3_l2b7_data_r2);
-        `PR_INFO("l2_proto_mon", `INFO, "MCU3 to L2B7 Read Data ECC = %x", ##3 mcu3_l2b7_ecc_r2);
+        repeat(3) @(posedge cmp_clk);
+        `PR_INFO("l2_proto_mon", `INFO, "MCU3 to L2B7 Read Data = %x", mcu3_l2b7_data_r2);
+        `PR_INFO("l2_proto_mon", `INFO, "MCU3 to L2B7 Read Data ECC = %x", mcu3_l2b7_ecc_r2);
     end
 end
 
 
+/* Monitors for Sending Write Request from L2 to MCU Section 2.1.2.2 Section 3.4.2 Manual Vol 1 */
 
-
-/* L2 to MCU Write Request */
 always @(posedge (cmp_clk && enabled))
 begin
     if(l2t0_mcu0_wr_req)
@@ -568,6 +582,24 @@ begin
         `PR_INFO("l2_proto_mon", `INFO, "L2T0 to MCU0 Write Request Address = %x", l2t0_mcu0_addr);
     end
 end
+
+always @(posedge (cmp_clk && enabled))
+begin
+    if(mcu0_l2t0_wr_ack)
+    begin
+        `PR_ALWAYS("l2_proto_mon", `ALWAYS, "MCU0 to L2T0 Write Request Acknowledgement");
+        repeat(5) @(posedge cmp_clk);
+        if(l2b0_mcu0_data_vld_r5)
+        begin
+            `PR_ALWAYS("l2_proto_mon", `ALWAYS, "L2B0 to MCU0 Data Valid and Write Data Cycle");
+            repeat (8) @(posedge cmp_clk)
+            begin
+                `PR_INFO("l2_proto_mon", `INFO, "L2B0 to MCU0 Write Data = %x", l2b0_mcu0_wr_data_r5);
+            end
+        end 
+    end
+end
+
 
 always @(posedge (cmp_clk && enabled))
 begin
@@ -580,12 +612,48 @@ end
 
 always @(posedge (cmp_clk && enabled))
 begin
+    if(mcu0_l2t1_wr_ack)
+    begin
+        `PR_ALWAYS("l2_proto_mon", `ALWAYS, "MCU0 to L2T1 Write Request Acknowledgement");
+        repeat(5) @(posedge cmp_clk);
+        if(l2b1_mcu0_data_vld_r5)
+        begin
+            `PR_ALWAYS("l2_proto_mon", `ALWAYS, "L2B1 to MCU0 Data Valid and Write Data Cycle");
+            repeat (8) @(posedge cmp_clk)
+            begin
+                `PR_INFO("l2_proto_mon", `INFO, "L2B1 to MCU0 Write Data = %x", l2b1_mcu0_wr_data_r5);
+            end
+        end
+    end
+end
+
+
+always @(posedge (cmp_clk && enabled))
+begin
     if(l2t2_mcu1_wr_req)
     begin
         `PR_ALWAYS("l2_proto_mon", `ALWAYS, "L2T2 Write Request to MCU1");
         `PR_INFO("l2_proto_mon", `INFO, "L2T2 to MCU1 Write Request Address = %x", l2t2_mcu1_addr);
     end
 end
+
+always @(posedge (cmp_clk && enabled))
+begin
+    if(mcu1_l2t2_wr_ack)
+    begin
+        `PR_ALWAYS("l2_proto_mon", `ALWAYS, "MCU1 to L2T2 Write Request Acknowledgement");
+        repeat(5) @(posedge cmp_clk);
+        if(l2b2_mcu1_data_vld_r5)
+        begin
+            `PR_ALWAYS("l2_proto_mon", `ALWAYS, "L2B2 to MCU1 Data Valid and Write Data Cycle");
+            repeat (8) @(posedge cmp_clk)
+            begin
+                `PR_INFO("l2_proto_mon", `INFO, "L2B2 to MCU1 Write Data = %x", l2b2_mcu1_wr_data_r5);
+            end
+        end
+    end
+end
+
 
 always @(posedge (cmp_clk && enabled))
 begin
@@ -598,12 +666,49 @@ end
 
 always @(posedge (cmp_clk && enabled))
 begin
+    if(mcu1_l2t3_wr_ack)
+    begin
+        `PR_ALWAYS("l2_proto_mon", `ALWAYS, "MCU1 to L2T3 Write Request Acknowledgement");
+        repeat(5) @(posedge cmp_clk);
+        if(l2b3_mcu1_data_vld_r5)
+        begin
+            `PR_ALWAYS("l2_proto_mon", `ALWAYS, "L2B3 to MCU1 Data Valid and Write Data Cycle");
+            repeat (8) @(posedge cmp_clk)
+            begin
+                `PR_INFO("l2_proto_mon", `INFO, "L2B3 to MCU1 Write Data = %x", l2b3_mcu1_wr_data_r5);
+            end
+        end
+    end
+end
+
+
+
+always @(posedge (cmp_clk && enabled))
+begin
     if(l2t4_mcu2_wr_req)
     begin
         `PR_ALWAYS("l2_proto_mon", `ALWAYS, "L2T4 Write Request to MCU2");
         `PR_INFO("l2_proto_mon", `INFO, "L2T4 to MCU2 Write Request Address = %x", l2t4_mcu2_addr);
     end
 end
+
+always @(posedge (cmp_clk && enabled))
+begin
+    if(mcu2_l2t4_wr_ack)
+    begin
+        `PR_ALWAYS("l2_proto_mon", `ALWAYS, "MCU2 to L2T4 Write Request Acknowledgement");
+        repeat(5) @(posedge cmp_clk);
+        if(l2b4_mcu2_data_vld_r5)
+        begin
+            `PR_ALWAYS("l2_proto_mon", `ALWAYS, "L2B4 to MCU2 Data Valid and Write Data Cycle");
+            repeat (8) @(posedge cmp_clk)
+            begin
+                `PR_INFO("l2_proto_mon", `INFO, "L2B4 to MCU2 Write Data = %x", l2b4_mcu2_wr_data_r5);
+            end
+        end
+    end
+end
+
 
 always @(posedge (cmp_clk && enabled))
 begin
@@ -616,12 +721,49 @@ end
 
 always @(posedge (cmp_clk && enabled))
 begin
+    if(mcu2_l2t5_wr_ack)
+    begin
+        `PR_ALWAYS("l2_proto_mon", `ALWAYS, "MCU2 to L2T5 Write Request Acknowledgement");
+        repeat(5) @(posedge cmp_clk);
+        if(l2b5_mcu2_data_vld_r5)
+        begin
+            `PR_ALWAYS("l2_proto_mon", `ALWAYS, "L2B5 to MCU2 Data Valid and Write Data Cycle");
+            repeat (8) @(posedge cmp_clk)
+            begin
+                `PR_INFO("l2_proto_mon", `INFO, "L2B5 to MCU2 Write Data = %x", l2b5_mcu2_wr_data_r5);
+            end
+        end
+    end
+end
+
+
+
+always @(posedge (cmp_clk && enabled))
+begin
     if(l2t6_mcu3_wr_req)
     begin
         `PR_ALWAYS("l2_proto_mon", `ALWAYS, "L2T6 Write Request to MCU3");
         `PR_INFO("l2_proto_mon", `INFO, "L2T6 to MCU3 Write Request Address = %x", l2t6_mcu3_addr);
     end
 end
+
+always @(posedge (cmp_clk && enabled))
+begin
+    if(mcu3_l2t6_wr_ack)
+    begin
+        `PR_ALWAYS("l2_proto_mon", `ALWAYS, "MCU3 to L2T6 Write Request Acknowledgement");
+        repeat(5) @(posedge cmp_clk);
+        if(l2b6_mcu3_data_vld_r5)
+        begin
+            `PR_ALWAYS("l2_proto_mon", `ALWAYS, "L2B6 to MCU3 Data Valid and Write Data Cycle");
+            repeat (8) @(posedge cmp_clk)
+            begin
+                `PR_INFO("l2_proto_mon", `INFO, "L2B6 to MCU3 Write Data = %x", l2b6_mcu3_wr_data_r5);
+            end
+        end
+    end
+end
+
 
 always @(posedge (cmp_clk && enabled))
 begin
@@ -632,151 +774,19 @@ begin
     end
 end
 
-
-/* MCU to L2 Write Request Acknowledgement */
-always @(posedge (cmp_clk && enabled))
-begin
-    if(mcu0_l2t0_wr_ack)
-        `PR_ALWAYS("l2_proto_mon", `ALWAYS, "MCU0 to L2T0 Write Request Acknowledgement");
-end
-
-always @(posedge (cmp_clk && enabled))
-begin
-    if(mcu0_l2t1_wr_ack)
-        `PR_ALWAYS("l2_proto_mon", `ALWAYS, "MCU0 to L2T1 Write Request Acknowledgement");
-end
-
-always @(posedge (cmp_clk && enabled))
-begin
-    if(mcu1_l2t2_wr_ack)
-        `PR_ALWAYS("l2_proto_mon", `ALWAYS, "MCU1 to L2T2 Write Request Acknowledgement");
-end
-
-always @(posedge (cmp_clk && enabled))
-begin
-    if(mcu1_l2t3_wr_ack)
-        `PR_ALWAYS("l2_proto_mon", `ALWAYS, "MCU1 to L2T3 Write Request Acknowledgement");
-end
-
-always @(posedge (cmp_clk && enabled))
-begin
-    if(mcu2_l2t4_wr_ack)
-        `PR_ALWAYS("l2_proto_mon", `ALWAYS, "MCU2 to L2T4 Write Request Acknowledgement");
-end
-
-always @(posedge (cmp_clk && enabled))
-begin
-    if(mcu2_l2t5_wr_ack)
-        `PR_ALWAYS("l2_proto_mon", `ALWAYS, "MCU2 to L2T5 Write Request Acknowledgement");
-end
-
-always @(posedge (cmp_clk && enabled))
-begin
-    if(mcu3_l2t6_wr_ack)
-        `PR_ALWAYS("l2_proto_mon", `ALWAYS, "MCU3 to L2T6 Write Request Acknowledgement");
-end
-
 always @(posedge (cmp_clk && enabled))
 begin
     if(mcu3_l2t7_wr_ack)
+    begin
         `PR_ALWAYS("l2_proto_mon", `ALWAYS, "MCU3 to L2T7 Write Request Acknowledgement");
-end
-
-
-
-/* L2 to MCU Write Rquest Data */
-always @(posedge (cmp_clk && enabled))
-begin
-    if(l2b0_mcu0_data_vld_r5)
-    begin
-        `PR_ALWAYS("l2_proto_mon", `ALWAYS, "L2B0 to MCU0 Write Data Being Sent");
-        repeat (8) @(posedge cmp_clk)
+        repeat(5) @(posedge cmp_clk);
+        if(l2b7_mcu3_data_vld_r5)
         begin
-            `PR_INFO("l2_proto_mon", `INFO, "L2B0 to MCU0 Write Data = %x", l2b0_mcu0_wr_data_r5);
-        end
-    end
-end
-
-always @(posedge (cmp_clk && enabled))
-begin
-    if(l2b1_mcu0_data_vld_r5)
-    begin
-        `PR_ALWAYS("l2_proto_mon", `ALWAYS, "L2B1 to MCU0 Write Data Being Sent");
-        repeat (8) @(posedge cmp_clk)
-        begin
-            `PR_INFO("l2_proto_mon", `INFO, "L2B1 to MCU0 Write Data = %x", l2b1_mcu0_wr_data_r5);
-        end
-    end
-end
-
-always @(posedge (cmp_clk && enabled))
-begin
-    if(l2b2_mcu1_data_vld_r5)
-    begin
-        `PR_ALWAYS("l2_proto_mon", `ALWAYS, "L2B2 to MCU1 Write Data Being Sent");
-        repeat (8) @(posedge cmp_clk)
-        begin
-            `PR_INFO("l2_proto_mon", `INFO, "L2B2 to MCU1 Write Data = %x", l2b2_mcu1_wr_data_r5);
-        end
-    end
-end
-
-always @(posedge (cmp_clk && enabled))
-begin
-    if(l2b3_mcu1_data_vld_r5)
-    begin
-        `PR_ALWAYS("l2_proto_mon", `ALWAYS, "L2B3 to MCU1 Write Data Being Sent");
-        repeat (8) @(posedge cmp_clk)
-        begin
-            `PR_INFO("l2_proto_mon", `INFO, "L2B3 to MCU1 Write Data = %x", l2b3_mcu1_wr_data_r5);
-        end
-    end
-end
-
-always @(posedge (cmp_clk && enabled))
-begin
-    if(l2b4_mcu2_data_vld_r5)
-    begin
-        `PR_ALWAYS("l2_proto_mon", `ALWAYS, "L2B4 to MCU2 Write Data Being Sent");
-        repeat (8) @(posedge cmp_clk)
-        begin
-            `PR_INFO("l2_proto_mon", `INFO, "L2B4 to MCU2 Write Data = %x", l2b4_mcu2_wr_data_r5);
-        end
-    end
-end
-
-always @(posedge (cmp_clk && enabled))
-begin
-    if(l2b5_mcu2_data_vld_r5)
-    begin
-        `PR_ALWAYS("l2_proto_mon", `ALWAYS, "L2B5 to MCU2 Write Data Being Sent");
-        repeat (8) @(posedge cmp_clk)
-        begin
-            `PR_INFO("l2_proto_mon", `INFO, "L2B5 to MCU2 Write Data = %x", l2b5_mcu2_wr_data_r5);
-        end
-    end
-end
-
-always @(posedge (cmp_clk && enabled))
-begin
-    if(l2b6_mcu3_data_vld_r5)
-    begin
-        `PR_ALWAYS("l2_proto_mon", `ALWAYS, "L2B6 to MCU3 Write Data Being Sent");
-        repeat (8) @(posedge cmp_clk)
-        begin
-            `PR_INFO("l2_proto_mon", `INFO, "L2B6 to MCU3 Write Data = %x", l2b6_mcu3_wr_data_r5);
-        end
-    end
-end
-
-always @(posedge (cmp_clk && enabled))
-begin
-    if(l2b7_mcu3_data_vld_r5)
-    begin
-        `PR_ALWAYS("l2_proto_mon", `ALWAYS, "L2B7 to MCU3 Write Data Being Sent");
-        repeat (8) @(posedge cmp_clk)
-        begin
-            `PR_INFO("l2_proto_mon", `INFO, "L2B7 to MCU3 Write Data = %x", l2b7_mcu3_wr_data_r5);
+            `PR_ALWAYS("l2_proto_mon", `ALWAYS, "L2B7 to MCU3 Data Valid and Write Data Cycle");
+            repeat (8) @(posedge cmp_clk)
+            begin
+                `PR_INFO("l2_proto_mon", `INFO, "L2B7 to MCU3 Write Data = %x", l2b7_mcu3_wr_data_r5);
+            end
         end
     end
 end
