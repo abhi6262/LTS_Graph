@@ -74,18 +74,33 @@ wire l2b1_sio_ue_err = `SIO.l2b1_sio_ue_err;
 wire l2b0_sio_ue_err = `SIO.l2b0_sio_ue_err;
 
 
-/* Molnitors for Single Read Response from L2 to SIO Section 6.5.1.1 Manual Vol 1 */
+/* Monitors for Single Read Response from L2 to SIO Section 6.5.1.1 Manual Vol 1 */
+/* Monitors for Write 8 Response from L2 to SIO Section 6.5.1.1 Manual Vol 1 */
+/* Monitors for Write Invalidate Response from L2 to SIO Section 6.5.1.1 Manual Vol 1 */
+
+/*
+
+    NOTE: Since its hard to differentiate between the Single Read Response, Write 8 Response and
+    Write Invalidate Response from L2 to SIO (same set of signals shared and no essential difference in the signal response)
+    I merge them all now. I also remove the 17 cycles repeat operator as in case of WR8 and WRI that 17 cycles
+    do not make much sense. Also `PR_INFO on Parity check bit are removed now as for WRI that signal
+    dont make sense. SIU to L2 inbound monitor is a better place to differentiate between what kind
+    of request came from SII to L2. siu_to_l2_mon in inbound will do that. In that monitor WRI has also 
+    been incorporated now.
+
+*/
+
 
 always @(posedge(iol2clk && enabled))
 begin
     if(l2b0_sio_ctag_vld)
     begin
         `PR_ALWAYS("l2_to_siu_mon", `ALWAYS, "Read Reasponse Cycle from L2B0 to SIO Started");
-        repeat (17) @(posedge iol2clk)
-        begin
-            `PR_INFO("l2_to_siu_mon", `INFO, "L2B0 TO SIU Read Response  = %x", l2b0_sio_data);
-            `PR_INFO("l2_to_siu_mon", `INFO, "L2B0 TO SIU Read Data Parity = %x", l2b0_sio_parity);
-        end
+        //repeat (17) @(posedge iol2clk)
+        //begin
+         `PR_INFO("l2_to_siu_mon", `INFO, "L2B0 TO SIU Read Response  = %x", l2b0_sio_data);
+        //`PR_INFO("l2_to_siu_mon", `INFO, "L2B0 TO SIU Read Data Parity = %x", l2b0_sio_parity);
+        //end
     end
 end
 
@@ -101,11 +116,11 @@ begin
     if(l2b1_sio_ctag_vld)
     begin
         `PR_ALWAYS("l2_to_siu_mon", `ALWAYS, "Read Reasponse Cycle from L2B1 to SIO Started");
-        repeat (17) @(posedge iol2clk)
-        begin
-            `PR_INFO("l2_to_siu_mon", `INFO, "L2B1 TO SIU Read Response  = %x", l2b1_sio_data);
-            `PR_INFO("l2_to_siu_mon", `INFO, "L2B1 TO SIU Read Data Parity = %x", l2b1_sio_parity);
-        end
+        //repeat (17) @(posedge iol2clk)
+        //begin
+        `PR_INFO("l2_to_siu_mon", `INFO, "L2B1 TO SIU Read Response  = %x", l2b1_sio_data);
+        //`PR_INFO("l2_to_siu_mon", `INFO, "L2B1 TO SIU Read Data Parity = %x", l2b1_sio_parity);
+        //end
     end
 end
 
@@ -121,11 +136,11 @@ begin
     if(l2b2_sio_ctag_vld)
     begin
         `PR_ALWAYS("l2_to_siu_mon", `ALWAYS, "Read Reasponse Cycle from L2B2 to SIO Started");
-        repeat (17) @(posedge iol2clk)
-        begin
-            `PR_INFO("l2_to_siu_mon", `INFO, "L2B2 TO SIU Read Response  = %x", l2b2_sio_data);
-            `PR_INFO("l2_to_siu_mon", `INFO, "L2B2 TO SIU Read Data Parity = %x", l2b2_sio_parity);
-        end
+        //repeat (17) @(posedge iol2clk)
+        //begin
+        `PR_INFO("l2_to_siu_mon", `INFO, "L2B2 TO SIU Read Response  = %x", l2b2_sio_data);
+        //`PR_INFO("l2_to_siu_mon", `INFO, "L2B2 TO SIU Read Data Parity = %x", l2b2_sio_parity);
+        //end
     end
 end
 
@@ -141,11 +156,11 @@ begin
     if(l2b3_sio_ctag_vld)
     begin
         `PR_ALWAYS("l2_to_siu_mon", `ALWAYS, "Read Reasponse Cycle from L2B3 to SIO Started");
-        repeat (17) @(posedge iol2clk)
-        begin
-            `PR_INFO("l2_to_siu_mon", `INFO, "L2B3 TO SIU Read Response  = %x", l2b3_sio_data);
-            `PR_INFO("l2_to_siu_mon", `INFO, "L2B3 TO SIU Read Data Parity = %x", l2b3_sio_parity);
-        end
+        //repeat (17) @(posedge iol2clk)
+        //begin
+        `PR_INFO("l2_to_siu_mon", `INFO, "L2B3 TO SIU Read Response  = %x", l2b3_sio_data);
+        //`PR_INFO("l2_to_siu_mon", `INFO, "L2B3 TO SIU Read Data Parity = %x", l2b3_sio_parity);
+        //end
     end
 end
 
@@ -161,11 +176,11 @@ begin
     if(l2b4_sio_ctag_vld)
     begin
         `PR_ALWAYS("l2_to_siu_mon", `ALWAYS, "Read Reasponse Cycle from L2B4 to SIO Started");
-        repeat (17) @(posedge iol2clk)
-        begin
-            `PR_INFO("l2_to_siu_mon", `INFO, "L2B4 TO SIU Read Response  = %x", l2b4_sio_data);
-            `PR_INFO("l2_to_siu_mon", `INFO, "L2B4 TO SIU Read Data Parity = %x", l2b4_sio_parity);
-        end
+        //repeat (17) @(posedge iol2clk)
+        //begin
+        `PR_INFO("l2_to_siu_mon", `INFO, "L2B4 TO SIU Read Response  = %x", l2b4_sio_data);
+        //`PR_INFO("l2_to_siu_mon", `INFO, "L2B4 TO SIU Read Data Parity = %x", l2b4_sio_parity);
+        //end
     end
 end
 
@@ -181,11 +196,11 @@ begin
     if(l2b5_sio_ctag_vld)
     begin
         `PR_ALWAYS("l2_to_siu_mon", `ALWAYS, "Read Reasponse Cycle from L2B5 to SIO Started");
-        repeat (17) @(posedge iol2clk)
-        begin
-            `PR_INFO("l2_to_siu_mon", `INFO, "L2B5 TO SIU Read Response  = %x", l2b5_sio_data);
-            `PR_INFO("l2_to_siu_mon", `INFO, "L2B5 TO SIU Read Data Parity = %x", l2b5_sio_parity);
-        end
+        //repeat (17) @(posedge iol2clk)
+        //begin
+        `PR_INFO("l2_to_siu_mon", `INFO, "L2B5 TO SIU Read Response  = %x", l2b5_sio_data);
+        //`PR_INFO("l2_to_siu_mon", `INFO, "L2B5 TO SIU Read Data Parity = %x", l2b5_sio_parity);
+        //end
     end
 end
 
@@ -201,11 +216,11 @@ begin
     if(l2b6_sio_ctag_vld)
     begin
         `PR_ALWAYS("l2_to_siu_mon", `ALWAYS, "Read Reasponse Cycle from L2B6 to SIO Started");
-        repeat (17) @(posedge iol2clk)
-        begin
-            `PR_INFO("l2_to_siu_mon", `INFO, "L2B6 TO SIU Read Response  = %x", l2b6_sio_data);
-            `PR_INFO("l2_to_siu_mon", `INFO, "L2B6 TO SIU Read Data Parity = %x", l2b6_sio_parity);
-        end
+        //repeat (17) @(posedge iol2clk)
+        //begin
+        `PR_INFO("l2_to_siu_mon", `INFO, "L2B6 TO SIU Read Response  = %x", l2b6_sio_data);
+        //`PR_INFO("l2_to_siu_mon", `INFO, "L2B6 TO SIU Read Data Parity = %x", l2b6_sio_parity);
+        //end
     end
 end
 
@@ -221,11 +236,11 @@ begin
     if(l2b7_sio_ctag_vld)
     begin
         `PR_ALWAYS("l2_to_siu_mon", `ALWAYS, "Read Reasponse Cycle from L2B7 to SIO Started");
-        repeat (17) @(posedge iol2clk)
-        begin
-            `PR_INFO("l2_to_siu_mon", `INFO, "L2B7 TO SIU Read Response  = %x", l2b7_sio_data);
-            `PR_INFO("l2_to_siu_mon", `INFO, "L2B7 TO SIU Read Data Parity = %x", l2b7_sio_parity);
-        end
+        //repeat (17) @(posedge iol2clk)
+        //begin
+        `PR_INFO("l2_to_siu_mon", `INFO, "L2B7 TO SIU Read Response  = %x", l2b7_sio_data);
+        //`PR_INFO("l2_to_siu_mon", `INFO, "L2B7 TO SIU Read Data Parity = %x", l2b7_sio_parity);
+        //end
     end
 end
 
