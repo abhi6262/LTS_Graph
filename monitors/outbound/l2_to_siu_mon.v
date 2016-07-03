@@ -98,7 +98,7 @@ begin
         `PR_ALWAYS("l2_to_siu_mon", `ALWAYS, "Read Reasponse Cycle from L2B0 to SIO Started");
         //repeat (17) @(posedge iol2clk)
         //begin
-         `PR_INFO("l2_to_siu_mon", `INFO, "L2B0 TO SIU Read Response  = %x", l2b0_sio_data);
+        `PR_INFO("l2_to_siu_mon", `INFO, "L2B0 TO SIU Read Response  = %x", l2b0_sio_data);
         //`PR_INFO("l2_to_siu_mon", `INFO, "L2B0 TO SIU Read Data Parity = %x", l2b0_sio_parity);
         //end
     end
@@ -107,7 +107,7 @@ end
 always @(posedge (iol2clk && enabled))
 begin
     if(l2b0_sio_ue_err)
-        `PR_INFO("l2_to_siu_mon", `INFO, "Uncorrectable error detetcted by L2B0 to SIO", l2b0_sio_ue_err);
+        `PR_INFO("l2_to_siu_mon", `INFO, "Uncorrectable error detetcted by L2B0 to SIO");
 end
 
 
@@ -127,7 +127,7 @@ end
 always @(posedge (iol2clk && enabled))
 begin
     if(l2b1_sio_ue_err)
-        `PR_INFO("l2_to_siu_mon", `INFO, "Uncorrectable error detetcted by L2B1 to SIO", l2b1_sio_ue_err);
+        `PR_INFO("l2_to_siu_mon", `INFO, "Uncorrectable error detetcted by L2B1 to SIO");
 end
 
 
@@ -147,7 +147,7 @@ end
 always @(posedge (iol2clk && enabled))
 begin
     if(l2b2_sio_ue_err)
-        `PR_INFO("l2_to_siu_mon", `INFO, "Uncorrectable error detetcted by L2B2 to SIO", l2b2_sio_ue_err);
+        `PR_INFO("l2_to_siu_mon", `INFO, "Uncorrectable error detetcted by L2B2 to SIO");
 end
 
 
@@ -167,7 +167,7 @@ end
 always @(posedge (iol2clk && enabled))
 begin
     if(l2b3_sio_ue_err)
-        `PR_INFO("l2_to_siu_mon", `INFO, "Uncorrectable error detetcted by L2B3 to SIO", l2b3_sio_ue_err);
+        `PR_INFO("l2_to_siu_mon", `INFO, "Uncorrectable error detetcted by L2B3 to SIO");
 end
 
 
@@ -187,7 +187,7 @@ end
 always @(posedge (iol2clk && enabled))
 begin
     if(l2b4_sio_ue_err)
-        `PR_INFO("l2_to_siu_mon", `INFO, "Uncorrectable error detetcted by L2B4 to SIO", l2b4_sio_ue_err);
+        `PR_INFO("l2_to_siu_mon", `INFO, "Uncorrectable error detetcted by L2B4 to SIO");
 end
 
 
@@ -207,7 +207,7 @@ end
 always @(posedge (iol2clk && enabled))
 begin
     if(l2b5_sio_ue_err)
-        `PR_INFO("l2_to_siu_mon", `INFO, "Uncorrectable error detetcted by L2B5 to SIO", l2b5_sio_ue_err);
+        `PR_INFO("l2_to_siu_mon", `INFO, "Uncorrectable error detetcted by L2B5 to SIO");
 end
 
 
@@ -227,7 +227,7 @@ end
 always @(posedge (iol2clk && enabled))
 begin
     if(l2b6_sio_ue_err)
-        `PR_INFO("l2_to_siu_mon", `INFO, "Uncorrectable error detetcted by L2B6 to SIO", l2b6_sio_ue_err);
+        `PR_INFO("l2_to_siu_mon", `INFO, "Uncorrectable error detetcted by L2B6 to SIO");
 end
 
 
@@ -247,7 +247,7 @@ end
 always @(posedge (iol2clk && enabled))
 begin
     if(l2b7_sio_ue_err)
-        `PR_INFO("l2_to_siu_mon", `INFO, "Uncorrectable error detetcted by L2B7 to SIO", l2b7_sio_ue_err);
+        `PR_INFO("l2_to_siu_mon", `INFO, "Uncorrectable error detetcted by L2B7 to SIO");
 end
 
 
