@@ -229,51 +229,46 @@ wire [27:0] mcu3_l2b7_ecc_r2 = `L2B7.mcu_l2b_ecc_r2;
 //                                                          //
 //////////////////////////////////////////////////////////////
 
+/* Note: l2t_mcu_addr will come from the Signals for sending Read request to MCU. Not declared
+   here anymore
+*/
 
 wire l2t0_mcu0_wr_req = `L2T0.l2t_mcu_wr_req;
-wire [39:7] l2t0_mcu0_addr = `L2T0.l2t_mcu_addr;
 wire mcu0_l2t0_wr_ack = `L2T0.mcu_l2t_wr_ack;
 wire l2b0_mcu0_data_vld_r5 = `L2B0.evict_l2b_mcu_data_vld_r5;
 wire [63:0] l2b0_mcu0_wr_data_r5 = `L2B0.evict_l2b_mcu_wr_data_r5;
 
 wire l2t1_mcu0_wr_req = `L2T1.l2t_mcu_wr_req;
-wire [39:7] l2t1_mcu0_addr = `L2T1.l2t_mcu_addr;
 wire mcu0_l2t1_wr_ack = `L2T1.mcu_l2t_wr_ack;
 wire l2b1_mcu0_data_vld_r5 = `L2B1.evict_l2b_mcu_data_vld_r5;
 wire [63:0] l2b1_mcu0_wr_data_r5 = `L2B1.evict_l2b_mcu_wr_data_r5;
 
 wire l2t2_mcu1_wr_req = `L2T2.l2t_mcu_wr_req;
-wire [39:7] l2t2_mcu1_addr = `L2T2.l2t_mcu_addr;
 wire mcu1_l2t2_wr_ack = `L2T2.mcu_l2t_wr_ack;
 wire l2b2_mcu1_data_vld_r5 = `L2B2.evict_l2b_mcu_data_vld_r5;
 wire [63:0] l2b2_mcu1_wr_data_r5 = `L2B2.evict_l2b_mcu_wr_data_r5;
 
 wire l2t3_mcu1_wr_req = `L2T3.l2t_mcu_wr_req;
-wire [39:7] l2t3_mcu1_addr = `L2T3.l2t_mcu_addr;
 wire mcu1_l2t3_wr_ack = `L2T3.mcu_l2t_wr_ack;
 wire l2b3_mcu1_data_vld_r5 = `L2B3.evict_l2b_mcu_data_vld_r5;
 wire [63:0] l2b3_mcu1_wr_data_r5 = `L2B3.evict_l2b_mcu_wr_data_r5;
 
 wire l2t4_mcu2_wr_req = `L2T4.l2t_mcu_wr_req;
-wire [39:7] l2t4_mcu2_addr = `L2T4.l2t_mcu_addr;
 wire mcu2_l2t4_wr_ack = `L2T4.mcu_l2t_wr_ack;
 wire l2b4_mcu2_data_vld_r5 = `L2B4.evict_l2b_mcu_data_vld_r5;
 wire [63:0] l2b4_mcu2_wr_data_r5 = `L2B4.evict_l2b_mcu_wr_data_r5;
 
 wire l2t5_mcu2_wr_req = `L2T5.l2t_mcu_wr_req;
-wire [39:7] l2t5_mcu2_addr = `L2T5.l2t_mcu_addr;
 wire mcu2_l2t5_wr_ack = `L2T5.mcu_l2t_wr_ack;
 wire l2b5_mcu2_data_vld_r5 = `L2B5.evict_l2b_mcu_data_vld_r5;
 wire [63:0] l2b5_mcu2_wr_data_r5 = `L2B5.evict_l2b_mcu_wr_data_r5;
 
 wire l2t6_mcu3_wr_req = `L2T6.l2t_mcu_wr_req;
-wire [39:7] l2t6_mcu3_addr = `L2T6.l2t_mcu_addr;
 wire mcu3_l2t6_wr_ack = `L2T6.mcu_l2t_wr_ack;
 wire l2b6_mcu3_data_vld_r5 = `L2B6.evict_l2b_mcu_data_vld_r5;
 wire [63:0] l2b6_mcu3_wr_data_r5 = `L2B6.evict_l2b_mcu_wr_data_r5;
 
 wire l2t7_mcu3_wr_req = `L2T7.l2t_mcu_wr_req;
-wire [39:7] l2t7_mcu3_addr = `L2T7.l2t_mcu_addr;
 wire mcu3_l2t7_wr_ack = `L2T7.mcu_l2t_wr_ack;
 wire l2b7_mcu3_data_vld_r5 = `L2B7.evict_l2b_mcu_data_vld_r5;
 wire [63:0] l2b7_mcu3_wr_data_r5 = `L2B7.evict_l2b_mcu_wr_data_r5;
@@ -861,7 +856,6 @@ end
 /* Monitors for sending a request to the crossbar Section 2.1.2.1 Manual Vol 1 */
 
 reg l2t0_cpx_req_cq_d;
-reg l2t0_cpx_req_cq_d;
 reg cpx_l2t0_grant_cx_d;
 reg l2t0_detected = 1'b1;
 always@(posedge (cmp_clk && enabled))
@@ -893,7 +887,6 @@ end
 
 
 reg l2t1_cpx_req_cq_d;
-reg l2t1_cpx_req_cq_d;
 reg cpx_l2t1_grant_cx_d;
 reg l2t1_detected = 1'b1;
 always@(posedge (cmp_clk && enabled))
@@ -924,7 +917,6 @@ begin
 end
 
 
-reg l2t2_cpx_req_cq_d;
 reg l2t2_cpx_req_cq_d;
 reg cpx_l2t2_grant_cx_d;
 reg l2t2_detected = 1'b1;
@@ -959,7 +951,6 @@ end
 
 
 reg l2t3_cpx_req_cq_d;
-reg l2t3_cpx_req_cq_d;
 reg cpx_l2t3_grant_cx_d;
 reg l2t3_detected = 1'b1;
 always@(posedge (cmp_clk && enabled))
@@ -990,8 +981,6 @@ begin
 end
 
 
-
-reg l2t4_cpx_req_cq_d;
 reg l2t4_cpx_req_cq_d;
 reg cpx_l2t4_grant_cx_d;
 reg l2t4_detected = 1'b1;
@@ -1023,8 +1012,6 @@ begin
 end
 
 
-
-reg l2t5_cpx_req_cq_d;
 reg l2t5_cpx_req_cq_d;
 reg cpx_l2t5_grant_cx_d;
 reg l2t5_detected = 1'b1;
@@ -1057,7 +1044,6 @@ end
 
 
 
-reg l2t6_cpx_req_cq_d;
 reg l2t6_cpx_req_cq_d;
 reg cpx_l2t6_grant_cx_d;
 reg l2t6_detected = 1'b1;
