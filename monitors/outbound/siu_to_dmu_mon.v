@@ -17,6 +17,8 @@ initial begin
     begin
         enabled = 1'b0;
     end
+    else
+        `PR_INFO("siu_to_dmu_mon". `INFO, "siu_to_dmu_mon ENABLED");
 end
 
 /* From SIU to DMU monitoring Outbound messages */

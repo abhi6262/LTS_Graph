@@ -19,6 +19,8 @@ initial begin
     begin
         enabled = 1'b0;
     end
+    else
+        `PR_INFO("siu_to_ncu_mon", `INFO, "siu_to_ncu_mon ENABLED");
 end
 
 /* From SII to NCU monitoring INBOUND Messages */ 

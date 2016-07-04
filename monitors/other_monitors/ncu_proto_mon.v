@@ -17,6 +17,8 @@ initial begin
     begin
         enabled = 1'b0;
     end
+    else
+        `PR_INFO("ncu_proto_mon", `INFO, "ncu_proto_mon ENABLED");
 end
 
 /* Common clock for all NCU Protocol monitoring */

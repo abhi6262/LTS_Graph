@@ -17,6 +17,8 @@ initial begin
     begin
         enabled = 1'b0;
     end
+    else
+        `PR_INFO("niu_to_siu_mon", `INFO, "niu_to_siu_mon ENABLED");
 end
 
 wire l2t0_sii_iq_dequeue = `SII.l2t0_sii_iq_dequeue;

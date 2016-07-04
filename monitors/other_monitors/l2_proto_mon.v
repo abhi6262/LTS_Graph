@@ -44,6 +44,8 @@ initial begin
     begin
         enabled = 1'b0;
     end
+    else
+        `PR_INFO("l2_proto_mon", `INFO, "l2_proto_mon ENABLED");
 end
 
 wire flush_reset_complete = `TOP.flush_reset_complete;
@@ -52,6 +54,7 @@ always @(flush_reset_complete)
 begin
     if(flush_reset_complete == 1'b0)
         enabled = 1'b0;
+        `PR_INFO("l2_proto_mon", `INFO, "l2_proto_mon DISABLED by flush_reset_complete");
     if((flush_reset_complete == 1'b1) && (!($test$plusargs("l2_proto_mon_off"))))
         enabled = 1'b1;
 end

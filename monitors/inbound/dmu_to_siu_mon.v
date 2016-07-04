@@ -21,6 +21,8 @@ initial begin
     begin
         enabled = 1'b0;
     end
+    else
+        `PR_INFO("dmu_to_siu_mon", `INFO, "dmu_to_siu_mon ENABLED");
 end
 
 /* From Fire-DMU to SII monitoring INBOUND Messages */
