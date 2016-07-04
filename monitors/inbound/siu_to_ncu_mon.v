@@ -9,12 +9,12 @@ Institute: Univerisity of Illinois at Urbana-Champaign
 module siu_to_ncu_mon();
 
 reg enabled;
-reg sii_ncu_req_serviced;
 reg ncu_sii_gnt_d;
+reg sii_ncu_req_asserted;
 initial begin
     enabled = 1'b1;
-    sii_ncu_req_serviced = 1'b0;
     ncu_sii_gnt_d = 1'b0;
+    sii_ncu_req_asserted = 1'b0;
     if($test$plusargs("siu_to_ncu_mon_disable"))
     begin
         enabled = 1'b0;
@@ -37,23 +37,28 @@ wire ncu_sii_gnt = `SII.ncu_sii_gnt;
    serviced 
 */
 
-always @(posedge (iol2clk && enabled && !sii_ncu_req_serviced && sii_ncu_req))
+always @(posedge (iol2clk && enabled && sii_ncu_req))
 begin
-	if (sii_ncu_req)
+	if (sii_ncu_req && !sii_ncu_req_asserted)
 	begin
 		`PR_ALWAYS("siu_to_ncu_mon", `ALWAYS, "SIU Signalling a Transfer to NCU");
-		sii_ncu_req_serviced = 1'b1;
+		sii_ncu_req_asserted = 1'b1;
 	end
+end
+
+always @(posedge (iol2clk && enabled && !sii_ncu_req))
+begin
+    if(!sii_ncu_req && sii_ncu_req_asserted)
+        sii_ncu_req_asserted = 1'b0;
 end
 
 /* Detecting NCU is ready to serice SIU request */
 
-always @(posedge (iol2clk && enabled && sii_ncu_req_serviced && ncu_sii_gnt))
+always @(posedge (iol2clk && enabled && ncu_sii_gnt))
 begin
 	if(ncu_sii_gnt)
 	begin
 		`PR_ALWAYS("siu_to_ncu_mon", `ALWAYS, "NCU Granting SIU for Transfer");
-		sii_ncu_req_serviced = 1'b0;
 	end
 end
 

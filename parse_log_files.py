@@ -1,14 +1,23 @@
 import os, sys
 import multiprocessing, time
+import argparse as agp
+from termcolor import colored
+
 NUMBER_OF_PROCESSES = multiprocessing.cpu_count()
 
 '''
 Code added from the following link:
 http://stackoverflow.com/questions/3893885/cheap-way-to-search-a-large-text-file-for-a-string
 '''
+parser = agp.ArgumentParser(
+        description=colored('MultiProcessor Text File Parsing\nAuthor: Debjit Pal\nEmail: dpal2@illinois.edu', 'green'), formatter_class=agp.RawTextHelpFormatter
+        )
+parser.add_argument("-p", "--path", help="Path to Test Run Directory", required=True)
+parser.add_argument("-g", "--group", help="Test Group name (fc1_all_T2, fc1_mini_T2, fc1_paper)", required=True)
+args = parser.parse_args()
 
-path = "./"
-group_name = 'fc1_all_T2'
+path = args.path
+group_name = args.group
 monitor_name = ['dmu_to_siu_mon', 'niu_to_siu_mon', 'siu_to_l2_mon', 'siu_to_ncu_mon', 'l2_proto_mon', 'ncu_proto_mon', 'l2_to_siu_mon', 'siu_to_dmu_mon', 'siu_to_niu_mon']
 
 
