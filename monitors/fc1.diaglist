@@ -1862,6 +1862,9 @@ n2_err_DmuSiiCredit             n2_err_siu_dmu_wr.s     -midas_args=-DERR_FIELD=
 <runargs -sys=fc1 -fast_boot -tg_seed=1 -midas_args=-DPART_0_BASE=0x200000000 -midas_args=-DL2_REG_PROG>
 <runargs -nosas -vcs_run_args=+show_delta -vcs_run_args=+NIU_STUB_TIME=600000 >
 
+<runargs -vcs_run_args=+ios_0in_ras_chk_off  -vcs_run_args=+l2esr_mon_off -vcs_run_args=+l2cpx_errmon_off -max_cycle=+500000 -vcs_run_args=+mcu_fmon_disable -vcs_run_args=+mcu_errmon_disable >
+
+
 <sys(ios_adv_ncu_ras) name=sys(ios_adv_ncu_ras)>
 <runargs -vcs_run_args=+ios_0in_ras_chk_off >
 
@@ -1881,6 +1884,8 @@ n2_err_adv_DmuNcuCredit_int n2_err_adv_piu_int_ejr.s -midas_args=-DERR_FIELD=Dmu
 
 </runargs>
 </sys(ios_adv_ncu_ras)>
+
+</runargs>
 
 </runargs>
 </runargs>
