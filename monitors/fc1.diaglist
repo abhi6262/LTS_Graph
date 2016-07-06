@@ -1643,54 +1643,6 @@ lddf_ldd_fpdis_dmisalgn_super 			ldf_alldest.pal  -midas_args=-pal_diag_args=-na
 
 </runargs>
 
-//////////////////////////////////////////////////////////////////////////////
-//  Long diags (over 8hrs) (Can be pain)
-//////////////////////////////////////////////////////////////////////////////
-
-
-<runargs -midas_args=-allow_tsb_conflicts -midas_args=-pal_diag_args=-thrd_count=4> 
-ldf_ld_alldest                                  ldf_alldest.pal  -midas_args=-pal_diag_args=-name="ldf_ld_alldest"
-ldf_ld_alldest_super                            ldf_alldest.pal  -midas_args=-pal_diag_args=-name="ldf_ld_alldest_super"
-</runargs>
-
-
-<runargs -midas_args=-allow_tsb_conflicts -midas_args=-pal_diag_args=-thrd_count=4> 
-ldaf_lda_fpdis                                       ldf_alldest.pal  -midas_args=-pal_diag_args=-name="ldaf_lda_fpdis"
-ldaf_lda_fpdis_dataacc                               ldf_alldest.pal  -midas_args=-pal_diag_args=-name="ldaf_lda_fpdis_dataacc"
-ldaf_lda_fpdis_super                                 ldf_alldest.pal  -midas_args=-pal_diag_args=-name="ldaf_lda_fpdis_super"
-ldaf_lda_misalgn_super                               ldf_alldest.pal  -midas_args=-pal_diag_args=-name="ldaf_lda_misalgn_super"
-
-
-<runargs -vcs_run_args=+l2warm=1> //Only one diag with cache warming
-ldaf_lda_fpdis_misalgn_super                         ldf_alldest.pal  -midas_args=-pal_diag_args=-name="ldaf_lda_fpdis_misalgn_super"
-</runargs>
-
-<runargs -nofast_boot>
-ldaf_lda_fpdis_hyper                                 ldf_alldest.pal  -midas_args=-pal_diag_args=-name="ldaf_lda_fpdis_hyper"
-ldaf_lda_misalgn_hyper                               ldf_alldest.pal  -midas_args=-pal_diag_args=-name="ldaf_lda_misalgn_hyper"
-</runargs>
-
-</runargs>
-
-//////////////////////////////////////////////////////////////////////////////
-//  Long diags (over 8hrs) (Can be pain)
-//////////////////////////////////////////////////////////////////////////////
-
-
-<runargs -midas_args=-allow_tsb_conflicts -midas_args=-pal_diag_args=-thrd_count=4> 
-<runargs -nofast_boot>
-ldaf_lda_fpdis_vawatch_hyper                         ldf_alldest.pal  -midas_args=-pal_diag_args=-name="ldaf_lda_fpdis_vawatch_hyper"
-ldaf_lda_fpdis_misalgn_hyper                         ldf_alldest.pal  -midas_args=-pal_diag_args=-name="ldaf_lda_fpdis_misalgn_hyper"
-</runargs>
-
-
-ldaf_lda_dataacc                                     ldf_alldest.pal  -midas_args=-pal_diag_args=-name="ldaf_lda_dataacc"
-ldaf_lda_fpdis_vawatch                               ldf_alldest.pal  -midas_args=-pal_diag_args=-name="ldaf_lda_fpdis_vawatch"
-ldaf_lda_alldest 					ldf_alldest.pal  -midas_args=-pal_diag_args=-name="ldaf_lda_alldest"
-ldaf_lda_alldest_super 					ldf_alldest.pal  -midas_args=-pal_diag_args=-name="ldaf_lda_alldest_super"
-ldaf_lda_misalgn                                     ldf_alldest.pal  -midas_args=-pal_diag_args=-name="ldaf_lda_misalgn"
-
-</runargs>
 </runargs>
 
 </arch_diags>
