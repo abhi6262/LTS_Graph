@@ -1920,6 +1920,8 @@ n2_all_mcu_all_l2_8th  n2_all_mcu_all_l2.s -midas_args=-DCMP_THREAD_START=0xff -
 n2_all_th_ldst_8th     n2_all_th_ldst.s    -midas_args=-DCMP_THREAD_START=0xff -finish_mask=ff
 </runargs>
 
+</sys(mcu)>
+
 </runargs>
 </runargs>
 </sys(paper_mcu)>
