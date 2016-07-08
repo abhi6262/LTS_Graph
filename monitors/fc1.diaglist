@@ -1976,32 +1976,34 @@ ncu_ssi_rw_b2b     ncu_ssi_rw_b2b.s    -finish_mask=0x1 -nofast_boot -sas -midas
 <runargs -vcs_run_args=+mcu_fmon_disable -vcs_run_args=+mcu_errmon_disable >
 
 n2_err_Mcu0Fbr_AA        n2_err_mcu_int.s      -midas_args=-DMCU0 -midas_args=-DERR_FIELD=Mcu0Fbr -midas_args=-DFBR -midas_args=-DFBSYND=0x2 -midas_args=-DINJ_ERR_SRC=2
-n2_err_Mcu1Ecc_trap      n2_err_mcu_ios_ecc_trap.s -midas_args=-DMCU1 -midas_args=-DERR_FIELD=Mcu1Ecc -midas_args=-DECC
 n2_err_Mcu0Fbu_AA        n2_err_mcu_int_fbu_AA.s      -midas_args=-DMCU0 -midas_args=-DERR_FIELD=Mcu0Fbu -midas_args=-DFBSYND=0x2 -midas_args=-DINJ_ERR_SRC=2
-n2_err_Mcu1Fbr_C         n2_err_mcu_int.s      -midas_args=-DMCU1 -midas_args=-DERR_FIELD=Mcu1Fbr -midas_args=-DFBR -midas_args=-DFBSYND=0x0 -midas_args=-DINJ_ERR_SRC=0
 n2_err_Mcu0Ecc_trap              n2_err_mcu_ios_ecc_trap.s -midas_args=-DMCU0 -midas_args=-DERR_FIELD=Mcu0Ecc -midas_args=-DECC
 n2_err_Mcu0Fbr_AFE_trap  n2_err_mcu_ios_fbr_trap.s -midas_args=-DMCU0 -midas_args=-DERR_FIELD=Mcu0Fbr -midas_args=-DFBR -midas_args=-DFBSYND=0x1 -midas_args=-DINJ_ERR_SRC=1
 n2_err_Mcu0Ecc                   n2_err_mcu_int.s      -midas_args=-DMCU0 -midas_args=-DERR_FIELD=Mcu0Ecc -midas_args=-DECC
-n2_err_Mcu0Fbr_C         n2_err_mcu_int.s      -midas_args=-DMCU0 -midas_args=-DERR_FIELD=Mcu0Fbr -midas_args=-DFBR -midas_args=-DFBSYND=0x0 -midas_args=-DINJ_ERR_SRC=0
 n2_err_Mcu0Fbu_AFE       n2_err_mcu_int_fbu.s      -midas_args=-DMCU0 -midas_args=-DERR_FIELD=Mcu0Fbu -midas_args=-DFBSYND=0x1 -midas_args=-DINJ_ERR_SRC=1
-n2_err_Mcu1Fbr_trap      n2_err_mcu_ios_fbr_trap.s -midas_args=-DMCU1 -midas_args=-DERR_FIELD=Mcu1Fbr -midas_args=-DFBR -midas_args=-DFBSYND=0x0 -midas_args=-DINJ_ERR_SRC=0
-n2_err_Mcu2Ecc           n2_err_mcu_int.s      -midas_args=-DMCU2 -midas_args=-DERR_FIELD=Mcu2Ecc -midas_args=-DECC
-n2_err_Mcu3Fbr_C         n2_err_mcu_int.s      -midas_args=-DMCU3 -midas_args=-DERR_FIELD=Mcu3Fbr -midas_args=-DFBR -midas_args=-DFBSYND=0x0 -midas_args=-DINJ_ERR_SRC=0
-n2_err_Mcu3Ecc           n2_err_mcu_int.s      -midas_args=-DMCU3 -midas_args=-DERR_FIELD=Mcu3Ecc -midas_args=-DECC
 n2_err_Mcu0Fbr_C         n2_err_mcu_int.s      -midas_args=-DMCU0 -midas_args=-DERR_FIELD=Mcu0Fbr -midas_args=-DFBR -midas_args=-DFBSYND=0x0 -midas_args=-DINJ_ERR_SRC=0
 n2_err_Mcu0Fbu_C         n2_err_mcu_int_fbu.s      -midas_args=-DMCU0 -midas_args=-DERR_FIELD=Mcu0Fbu -midas_args=-DFBSYND=0x0 -midas_args=-DINJ_ERR_SRC=0
-n2_err_Mcu1Ecc           n2_err_mcu_int.s      -midas_args=-DMCU1 -midas_args=-DERR_FIELD=Mcu1Ecc -midas_args=-DECC
-n2_err_Mcu2Ecc_trap      n2_err_mcu_ios_ecc_trap.s -midas_args=-DMCU2 -midas_args=-DERR_FIELD=Mcu2Ecc -midas_args=-DECC
-n2_err_Mcu3Ecc_trap      n2_err_mcu_ios_ecc_trap.s -midas_args=-DMCU3 -midas_args=-DERR_FIELD=Mcu3Ecc -midas_args=-DECC
 n2_err_Mcu0Fbr_AA_trap   n2_err_mcu_ios_fbr_trap.s -midas_args=-DMCU0 -midas_args=-DERR_FIELD=Mcu0Fbr -midas_args=-DFBR -midas_args=-DFBSYND=0x2 -midas_args=-DINJ_ERR_SRC=2
-n2_err_Mcu3Fbr_trap      n2_err_mcu_ios_fbr_trap.s -midas_args=-DMCU3 -midas_args=-DERR_FIELD=Mcu3Fbr -midas_args=-DFBR -midas_args=-DFBSYND=0x0 -midas_args=-DINJ_ERR_SRC=0
-n2_err_Mcu2Fbr_trap      n2_err_mcu_ios_fbr_trap.s -midas_args=-DMCU2 -midas_args=-DERR_FIELD=Mcu2Fbr -midas_args=-DFBR -midas_args=-DFBSYND=0x0 -midas_args=-DINJ_ERR_SRC=0
-n2_err_Mcu2Fbr_C         n2_err_mcu_int.s      -midas_args=-DMCU2 -midas_args=-DERR_FIELD=Mcu2Fbr -midas_args=-DFBR -midas_args=-DFBSYND=0x0 -midas_args=-DINJ_ERR_SRC=0
 n2_err_Mcu0Fbr_SFPE_trap n2_err_mcu_ios_fbr_trap.s -midas_args=-DMCU0 -midas_args=-DERR_FIELD=Mcu0Fbr -midas_args=-DFBR -midas_args=-DFBSYND=0x3 -midas_args=-DINJ_ERR_SRC=3
 n2_err_Mcu0Fbr_AFE       n2_err_mcu_int.s      -midas_args=-DMCU0 -midas_args=-DERR_FIELD=Mcu0Fbr -midas_args=-DFBR -midas_args=-DFBSYND=0x1 -midas_args=-DINJ_ERR_SRC=1
 n2_err_Mcu0Fbr_SFPE      n2_err_mcu_int.s      -midas_args=-DMCU0 -midas_args=-DERR_FIELD=Mcu0Fbr -midas_args=-DFBR -midas_args=-DFBSYND=0x3 -midas_args=-DINJ_ERR_SRC=3
 n2_err_Mcu0Fbu_SFPE      n2_err_mcu_int_fbu.s      -midas_args=-DMCU0 -midas_args=-DERR_FIELD=Mcu0Fbu -midas_args=-DFBSYND=0x3 -midas_args=-DINJ_ERR_SRC=3
+n2_err_Mcu0Fbr_C_trap    n2_err_mcu_ios_fbr_trap.s -midas_args=-DMCU0 -midas_args=-DERR_FIELD=Mcu0Fbr -midas_args=-DFBR -midas_args=-DFBSYND=0x0 -midas_args=-DINJ_ERR_SRC=0
 
+n2_err_Mcu1Ecc_trap      n2_err_mcu_ios_ecc_trap.s -midas_args=-DMCU1 -midas_args=-DERR_FIELD=Mcu1Ecc -midas_args=-DECC
+n2_err_Mcu1Fbr_C         n2_err_mcu_int.s      -midas_args=-DMCU1 -midas_args=-DERR_FIELD=Mcu1Fbr -midas_args=-DFBR -midas_args=-DFBSYND=0x0 -midas_args=-DINJ_ERR_SRC=0
+n2_err_Mcu1Fbr_trap      n2_err_mcu_ios_fbr_trap.s -midas_args=-DMCU1 -midas_args=-DERR_FIELD=Mcu1Fbr -midas_args=-DFBR -midas_args=-DFBSYND=0x0 -midas_args=-DINJ_ERR_SRC=0
+n2_err_Mcu1Ecc           n2_err_mcu_int.s      -midas_args=-DMCU1 -midas_args=-DERR_FIELD=Mcu1Ecc -midas_args=-DECC
+
+n2_err_Mcu2Ecc           n2_err_mcu_int.s      -midas_args=-DMCU2 -midas_args=-DERR_FIELD=Mcu2Ecc -midas_args=-DECC
+n2_err_Mcu2Ecc_trap      n2_err_mcu_ios_ecc_trap.s -midas_args=-DMCU2 -midas_args=-DERR_FIELD=Mcu2Ecc -midas_args=-DECC
+n2_err_Mcu2Fbr_trap      n2_err_mcu_ios_fbr_trap.s -midas_args=-DMCU2 -midas_args=-DERR_FIELD=Mcu2Fbr -midas_args=-DFBR -midas_args=-DFBSYND=0x0 -midas_args=-DINJ_ERR_SRC=0
+n2_err_Mcu2Fbr_C         n2_err_mcu_int.s      -midas_args=-DMCU2 -midas_args=-DERR_FIELD=Mcu2Fbr -midas_args=-DFBR -midas_args=-DFBSYND=0x0 -midas_args=-DINJ_ERR_SRC=0
+
+n2_err_Mcu3Fbr_C         n2_err_mcu_int.s      -midas_args=-DMCU3 -midas_args=-DERR_FIELD=Mcu3Fbr -midas_args=-DFBR -midas_args=-DFBSYND=0x0 -midas_args=-DINJ_ERR_SRC=0
+n2_err_Mcu3Ecc           n2_err_mcu_int.s      -midas_args=-DMCU3 -midas_args=-DERR_FIELD=Mcu3Ecc -midas_args=-DECC
+n2_err_Mcu3Fbr_trap      n2_err_mcu_ios_fbr_trap.s -midas_args=-DMCU3 -midas_args=-DERR_FIELD=Mcu3Fbr -midas_args=-DFBR -midas_args=-DFBSYND=0x0 -midas_args=-DINJ_ERR_SRC=0
+n2_err_Mcu3Ecc_trap      n2_err_mcu_ios_ecc_trap.s -midas_args=-DMCU3 -midas_args=-DERR_FIELD=Mcu3Ecc -midas_args=-DECC
 </runargs>
 </sys(ios_mcu_err)>
 
