@@ -90,18 +90,37 @@ def main(file_name,text):
     for h in range(NUMBER_OF_PROCESSES):
         if results[h][1] > -1:
             print text, 'Found at', total_lines + results[h][1], 'in', time.time() - t_start, 'seconds'
-            break
+            #break
+            return 1
         total_lines += results[h][0]
+
+    return 0
 
 if __name__ == "__main__":
     subdirectories = os.listdir(path)
+    # Dictionary to store test name and the monitors that are sensitized in its run
+    diag_name = {}
     for subdir in subdirectories:
         if os.path.isfile(subdir):
             continue
         if group_name in subdir:
+            diag_name_ = subdir.split(':')
             print '#' * 20
-            print subdir
+            print "Working on " + diag_name_[0]
             fileName = subdir + '/sims.log'
             for monitor_name_ in monitor_name:
-                main( file_name = fileName, text = monitor_name_ )
-            print '#' * 20
+                if(main( file_name = fileName, text = monitor_name_ )):
+                    if diag_name_[0] in diag_name.keys():
+                        diag_name[diag_name_[0]].append(monitor_name_)
+                    else:
+                        diag_name[diag_name_[0]] = [monitor_name_]
+            print '#' * 20 + "\n"
+
+    total_num_diags = 0
+    if diag_name:
+        for key_ in diag_name.keys():
+            if len(diag_name[key_]) >= 2:
+                print "Diag " + key_ + " triggered following monitors: " + ', '.join(diag_name[key_])
+                total_num_diags += 1
+
+    print "Total Valuable Diags Found: " + str(total_num_diags)
