@@ -1952,6 +1952,116 @@ ncu_ssi_rw_b2b     ncu_ssi_rw_b2b.s    -finish_mask=0x1 -nofast_boot -sas -midas
 
 //////////////////////////////////////////////////////////////////////////////
 
+
+//////////////////////////////////////////////////////////////////////////////
+//
+// Added this group of tests for OpenSPARC T2 Paper on Protocol
+//
+// These set of tests invoke two or more monitors
+//
+// Author: Debjit Pal
+// Email: dpal2@illinois.edu
+// Instituition: University of Illinois at Urbana-Champaign
+//////////////////////////////////////////////////////////////////////////////
+
+<sys(paper_value_37) sys=fc1 -vcs_build_args=+define+FBDIMM_NUM_8+>
+<runargs -sys=fc1 -fast_boot -tg_seed=1 -midas_args=-DPART_0_BASE=0x200000000 -midas_args=-DL2_REG_PROG>
+<runargs -nosas -vcs_run_args=+show_delta -vcs_run_args=+NIU_STUB_TIME=600000 >
+
+<runargs -vcs_run_args=+8_FBDIMMS -midas_args=-DPART_0_BASE=0x1000000000>
+<sys(ras)>
+<runargs  -vcs_run_args=+ios_0in_ras_chk_off >
+
+<sys(ios_mcu_err) name=sys(ios_mcu_err)>
+<runargs -vcs_run_args=+mcu_fmon_disable -vcs_run_args=+mcu_errmon_disable >
+
+n2_err_Mcu0Fbr_AA        n2_err_mcu_int.s      -midas_args=-DMCU0 -midas_args=-DERR_FIELD=Mcu0Fbr -midas_args=-DFBR -midas_args=-DFBSYND=0x2 -midas_args=-DINJ_ERR_SRC=2
+n2_err_Mcu1Ecc_trap      n2_err_mcu_ios_ecc_trap.s -midas_args=-DMCU1 -midas_args=-DERR_FIELD=Mcu1Ecc -midas_args=-DECC
+n2_err_Mcu0Fbu_AA        n2_err_mcu_int_fbu_AA.s      -midas_args=-DMCU0 -midas_args=-DERR_FIELD=Mcu0Fbu -midas_args=-DFBSYND=0x2 -midas_args=-DINJ_ERR_SRC=2
+n2_err_Mcu1Fbr_C         n2_err_mcu_int.s      -midas_args=-DMCU1 -midas_args=-DERR_FIELD=Mcu1Fbr -midas_args=-DFBR -midas_args=-DFBSYND=0x0 -midas_args=-DINJ_ERR_SRC=0
+n2_err_Mcu0Ecc_trap              n2_err_mcu_ios_ecc_trap.s -midas_args=-DMCU0 -midas_args=-DERR_FIELD=Mcu0Ecc -midas_args=-DECC
+n2_err_Mcu0Fbr_AFE_trap  n2_err_mcu_ios_fbr_trap.s -midas_args=-DMCU0 -midas_args=-DERR_FIELD=Mcu0Fbr -midas_args=-DFBR -midas_args=-DFBSYND=0x1 -midas_args=-DINJ_ERR_SRC=1
+n2_err_Mcu0Ecc                   n2_err_mcu_int.s      -midas_args=-DMCU0 -midas_args=-DERR_FIELD=Mcu0Ecc -midas_args=-DECC
+n2_err_Mcu0Fbr_C         n2_err_mcu_int.s      -midas_args=-DMCU0 -midas_args=-DERR_FIELD=Mcu0Fbr -midas_args=-DFBR -midas_args=-DFBSYND=0x0 -midas_args=-DINJ_ERR_SRC=0
+n2_err_Mcu0Fbu_AFE       n2_err_mcu_int_fbu.s      -midas_args=-DMCU0 -midas_args=-DERR_FIELD=Mcu0Fbu -midas_args=-DFBSYND=0x1 -midas_args=-DINJ_ERR_SRC=1
+n2_err_Mcu1Fbr_trap      n2_err_mcu_ios_fbr_trap.s -midas_args=-DMCU1 -midas_args=-DERR_FIELD=Mcu1Fbr -midas_args=-DFBR -midas_args=-DFBSYND=0x0 -midas_args=-DINJ_ERR_SRC=0
+n2_err_Mcu2Ecc           n2_err_mcu_int.s      -midas_args=-DMCU2 -midas_args=-DERR_FIELD=Mcu2Ecc -midas_args=-DECC
+n2_err_Mcu3Fbr_C         n2_err_mcu_int.s      -midas_args=-DMCU3 -midas_args=-DERR_FIELD=Mcu3Fbr -midas_args=-DFBR -midas_args=-DFBSYND=0x0 -midas_args=-DINJ_ERR_SRC=0
+n2_err_Mcu3Ecc           n2_err_mcu_int.s      -midas_args=-DMCU3 -midas_args=-DERR_FIELD=Mcu3Ecc -midas_args=-DECC
+n2_err_Mcu0Fbr_C         n2_err_mcu_int.s      -midas_args=-DMCU0 -midas_args=-DERR_FIELD=Mcu0Fbr -midas_args=-DFBR -midas_args=-DFBSYND=0x0 -midas_args=-DINJ_ERR_SRC=0
+n2_err_Mcu0Fbu_C         n2_err_mcu_int_fbu.s      -midas_args=-DMCU0 -midas_args=-DERR_FIELD=Mcu0Fbu -midas_args=-DFBSYND=0x0 -midas_args=-DINJ_ERR_SRC=0
+n2_err_Mcu1Ecc           n2_err_mcu_int.s      -midas_args=-DMCU1 -midas_args=-DERR_FIELD=Mcu1Ecc -midas_args=-DECC
+n2_err_Mcu2Ecc_trap      n2_err_mcu_ios_ecc_trap.s -midas_args=-DMCU2 -midas_args=-DERR_FIELD=Mcu2Ecc -midas_args=-DECC
+n2_err_Mcu3Ecc_trap      n2_err_mcu_ios_ecc_trap.s -midas_args=-DMCU3 -midas_args=-DERR_FIELD=Mcu3Ecc -midas_args=-DECC
+n2_err_Mcu0Fbr_AA_trap   n2_err_mcu_ios_fbr_trap.s -midas_args=-DMCU0 -midas_args=-DERR_FIELD=Mcu0Fbr -midas_args=-DFBR -midas_args=-DFBSYND=0x2 -midas_args=-DINJ_ERR_SRC=2
+n2_err_Mcu3Fbr_trap      n2_err_mcu_ios_fbr_trap.s -midas_args=-DMCU3 -midas_args=-DERR_FIELD=Mcu3Fbr -midas_args=-DFBR -midas_args=-DFBSYND=0x0 -midas_args=-DINJ_ERR_SRC=0
+n2_err_Mcu2Fbr_trap      n2_err_mcu_ios_fbr_trap.s -midas_args=-DMCU2 -midas_args=-DERR_FIELD=Mcu2Fbr -midas_args=-DFBR -midas_args=-DFBSYND=0x0 -midas_args=-DINJ_ERR_SRC=0
+n2_err_Mcu2Fbr_C         n2_err_mcu_int.s      -midas_args=-DMCU2 -midas_args=-DERR_FIELD=Mcu2Fbr -midas_args=-DFBR -midas_args=-DFBSYND=0x0 -midas_args=-DINJ_ERR_SRC=0
+n2_err_Mcu0Fbr_SFPE_trap n2_err_mcu_ios_fbr_trap.s -midas_args=-DMCU0 -midas_args=-DERR_FIELD=Mcu0Fbr -midas_args=-DFBR -midas_args=-DFBSYND=0x3 -midas_args=-DINJ_ERR_SRC=3
+n2_err_Mcu0Fbr_AFE       n2_err_mcu_int.s      -midas_args=-DMCU0 -midas_args=-DERR_FIELD=Mcu0Fbr -midas_args=-DFBR -midas_args=-DFBSYND=0x1 -midas_args=-DINJ_ERR_SRC=1
+n2_err_Mcu0Fbr_SFPE      n2_err_mcu_int.s      -midas_args=-DMCU0 -midas_args=-DERR_FIELD=Mcu0Fbr -midas_args=-DFBR -midas_args=-DFBSYND=0x3 -midas_args=-DINJ_ERR_SRC=3
+n2_err_Mcu0Fbu_SFPE      n2_err_mcu_int_fbu.s      -midas_args=-DMCU0 -midas_args=-DERR_FIELD=Mcu0Fbu -midas_args=-DFBSYND=0x3 -midas_args=-DINJ_ERR_SRC=3
+
+</runargs>
+</sys(ios_mcu_err)>
+
+<sys(ios_ncu_err) name=sys(ios_ncu_err)>
+
+n2_err_ncu_NcuMondoTable n2_err_ncu_dmu_mondo.s  -midas_args=-DERR_FIELD=NcuMondoTable -midas_args=-DTT=0x32
+
+</sys(ios_ncu_err)>
+
+<sys(ios_dmu_err) name=sys(ios_dmu_err)>
+<runargs -vcs_run_args=+PEU_TEST>
+
+n2_err_DmuNcuCredit        n2_err_piu_int_ejr.s        -midas_args=-DERR_FIELD=DmuNcuCredit
+
+</runargs>
+</sys(ios_dmu_err)>
+
+</runargs>
+</sys(ras)>
+</runargs>
+
+
+<runargs -vcs_run_args=+ios_0in_ras_chk_off  -vcs_run_args=+l2esr_mon_off -vcs_run_args=+l2cpx_errmon_off -max_cycle=+500000 -vcs_run_args=+mcu_fmon_disable -vcs_run_args=+mcu_errmon_disable>
+<sys(ios_adv_ncu_ras) name=sys(ios_adv_ncu_ras)>
+<runargs -vcs_run_args=+ios_0in_ras_chk_off >
+
+n2_err_adv_NcuDataParity_mondo n2_err_adv_piu_int_ejr_nomondo.s  -midas_args=-DERR_FIELD=NcuDataParity -vcs_run_args=+PEU_TEST
+n2_err_adv_NcuCtagCe_int    n2_err_adv_piu_int_ejr.s -midas_args=-DERR_FIELD=NcuCtagCe    -midas_args=-DTT=0x63
+n2_err_adv_DmuNcuCredit_int n2_err_adv_piu_int_ejr.s -midas_args=-DERR_FIELD=DmuNcuCredit -midas_args=-DTT=0x40
+n2_err_adv_NcuCtagUe_int    n2_err_adv_piu_int_ejr.s -midas_args=-DERR_FIELD=NcuCtagUe    -midas_args=-DTT=0x40 -vcs_run_args=+lsu_mon_off
+
+</runargs>
+</sys(ios_adv_ncu_ras)>
+</runargs>
+
+
+<sys(interrupt) name=sys(interrupt)>
+
+interrupt_pci_spurious_err      interrupt_pci_spurious_err.s -nosas
+
+<runargs -midas_args=-DCMP_THREAD_START=0x1 -finish_mask=1>
+interrupt_DMU_CORE_BLK_enable1  interrupt_DMU_CORE_BLK_enable1.s
+</runargs>
+
+</sys(interrupt)>
+
+<memop name=memop>
+<runargs -nosas>
+
+memop_mcu_regs_other	memop_mcu_regs_other.s -vcs_run_args=+mcu_errmon_disable
+memop_mcu_regs_rw	memop_mcu_regs_rw.s
+memop_mcu_regs_ro	memop_mcu_regs_ro.s
+
+</runargs>
+</memop>
+
+</runargs>
+</runargs>
+</sys(paper_value_37)>
+
 #ifdef FC
 #undef FC
 #undef sys
