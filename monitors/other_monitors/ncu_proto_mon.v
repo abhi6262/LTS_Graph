@@ -21,9 +21,13 @@ initial begin
         `PR_INFO("ncu_proto_mon", `INFO, "ncu_proto_mon ENABLED");
 end
 
-/* Common clock for all NCU Protocol monitoring */
+/* Common clock for all NCU IO Side Protocol monitoring */
 
 wire iol2clk = `NCU.iol2clk;
+
+/* Common clock for all NCU CPU Side Protocol monitoring */
+
+wire cmp_clk = `CPU.l2clk
 
 /* From NCU to DMU PIO Interface */
 
