@@ -27,7 +27,7 @@ wire iol2clk = `NCU.iol2clk;
 
 /* Common clock for all NCU CPU Side Protocol monitoring */
 
-wire cmp_clk = `CPU.l2clk
+wire cmp_clk = `CPU.l2clk;
 
 /* From NCU to DMU PIO Interface */
 
@@ -79,6 +79,8 @@ wire ncu_mcu2_stall = `NCU.ncu_mcu2_stall;
 wire mcu3_ncu_vld = `NCU.mcu3_ncu_vld;
 wire [3:0] mcu3_ncu_data = `NCU.mcu3_ncu_data;
 wire ncu_mcu3_stall = `NCU.ncu_mcu3_stall;
+
+/* From CPX PCX Interface to NCU */
 
 /* PIO Interface monitors Section 7.4.9 Manual Vol 1, Section 1.14.4.15 Manual Vol 2 */
 
