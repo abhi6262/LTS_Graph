@@ -234,13 +234,13 @@ begin
         if(ncu_dmu_pio_data[60] == 1'b1)
         begin
             `PR_ALWAYS("ncu_proto_mon", `ALWAYS, "PIO Header Valid for PIO Reads from SIU header to NCU Credit Pool");
-            `PR_INFO("ncu_proto_mon", `INFO, "Credit ID returned in PIO Read Header Data = %x", ncu_dmu_pio_data[59:56]);
+            `PR_ALWAYS("ncu_proto_mon", `ALWAYS, "Credit ID returned in PIO Read Header Data = %x", ncu_dmu_pio_data[59:56]);
         end
         else if(ncu_dmu_pio_data[60] == 1'b0)
         begin
             `PR_ALWAYS("ncu_proto_mon", `ALWAYS, "PIO Header Valid for PIO Write from DMU to NCU Credit Pool");
             if(dmu_ncu_wrack_tag != 4'bxxxx)
-                `PR_INFO("ncu_proto_mon", `INFO, "DMU Returning credit = %x", dmu_ncu_wrack_tag);
+                `PR_ALWAYS("ncu_proto_mon", `ALWAYS, "DMU Returning credit = %x", dmu_ncu_wrack_tag);
         end
     end
 end
