@@ -12,30 +12,75 @@ reg enabled;
 reg ncu_dmu_pio_hdr_vld_d;
 reg ncu_cpx_req_cq_d;
 reg ncu_pcx_stall_pq_strobe;
-reg pcx_mcu_data_rdy_px1_strobe;
+reg pcx_ncu_data_rdy_px1_strobe;
+
 reg ncu_mcu0_vld_strobe;
 reg ncu_mcu1_vld_strobe;
 reg ncu_mcu2_vld_strobe;
 reg ncu_mcu3_vld_strobe;
+
 reg mcu0_ncu_vld_strobe;
 reg mcu1_ncu_vld_strobe;
 reg mcu2_ncu_vld_strobe;
 reg mcu3_ncu_vld_strobe;
+
+reg [127:0] mcu3_ncu_data_packet;
+reg [127:0] mcu2_ncu_data_packet;
+reg [127:0] mcu1_ncu_data_packet;
+reg [127:0] mcu0_ncu_data_packet;
+
+integer N3_mn;
+integer N2_mn;
+integer N1_mn;
+integer N0_mn;
+
+reg [127:0] ncu_mcu3_data_packet;
+reg [127:0] ncu_mcu2_data_packet;
+reg [127:0] ncu_mcu1_data_packet;
+reg [127:0] ncu_mcu0_data_packet;
+
+integer N3_nm;
+integer N2_nm;
+integer N1_nm;
+integer N0_nm;
 
 initial begin
     enabled = 1'b1;
     ncu_dmu_pio_hdr_vld_d = 1'b0;
     ncu_cpx_req_cq_d = 1'b0;
     ncu_pcx_stall_pq_strobe = 1'b0;
-    pcx_mcu_data_rdy_px1_strobe = 1'b0;
+    pcx_ncu_data_rdy_px1_strobe = 1'b0;
+
 	ncu_mcu0_vld_strobe = 1'b0;
 	ncu_mcu1_vld_strobe = 1'b0;
 	ncu_mcu2_vld_strobe = 1'b0;
 	ncu_mcu3_vld_strobe = 1'b0;
+
 	mcu0_ncu_vld_strobe = 1'b0;
 	mcu1_ncu_vld_strobe = 1'b0;
 	mcu2_ncu_vld_strobe = 1'b0;
 	mcu3_ncu_vld_strobe = 1'b0;
+
+    mcu3_ncu_data_packet = 128'bx;
+    mcu2_ncu_data_packet = 128'bx;
+    mcu1_ncu_data_packet = 128'bx;
+    mcu0_ncu_data_packet = 128'bx;
+
+    N3_mn = 0;
+    N2_mn = 0;
+    N1_mn = 0;
+    N0_mn = 0;
+
+    ncu_mcu3_data_packet = 128'bx;
+    ncu_mcu2_data_packet = 128'bx;
+    ncu_mcu1_data_packet = 128'bx;
+    ncu_mcu0_data_packet = 128'bx;
+
+    N3_nm = 0;
+    N2_nm = 0;
+    N1_nm = 0;
+    N0_nm = 0;
+
     if ($test$plusargs("ncu_proto_mon_disable"))
     begin
         enabled = 1'b0;
@@ -107,7 +152,7 @@ wire ncu_mcu3_stall = `NCU.ncu_mcu3_stall;
 
 wire ncu_pcx_stall_pq = `NCU.ncu_pcx_stall_pq;
 wire [129:0] pcx_ncu_data_px2 = `NCU.pcx_ncu_data_px2;
-wire ocx_ncu_data_rdy_px1 = `NCU.pcx_ncu_data_rdy_px1;
+wire pcx_ncu_data_rdy_px1 = `NCU.pcx_ncu_data_rdy_px1;
 
 /* From NCU to CPX Interface Upstream Path */
 
@@ -132,19 +177,19 @@ begin
         ncu_pcx_stall_pq_strobe = 1'b0;
 end
 
-always @(posedge (cmp_clk && enabled && !pcx_mcu_data_rdy_px1_strobe))
+always @(posedge (cmp_clk && enabled && !pcx_ncu_data_rdy_px1_strobe))
 begin
     if(pcx_ncu_data_rdy_px1)
     begin
         `PR_ALWAYS("ncu_proto_mon", `ALWAYS, "PCX initiating data transfer to NCU");
-        pcx_mcu_data_rdy_px1_strobe = 1'b1;
+        pcx_ncu_data_rdy_px1_strobe = 1'b1;
     end
 end
 
-always @(posedge (cmp_clk && enabled && pcx_mcu_data_rdy_px1_strobe))
+always @(posedge (cmp_clk && enabled && pcx_ncu_data_rdy_px1_strobe))
 begin
     if(pcx_ncu_data_rdy_px1)
-        pcx_mcu_data_rdy_px1_strobe = 1'b0;
+        pcx_ncu_data_rdy_px1_strobe = 1'b0;
 end
 
 /* Upstream Non-cacheable read / write monitors Section 7.4.1.2 Vol 1 */
@@ -250,9 +295,31 @@ always @(posedge (iol2clk && enabled && mcu0_ncu_stall))
 begin
     if(mcu0_ncu_stall)
     begin
-        `PR_INFO("ncu_proto_mon", `INFO, "Stall Initiated from MCU0 to NCU");
+        `PR_ALWAYS("ncu_proto_mon", `ALWAYS, "Stall Initiated from MCU0 to NCU");
     end
 end
+
+//// Packet Construction Code for the NCU to MCU downstream Packet (May be unstable) ////
+always @(posedge (iol2clk && enabled))
+begin
+    if(ncu_mcu0_vld && !mcu0_ncu_stall && N0_nm < 32)
+    begin
+        ncu_mcu0_data_packet[N0_nm*4 - 1 : (N0_nm - 1)*4] = ncu_mcu0_data;
+        N0_nm = N0_nm + 1;
+    end
+    else if (!ncu_mcu0_vld && N0_nm == 32)
+    begin
+        `PR_ALWAYS("ncu_proto_mon", `ALWAYS, "NCU to MCU0 Accumulated Packet = %x", ncu_mcu0_data_packet);
+        ncu_mcu0_data_packet = 128'bx;
+        N0_nm = 0;
+    end
+    else if (!ncu_mcu0_vld)
+    begin
+        ncu_mcu0_data_packet = 128'bx;
+        N0_nm = 0;
+    end
+end
+//// Packet Construction Code for the NCU to MCU downstream Packet (May be unstable) ////
 
 always @(posedge (iol2clk && enabled && !ncu_mcu1_vld_strobe))
 begin
@@ -280,9 +347,32 @@ always @(posedge (iol2clk && enabled && mcu1_ncu_stall))
 begin
     if(mcu1_ncu_stall)
     begin
-        `PR_INFO("ncu_proto_mon", `INFO, "Stall Initiated from MCU1 to NCU");
+        `PR_ALWAYS("ncu_proto_mon", `ALWAYS, "Stall Initiated from MCU1 to NCU");
     end
 end
+
+//// Packet Construction Code for the NCU to MCU downstream Packet (May be unstable) ////
+always @(posedge (iol2clk && enabled))
+begin
+    if(ncu_mcu1_vld && !mcu1_ncu_stall && N1_nm < 32)
+    begin
+        ncu_mcu1_data_packet[N1_nm*4 - 1 : (N1_nm - 1)*4] = ncu_mcu1_data;
+        N1_nm = N1_nm + 1;
+    end
+    else if (!ncu_mcu1_vld && N1_nm == 32)
+    begin
+        `PR_ALWAYS("ncu_proto_mon", `ALWAYS, "NCU to MCU1 Accumulated Packet = %x", ncu_mcu1_data_packet);
+        ncu_mcu1_data_packet = 128'bx;
+        N1_nm = 0;
+    end
+    else if (!ncu_mcu1_vld)
+    begin
+        ncu_mcu1_data_packet = 128'bx;
+        N1_nm = 0;
+    end
+end
+//// Packet Construction Code for the NCU to MCU downstream Packet (May be unstable) ////
+
 
 always @(posedge (iol2clk && enabled && !ncu_mcu2_vld_strobe))
 begin
@@ -309,9 +399,32 @@ always @(posedge (iol2clk && enabled && mcu2_ncu_stall))
 begin
     if(mcu2_ncu_stall)
     begin
-        `PR_INFO("ncu_proto_mon", `INFO, "Stall Initiated from MCU2 to NCU");
+        `PR_ALWAYS("ncu_proto_mon", `ALWAYS, "Stall Initiated from MCU2 to NCU");
     end
 end
+
+//// Packet Construction Code for the NCU to MCU downstream Packet (May be unstable) ////
+always @(posedge (iol2clk && enabled))
+begin
+    if(ncu_mcu2_vld && !mcu2_ncu_stall && N2_nm < 32)
+    begin
+        ncu_mcu2_data_packet[N2_nm*4 - 1 : (N2_nm - 1)*4] = ncu_mcu2_data;
+        N2_nm = N2_nm + 1;
+    end
+    else if (!ncu_mcu2_vld && N2_nm == 32)
+    begin
+        `PR_ALWAYS("ncu_proto_mon", `ALWAYS, "NCU to MCU2 Accumulated Packet = %x", ncu_mcu2_data_packet);
+        ncu_mcu2_data_packet = 128'bx;
+        N2_nm = 0;
+    end
+    else if (!ncu_mcu2_vld)
+    begin
+        ncu_mcu2_data_packet = 128'bx;
+        N2_nm = 0;
+    end
+end
+//// Packet Construction Code for the NCU to MCU downstream Packet (May be unstable) ////
+
 
 always @(posedge (iol2clk && enabled && !ncu_mcu3_vld_strobe))
 begin
@@ -333,6 +446,37 @@ begin
     if(!ncu_mcu3_vld)
         ncu_mcu3_vld_strobe = 1'b0;
 end
+
+always @(posedge (iol2clk && enabled && mcu3_ncu_stall))
+begin
+    if(mcu3_ncu_stall)
+    begin
+        `PR_ALWAYS("ncu_proto_mon", `ALWAYS, "Stall Initiated from MCU3 to NCU");
+    end
+end
+
+//// Packet Construction Code for the NCU to MCU downstream Packet (May be unstable) ////
+always @(posedge (iol2clk && enabled))
+begin
+    if(ncu_mcu3_vld && !mcu3_ncu_stall && N3_nm < 32)
+    begin
+        ncu_mcu3_data_packet[N3_nm*4 - 1 : (N3_nm - 1)*4] = ncu_mcu3_data;
+        N3_nm = N3_nm + 1;
+    end
+    else if (!ncu_mcu3_vld && N3_nm == 32)
+    begin
+        `PR_ALWAYS("ncu_proto_mon", `ALWAYS, "NCU to MCU3 Accumulated Packet = %x", ncu_mcu3_data_packet);
+        ncu_mcu3_data_packet = 128'bx;
+        N3_nm = 0;
+    end
+    else if (!ncu_mcu3_vld)
+    begin
+        ncu_mcu3_data_packet = 128'bx;
+        N3_nm = 0;
+    end
+end
+//// Packet Construction Code for the NCU to MCU downstream Packet (May be unstable) ////
+
 
 /* From MCU to NCU Upstream Monitors Section 7.4.2 Manual Vol 1 */
 
@@ -367,9 +511,31 @@ always @(posedge (iol2clk && enabled && ncu_mcu0_stall))
 begin
     if(ncu_mcu0_stall)
     begin
-        `PR_INFO("ncu_proto_mon", `INFO, "Stall Initiated from MCU0 to NCU");
+        `PR_ALWAYS("ncu_proto_mon", `ALWAYS, "Stall Initiated from NCU to MCU0");
     end
 end
+
+//// Packet Construction Code for the MCU to NCU upstream Packet (May be unstable) ////
+always @(posedge (iol2clk && enabled))
+begin
+    if(mcu0_ncu_vld && !ncu_mcu0_stall && N0_mn < 32)
+    begin
+        mcu0_ncu_data_packet[N0_mn*4 - 1 : (N0_mn - 1)*4] = mcu0_ncu_data;
+        N0_mn = N0_mn + 1;
+    end
+    else if (!mcu0_ncu_vld && N0_mn == 32)
+    begin
+        `PR_ALWAYS("ncu_proto_mon", `ALWAYS, "MCU0 to NCU Accumulated Packet = %x", mcu0_ncu_data_packet);
+        mcu0_ncu_data_packet = 128'bx;
+        N0_mn = 0;
+    end
+    else if (!mcu0_ncu_vld)
+    begin
+        mcu0_ncu_data_packet = 128'bx;
+        N0_mn = 0;
+    end
+end
+//// Packet Construction Code for the MCU to NCU upstream Packet (May be unstable) ////
 
 
 always @(posedge (iol2clk && enabled && !mcu1_ncu_vld_strobe))
@@ -403,9 +569,32 @@ always @(posedge (iol2clk && enabled && ncu_mcu1_stall))
 begin
     if(ncu_mcu1_stall)
     begin
-        `PR_INFO("ncu_proto_mon", `INFO, "Stall Initiated from MCU1 to NCU");
+        `PR_ALWAYS("ncu_proto_mon", `ALWAYS, "Stall Initiated from NCU to MCU1");
     end
 end
+
+//// Packet Construction Code for the MCU to NCU upstream Packet (May be unstable) ////
+always @(posedge (iol2clk && enabled))
+begin
+    if(mcu1_ncu_vld && !ncu_mcu1_stall && N1_mn < 32)
+    begin
+        mcu1_ncu_data_packet[N1_mn*4 - 1 : (N1_mn - 1)*4] = mcu1_ncu_data;
+        N1_mn = N1_mn + 1;
+    end
+    else if (!mcu1_ncu_vld && N1_mn == 32)
+    begin
+        `PR_ALWAYS("ncu_proto_mon", `ALWAYS, "MCU1 to NCU Accumulated Packet = %x", mcu1_ncu_data_packet);
+        mcu1_ncu_data_packet = 128'bx;
+        N1_mn = 0;
+    end
+    else if (!mcu1_ncu_vld)
+    begin
+        mcu1_ncu_data_packet = 128'bx;
+        N1_mn = 0;
+    end
+end
+//// Packet Construction Code for the MCU to NCU upstream Packet (May be unstable) ////
+
 
 
 always @(posedge (iol2clk && enabled && !mcu2_ncu_vld_strobe))
@@ -439,9 +628,31 @@ always @(posedge (iol2clk && enabled && ncu_mcu2_stall))
 begin
     if(ncu_mcu2_stall)
     begin
-        `PR_INFO("ncu_proto_mon", `INFO, "Stall Initiated from MCU2 to NCU");
+        `PR_ALWAYS("ncu_proto_mon", `ALWAYS, "Stall Initiated from NCU to MCU2");
     end
 end
+
+//// Packet Construction Code for the MCU to NCU upstream Packet (May be unstable) ////
+always @(posedge (iol2clk && enabled))
+begin
+    if(mcu2_ncu_vld && !ncu_mcu2_stall && N2_mn < 32)
+    begin
+        mcu2_ncu_data_packet[N2_mn*4 - 1 : (N2_mn - 1)*4] = mcu2_ncu_data;
+        N2_mn = N2_mn + 1;
+    end
+    else if (!mcu2_ncu_vld && N2_mn == 32)
+    begin
+        `PR_ALWAYS("ncu_proto_mon", `ALWAYS, "MCU2 to NCU Accumulated Packet = %x", mcu2_ncu_data_packet);
+        mcu2_ncu_data_packet = 128'bx;
+        N2_mn = 0;
+    end
+    else if (!mcu2_ncu_vld)
+    begin
+        mcu2_ncu_data_packet = 128'bx;
+        N2_mn = 0;
+    end
+end
+//// Packet Construction Code for the MCU to NCU upstream Packet (May be unstable) ////
 
 
 always @(posedge (iol2clk && enabled && !mcu3_ncu_vld_strobe))
@@ -475,8 +686,30 @@ always @(posedge (iol2clk && enabled && ncu_mcu3_stall))
 begin
     if(ncu_mcu3_stall)
     begin
-        `PR_INFO("ncu_proto_mon", `INFO, "Stall Initiated from MCU3 to NCU");
+        `PR_ALWAYS("ncu_proto_mon", `ALWAYS, "Stall Initiated from NCU to MCU3");
     end
 end
+
+//// Packet Construction Code for the MCU to NCU upstream Packet (May be unstable) ////
+always @(posedge (iol2clk && enabled))
+begin
+    if(mcu3_ncu_vld && !ncu_mcu3_stall && N3_mn < 32)
+    begin
+        mcu3_ncu_data_packet[N3_mn*4 - 1 : (N3_mn - 1)*4] = mcu3_ncu_data;
+        N3_mn = N3_mn + 1;
+    end
+    else if (!mcu3_ncu_vld && N3_mn == 32)
+    begin
+        `PR_ALWAYS("ncu_proto_mon", `ALWAYS, "MCU3 to NCU Accumulated Packet = %x", mcu3_ncu_data_packet);
+        mcu3_ncu_data_packet = 128'bx;
+        N3_mn = 0;
+    end
+    else if (!mcu3_ncu_vld)
+    begin
+        mcu3_ncu_data_packet = 128'bx;
+        N3_mn = 0;
+    end
+end
+//// Packet Construction Code for the MCU to NCU upstream Packet (May be unstable) ////
 
 endmodule
