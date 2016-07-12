@@ -13,6 +13,7 @@ reg ncu_dmu_pio_hdr_vld_d;
 reg ncu_cpx_req_cq_d;
 reg ncu_pcx_stall_pq_strobe;
 reg pcx_ncu_data_rdy_px1_strobe;
+reg pcx_ncu_data_rdy_px1_d;
 
 reg ncu_mcu0_vld_strobe;
 reg ncu_mcu1_vld_strobe;
@@ -50,6 +51,7 @@ initial begin
     ncu_cpx_req_cq_d = 1'b0;
     ncu_pcx_stall_pq_strobe = 1'b0;
     pcx_ncu_data_rdy_px1_strobe = 1'b0;
+    pcx_ncu_data_rdy_px1_d = 1'b0;
 
 	ncu_mcu0_vld_strobe = 1'b0;
 	ncu_mcu1_vld_strobe = 1'b0;
@@ -188,9 +190,21 @@ end
 
 always @(posedge (cmp_clk && enabled && pcx_ncu_data_rdy_px1_strobe))
 begin
-    if(pcx_ncu_data_rdy_px1)
+    if(!pcx_ncu_data_rdy_px1)
         pcx_ncu_data_rdy_px1_strobe = 1'b0;
 end
+
+always @(posedge (cmp_clk && enabled))
+begin
+    pcx_ncu_data_rdy_px1_d <= pcx_ncu_data_rdy_px1;
+end
+
+always @(posedge (cmp_clk && enabled && pcx_ncu_data_rdy_px1_d))
+begin
+    if(pcx_ncu_data_rdy_px1_d)
+        `PR_ALWAYS("ncu_proto_mon", `ALWAYS, "PCX Sending data to NCU = %x", pcx_ncu_data_px2);
+end
+
 
 /* Upstream Non-cacheable read / write monitors Section 7.4.1.2 Vol 1 */
 
@@ -199,15 +213,15 @@ begin
     if(ncu_cpx_req_cq != 8'b0)
     begin
         `PR_ALWAYS("ncu_proto_mon", `ALWAYS, "NCU sending Request to CPX for CPU = %x", ncu_cpx_req_cq);
-        ncu_cpx_req_cq_d <= ncu_cpx_req_cq;
     end
+    ncu_cpx_req_cq_d <= ncu_cpx_req_cq;
 end
 
 always @(posedge (cmp_clk && enabled))
 begin
     if(ncu_cpx_req_cq_d != 8'b0)
     begin
-        `PR_ALWAYS("ncu_proto_mon", `ALWAYS, "NCU transferring data to CPX for CPU = %x", ncu_cpx_req_cq_d);
+        `PR_ALWAYS("ncu_proto_mon", `ALWAYS, "NCU transferring data = %x to CPX for CPU = %x", ncu_cpx_data_ca, ncu_cpx_req_cq_d);
     end
 end
 
@@ -215,7 +229,7 @@ always @(posedge (cmp_clk && enabled))
 begin
     if(cpx_ncu_grant_cx != 8'b0)
     begin
-        `PR_ALWAYS("ncu_proto_mon", `ALWAYS, "CPX indicatuing packet reached at CPU = %x", cpx_ncu_grant_cx);
+        `PR_ALWAYS("ncu_proto_mon", `ALWAYS, "CPX indicating packet reached at CPU = %x", cpx_ncu_grant_cx);
     end
 end
 
