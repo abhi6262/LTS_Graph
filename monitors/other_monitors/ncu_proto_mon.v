@@ -304,7 +304,6 @@ always @(posedge (iol2clk && enabled))
 begin
     if(ncu_mcu0_vld && !mcu0_ncu_stall && N0_nm < 32)
     begin
-        ncu_mcu0_data_packet[N0_nm*4 - 1 : (N0_nm - 1)*4] = ncu_mcu0_data;
         N0_nm = N0_nm + 1;
     end
     else if (!ncu_mcu0_vld && N0_nm == 32)
@@ -356,7 +355,6 @@ always @(posedge (iol2clk && enabled))
 begin
     if(ncu_mcu1_vld && !mcu1_ncu_stall && N1_nm < 32)
     begin
-        ncu_mcu1_data_packet[N1_nm*4 - 1 : (N1_nm - 1)*4] = ncu_mcu1_data;
         N1_nm = N1_nm + 1;
     end
     else if (!ncu_mcu1_vld && N1_nm == 32)
@@ -408,7 +406,6 @@ always @(posedge (iol2clk && enabled))
 begin
     if(ncu_mcu2_vld && !mcu2_ncu_stall && N2_nm < 32)
     begin
-        ncu_mcu2_data_packet[N2_nm*4 - 1 : (N2_nm - 1)*4] = ncu_mcu2_data;
         N2_nm = N2_nm + 1;
     end
     else if (!ncu_mcu2_vld && N2_nm == 32)
@@ -460,7 +457,6 @@ always @(posedge (iol2clk && enabled))
 begin
     if(ncu_mcu3_vld && !mcu3_ncu_stall && N3_nm < 32)
     begin
-        ncu_mcu3_data_packet[N3_nm*4 - 1 : (N3_nm - 1)*4] = ncu_mcu3_data;
         N3_nm = N3_nm + 1;
     end
     else if (!ncu_mcu3_vld && N3_nm == 32)
@@ -520,7 +516,6 @@ always @(posedge (iol2clk && enabled))
 begin
     if(mcu0_ncu_vld && !ncu_mcu0_stall && N0_mn < 32)
     begin
-        mcu0_ncu_data_packet[N0_mn*4 - 1 : (N0_mn - 1)*4] = mcu0_ncu_data;
         N0_mn = N0_mn + 1;
     end
     else if (!mcu0_ncu_vld && N0_mn == 32)
@@ -578,7 +573,6 @@ always @(posedge (iol2clk && enabled))
 begin
     if(mcu1_ncu_vld && !ncu_mcu1_stall && N1_mn < 32)
     begin
-        mcu1_ncu_data_packet[N1_mn*4 - 1 : (N1_mn - 1)*4] = mcu1_ncu_data;
         N1_mn = N1_mn + 1;
     end
     else if (!mcu1_ncu_vld && N1_mn == 32)
@@ -637,7 +631,6 @@ always @(posedge (iol2clk && enabled))
 begin
     if(mcu2_ncu_vld && !ncu_mcu2_stall && N2_mn < 32)
     begin
-        mcu2_ncu_data_packet[N2_mn*4 - 1 : (N2_mn - 1)*4] = mcu2_ncu_data;
         N2_mn = N2_mn + 1;
     end
     else if (!mcu2_ncu_vld && N2_mn == 32)
@@ -695,7 +688,12 @@ always @(posedge (iol2clk && enabled))
 begin
     if(mcu3_ncu_vld && !ncu_mcu3_stall && N3_mn < 32)
     begin
-        mcu3_ncu_data_packet[N3_mn*4 - 1 : (N3_mn - 1)*4] = mcu3_ncu_data;
+        case(N3_mn)
+            0: mcu3_ncu_data_packet[3:0] = mcu3_ncu_data;
+            1: mcu3_ncu_data_packet[7:4] = mcu3_ncu_data;
+            2: mcu3_ncu_data_packet[11:8] = mcu3_ncu_data;
+            3: mcu3_ncu_data_packet[15:12] = mcu3_ncu_data;
+        endcase
         N3_mn = N3_mn + 1;
     end
     else if (!mcu3_ncu_vld && N3_mn == 32)
