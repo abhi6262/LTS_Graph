@@ -649,7 +649,7 @@ end
 
 always @(posedge (iol2clk && enabled && mcu0_ncu_vld_strobe))
 begin
-    if(mcu0_ncu_vld)
+    if(!mcu0_ncu_vld)
         mcu0_ncu_vld_strobe = 1'b0;
 end
 
@@ -740,7 +740,7 @@ end
 
 always @(posedge (iol2clk && enabled && mcu1_ncu_vld_strobe))
 begin
-    if(mcu1_ncu_vld)
+    if(!mcu1_ncu_vld)
         mcu1_ncu_vld_strobe = 1'b0;
 end
 
@@ -832,7 +832,7 @@ end
 
 always @(posedge (iol2clk && enabled && mcu2_ncu_vld_strobe))
 begin
-    if(mcu2_ncu_vld)
+    if(!mcu2_ncu_vld)
         mcu2_ncu_vld_strobe = 1'b0;
 end
 
@@ -923,7 +923,7 @@ end
 
 always @(posedge (iol2clk && enabled && mcu3_ncu_vld_strobe))
 begin
-    if(mcu3_ncu_vld)
+    if(!mcu3_ncu_vld)
         mcu3_ncu_vld_strobe = 1'b0;
 end
 
