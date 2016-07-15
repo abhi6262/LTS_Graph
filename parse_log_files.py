@@ -1,5 +1,5 @@
 import os, sys
-import multiprocessing, time
+import multiprocessing, time, operator
 import argparse as agp
 #from termcolor import colored
 
@@ -8,6 +8,10 @@ NUMBER_OF_PROCESSES = multiprocessing.cpu_count()
 '''
 Code added from the following link:
 http://stackoverflow.com/questions/3893885/cheap-way-to-search-a-large-text-file-for-a-string
+
+Example Command Line Usage:
+
+python ~/Work/Protocol_Code_from_Abhishek/parse_log_files.py -p ./ -g fc1_paper -a -l /home/debjit/Work/Protocol_Code_from_Abhishek/message_log_files
 '''
 parser = agp.ArgumentParser(
         description='MultiProcessor Text File Parsing\nAuthor: Debjit Pal\nEmail: dpal2@illinois.edu', formatter_class=agp.RawTextHelpFormatter
@@ -24,7 +28,7 @@ group_name = args.group
 dump_location=''
 allo = False
 
-# Checking all dump arguments
+# Checking all dump arguments and making sure command line arguments are sane
 if args.all and not args.loc:
     parser.error('-l / --loc is mandatory with -a / -all')
 elif args.all and args.loc:
@@ -34,7 +38,20 @@ elif args.all and args.loc:
 monitor_name = ['dmu_to_siu_mon', 'niu_to_siu_mon', 'siu_to_l2_mon', 'siu_to_ncu_mon', 'l2_proto_mon', 'ncu_proto_mon', 'l2_to_siu_mon', 'siu_to_dmu_mon', 'siu_to_niu_mon']
 
 
+def merge(d1, d2, merge):
+    result = dict(d1)
+    for k,v in d2.iteritems():
+        if k in result:
+            result[k] = merge(result[k], v)
+        else:
+            result[k] = v
+    return result
+
 def FindTextAtAllOccurence( host, file_name, text):
+    '''
+    This function will find out all occurences of a single monitor from a sims.log file using a
+    multi-processor queue calculation
+    '''
     file_size = os.stat(file_name).st_size
     m1 = open(file_name, "r")
 
@@ -42,8 +59,9 @@ def FindTextAtAllOccurence( host, file_name, text):
     
     # A major change from Single Occurence subroutine
 
-    lines = []
+    lines = {}
     line_found_at = []
+    line_num = 0
 
     seekStart = chunk * (host)
     seekEnd = chunk * (host + 1)
@@ -58,14 +76,18 @@ def FindTextAtAllOccurence( host, file_name, text):
     line = m1.readline()
 
     while len(line) > 0:
-        #lines = lines + 1
+        line_num = line_num + 1
         if text in line:
-            line_found_at.append(lines)
-            lines.append(line)
+            line_found_at.append(line_num)
+            lines_ = line.split(':')
+            if int(lines_[0]) in lines.keys():
+                lines[int(lines_[0])].append(lines_[1] + ':' + lines_[2].rstrip())
+            else:
+                lines[int(lines_[0])] = [lines_[1] + ':' + lines_[2].rstrip()]
         if m1.tell() > seekEnd or len(line) == 0:
             break
         line = m1. readline()
-
+ 
     m1.close()
     return host, lines, line_found_at
 
@@ -111,7 +133,7 @@ def worker(input, output):
         for host,file_name,text in iter(input.get, 'STOP'):
             output.put(FindTextAtAllOccurence(host, file_name, text ))
 
-def main(diag_file_handle,file_name,text):
+def main(file_name,text):
     t_start = time.time()
     # Create queues
     task_queue = multiprocessing.Queue()
@@ -159,10 +181,17 @@ def main(diag_file_handle,file_name,text):
         for _i in range(NUMBER_OF_PROCESSES):
             task_queue.put('STOP')
 
+        total_lines = {}
         for h in range(NUMBER_OF_PROCESSES):
             if len(results[h][0]) > 0:
-                diag_log_file.write("".join(results[h][0]))
-                return 1
+                #diag_log_file.write("".join(results[h][0]))
+                #total_lines.update(results[h][0])
+                total_lines = merge(total_lines, results[h][0], lambda x, y:(x,y))
+        if total_lines:       
+            return 1, total_lines
+        else:
+            return 0, total_lines
+
     return 0
 
 if __name__ == "__main__":
@@ -179,12 +208,25 @@ if __name__ == "__main__":
             fileName = subdir + '/sims.log'
             logFileName = dump_location + '/' + diag_name_[0] + "_messages.log"
             diag_log_file = open(logFileName, 'w')
+            total_lines_cum = {}
             for monitor_name_ in monitor_name:
-                if(main( diag_file_handle = diag_log_file, file_name = fileName, text = monitor_name_ )):
-                    if diag_name_[0] in diag_name.keys():
-                        diag_name[diag_name_[0]].append(monitor_name_)
-                    else:
-                        diag_name[diag_name_[0]] = [monitor_name_]
+                if not allo:
+                    if(main( file_name = fileName, text = monitor_name_ )):
+                        if diag_name_[0] in diag_name.keys():
+                            diag_name[diag_name_[0]].append(monitor_name_)
+                        else:
+                            diag_name[diag_name_[0]] = [monitor_name_]
+                else:
+                    val_ret, total_lines = main( file_name = fileName, text = monitor_name_ )
+                    if(val_ret):
+                        if diag_name_[0] in diag_name.keys():
+                            diag_name[diag_name_[0]].append(monitor_name_)
+                        else:
+                            diag_name[diag_name_[0]] = [monitor_name_]
+                        #total_lines_cum.update(total_lines)
+                        total_lines_cum = merge(total_lines_cum, total_lines, lambda x, y:(x,y))
+            total_lines_cum_sorted = sorted(total_lines_cum.items(), key = operator.itemgetter(0))
+            diag_log_file.write('\n'.join('%s: %s' % x for x in total_lines_cum_sorted))
             diag_log_file.close()
             print '#' * 20 + "\n"
 
