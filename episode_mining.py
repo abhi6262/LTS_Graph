@@ -28,11 +28,45 @@ class EpisodeMining():
 
     def Freq_Check(self, Event_Set, Event_Seq):
         FreqEpisode = {}
+        pointer = start_cycle
+        nxtStart = 0
+        while pointer <= stop_cycle:
+            eventTuple, nxtStart = self.GetEvents(Event_Set, nxtStart)
+            for event in Event_Set:
+                if set(event) < set(eventTuple):
+                    if event in FreqEpisode.keys():
+                        FreqEpisode[event] = FreqEpisode[event] + 1
+                    else:
+                        FreqEpisode[event] = 1
+            pointer = pointer + window_length
+        # After all the Frequencies of the Event Episode are calculated make
+        # another pass to see which Episode is more frequent using the min_sup 
+        # value. Keep those Event Sequence which is frequent enough
+        for key in FreqEpisode.keys():
+            if FreqEpisode[key] < min_sup:
+                try:
+                    del FreqEpisode[key]
+                except KeyError:
+                    pass
         return FreqEpisode
 
 
-    def Cand_Gen(self):
-        return 1
+    def Cand_Gen(self, FreqEpisodesPrev):
+        EpisodeCurrent = []
+        sizeOfFreqEpisode = len(FreqEpisodesPrev)
+        for i in range(sizeOfFreqEpisode):
+            for j in range(sizeOfFreqEpisode):
+                if i == j:
+                    continue
+                # Considering Postfix of i and Prefix of j and concatenating i < j
+                if self.GetPostfix(FreqEpisodesPrev[i]) == self.GetPrefix(FreqEpisodesPrev[j]):
+                    newTuple = FreqEpisodesPrev[i] + tuple(FreqEpisodesPrev[j][-1])
+                    EpisodeCurrent.append(newTuple)
+                # Considering Postfix of j and Prefix of i and concatenating j < i
+                if self.GetPostfix(FreqEpisodesPrev[j]) == self.GetPrefix(FreqEpisodesPrev[i]):
+                    newTuple = FreqEpisodesPrev[j] + tuple(FreqEpisodesPrev[i][-1])
+                    EpisodeCurrent.append(newTuple)
+        return EpisodeCurrent
 
 
     def NextFreqEpisode(self):
@@ -41,7 +75,7 @@ class EpisodeMining():
 
     def GetPrefix(self, Episode):
         '''
-        Consider Episode as a list. Prefix is the Episode with its last element removed
+        Consider Episode as a tuple. Prefix is the Episode with its last element removed
         '''
         return Episode[:-1]
 
@@ -59,9 +93,9 @@ class EpisodeMining():
 
     def EpisodeMine(self, Event_Set, Event_Seq):
         '''
-        Event_Set: A list enlistig all possible events
-        Event_Seq: A list containing events that happened in the execution along with the
-        cycle stamp in the format e@t
+        Event_Set: A tuple enlistig all possible events
+        Event_Seq: A tuple containing events that happened in the execution along with the
+        cycle stamp in the format e:t
         '''
         # Dictionary to store frequent episode with the occurence frequency / support
         FreqEpisode = {}
@@ -75,9 +109,9 @@ class EpisodeMining():
         LCurr = LPrev
         while LCurr:
             print "Mining Episodes for Iteration : " + str(index)
-            CandCurr = self.Cand_Gen(LPrev)
+            CandCurr = self.Cand_Gen(LPrev.keys())
             LCurr = self.Freq_Check(CandCurr)
-            FreqEpisode = self.NextFreqEpisode(FreqEpisode, LCurr)
+            FreqEpisode = self.NextFreqEpisode(FreqEpisode, LCurr.keys())
             LPrev = LCurr
             index = index + 1
         return FreqEpisode
