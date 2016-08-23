@@ -26,26 +26,52 @@ class EpisodeMining():
             ):
         self.enabled = enabled
 
-    def Freq_Check(self):
+    def Freq_Check(self, Event_Set, Event_Seq):
+        FreqEpisode = {}
+        return FreqEpisode
 
 
     def Cand_Gen(self):
+        return 1
 
 
     def NextFreqEpisode(self):
+        return 1
 
 
     def GetPrefix(self, Episode):
-
+        '''
+        Consider Episode as a list. Prefix is the Episode with its last element removed
+        '''
+        return Episode[:-1]
 
     def GetPostfix(self, Episode):
+        '''
+        Consider Episode as a lilst. Postfix is the Episode with its first element removed
+        '''
+        return Episode[1:]
 
+    def GetPrefixSupport(self, Episode, FreqEpisode):
+        '''
+        Find the support of the prefix of an Episode
+        '''
+        return FreqEpisode[self.GetPrefix(Episode)]
 
-    def EpisodeMine(self):
+    def EpisodeMine(self, Event_Set, Event_Seq):
+        '''
+        Event_Set: A list enlistig all possible events
+        Event_Seq: A list containing events that happened in the execution along with the
+        cycle stamp in the format e@t
+        '''
         # Dictionary to store frequent episode with the occurence frequency / support
         FreqEpisode = {}
+        # Two more dictionaries to hold the current and the previous iteration Frequent
+        # Episodes. LPrev holds the frequent episodes of the previous iteration
+        # And the LCurr holds the frequent episodes of the current iteration
+        LPrev = {}
+        LCurr = {}
         index = 1
-        LPrev = self.Freq_Check(Event_Seq)
+        LPrev = self.Freq_Check(Event_Set, Event_Seq)
         LCurr = LPrev
         while LCurr:
             print "Mining Episodes for Iteration : " + str(index)
