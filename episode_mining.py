@@ -1,7 +1,9 @@
+#python episode_mining.py -w 15 -s 2 -m 0 -M 50 -e event.txt -E eventseq.txt
 import os, sys
 import time
 import argparse as agp
 import numpy as np
+from types import *
 
 parser = agp.ArgumentParser(
         description='Episode Mining Code for Post-Silicon Traceability of Message Transactions\nAuthor: Debjit Pal\nEmail: dpal2@illinois.edu', formatter_class=agp.RawTextHelpFormatter
@@ -78,9 +80,10 @@ class EpisodeMining():
 
 
     def Cand_Gen(self, FreqEpisodesPrev):
+        assert type(FreqEpisodesPrev) is ListType, "Cand_Gen: Expected \"FreqEpisodesPrev\" Tuple Type. Received %r" % type(FreqEpisodesPrev)
         EpisodeCurrent = []
         sizeOfFreqEpisode = len(FreqEpisodesPrev)
-        print sizeOfFreqEpisode
+        #print sizeOfFreqEpisode
         for i in range(sizeOfFreqEpisode):
             for j in range(sizeOfFreqEpisode):
                 if i == j:
@@ -99,12 +102,9 @@ class EpisodeMining():
                 if jPostfix == iPrefix:
                     newTuple = tuple(FreqEpisodesPrev[j]) + tuple(FreqEpisodesPrev[i][-1])
                     EpisodeCurrent.append(newTuple)
-        return EpisodeCurrent
-
-
-    def NextFreqEpisode(self):
-        return 1
-
+        # list(set(A)) : This will convert the list in a SET of unique elements and will then convert it back to a list. So that if Prefix and PostFix 
+        # calculation produce duplicate Candidates, they will be removed
+        return list(set(EpisodeCurrent))
 
     def GetPrefix(self, Episode):
         '''
@@ -131,7 +131,7 @@ class EpisodeMining():
         cycle stamp in the format e:t
         '''
         # Dictionary to store frequent episode with the occurence frequency / support
-        FreqEpisode = {}
+        FreqEpisode = []
         # Two more dictionaries to hold the current and the previous iteration Frequent
         # Episodes. LPrev holds the frequent episodes of the previous iteration
         # And the LCurr holds the frequent episodes of the current iteration
@@ -139,14 +139,16 @@ class EpisodeMining():
         LCurr = {}
         index = 1
         LPrev = self.Freq_Check(Event_Set, Event_Seq)
+        #print LPrev
         LCurr = LPrev
-        while True:
+        while index <= 3:
             print "Mining Episodes for Iteration : " + str(index)
             CandCurr = self.Cand_Gen(LPrev.keys())
-            LCurr = self.Freq_Check(CandCurr)
+            LCurr = self.Freq_Check(CandCurr, Event_Seq)
+            print LCurr
             if LCurr:
-                FreqEpisode = self.NextFreqEpisode(FreqEpisode, LCurr.keys())
-            else
+                FreqEpisode.append(LCurr.keys())
+            else:
                 break
             LPrev = LCurr
             index = index + 1
@@ -189,7 +191,8 @@ if __name__ == "__main__":
     Event_Set = ReadData.ReadEventSet(event_all)
     Event_Seq = ReadData.ReadEventSequence(event_seq)
 
-    FreqEpisode = EpisodeMining.Freq_Check(Event_Set, Event_Seq)
-    EpisodeCurrent = EpisodeMining.Cand_Gen(FreqEpisode.keys())
-    print EpisodeCurrent
+    #FreqEpisode = EpisodeMining.Freq_Check(Event_Set, Event_Seq)
+    #EpisodeCurrent = EpisodeMining.Cand_Gen(FreqEpisode.keys())
+    FreqEpisode = EpisodeMining.EpisodeMine(Event_Set, Event_Seq)
+    print "Set of All Frequent Episodes are: ", FreqEpisode
 
