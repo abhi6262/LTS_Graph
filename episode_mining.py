@@ -80,17 +80,24 @@ class EpisodeMining():
     def Cand_Gen(self, FreqEpisodesPrev):
         EpisodeCurrent = []
         sizeOfFreqEpisode = len(FreqEpisodesPrev)
+        print sizeOfFreqEpisode
         for i in range(sizeOfFreqEpisode):
             for j in range(sizeOfFreqEpisode):
                 if i == j:
                     continue
+                iPostfix = self.GetPostfix(tuple(FreqEpisodesPrev[i]))
+                jPostfix = self.GetPostfix(tuple(FreqEpisodesPrev[j]))
+        
+                iPrefix = self.GetPrefix(tuple(FreqEpisodesPrev[i]))
+                jPrefix = self.GetPrefix(tuple(FreqEpisodesPrev[j]))
+
                 # Considering Postfix of i and Prefix of j and concatenating i < j
-                if self.GetPostfix(FreqEpisodesPrev[i]) == self.GetPrefix(FreqEpisodesPrev[j]):
-                    newTuple = FreqEpisodesPrev[i] + tuple(FreqEpisodesPrev[j][-1])
+                if iPostfix == jPrefix:
+                    newTuple = tuple(FreqEpisodesPrev[i]) + tuple(FreqEpisodesPrev[j][-1])
                     EpisodeCurrent.append(newTuple)
                 # Considering Postfix of j and Prefix of i and concatenating j < i
-                if self.GetPostfix(FreqEpisodesPrev[j]) == self.GetPrefix(FreqEpisodesPrev[i]):
-                    newTuple = FreqEpisodesPrev[j] + tuple(FreqEpisodesPrev[i][-1])
+                if jPostfix == iPrefix:
+                    newTuple = tuple(FreqEpisodesPrev[j]) + tuple(FreqEpisodesPrev[i][-1])
                     EpisodeCurrent.append(newTuple)
         return EpisodeCurrent
 
@@ -133,11 +140,14 @@ class EpisodeMining():
         index = 1
         LPrev = self.Freq_Check(Event_Set, Event_Seq)
         LCurr = LPrev
-        while LCurr:
+        while True:
             print "Mining Episodes for Iteration : " + str(index)
             CandCurr = self.Cand_Gen(LPrev.keys())
             LCurr = self.Freq_Check(CandCurr)
-            FreqEpisode = self.NextFreqEpisode(FreqEpisode, LCurr.keys())
+            if LCurr:
+                FreqEpisode = self.NextFreqEpisode(FreqEpisode, LCurr.keys())
+            else
+                break
             LPrev = LCurr
             index = index + 1
         return FreqEpisode
@@ -180,5 +190,6 @@ if __name__ == "__main__":
     Event_Seq = ReadData.ReadEventSequence(event_seq)
 
     FreqEpisode = EpisodeMining.Freq_Check(Event_Set, Event_Seq)
-    print FreqEpisode
+    EpisodeCurrent = EpisodeMining.Cand_Gen(FreqEpisode.keys())
+    print EpisodeCurrent
 
