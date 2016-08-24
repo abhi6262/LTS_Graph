@@ -60,7 +60,9 @@ class EpisodeMining():
         while nxtStart <= stop_cycle:
             eventTuple, pointer = self.GetEvents(Event_Seq, nxtStart, pointer)
             for event in Event_Set:
+                print tuple(event) , eventTuple, tuple(event) < eventTuple
                 if set(event) <= set(eventTuple):
+                #if event < eventTuple:
                     if event in FreqEpisode.keys():
                         FreqEpisode[event] = FreqEpisode[event] + 1
                     else:
