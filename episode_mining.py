@@ -32,6 +32,24 @@ class EpisodeMining():
             ):
         self.enabled = enabled
 
+    def EventContainment(self, Pattern, Text):
+        assert type(Pattern) is TupleType, "EventContainment: Expected \"Pattern\" Tuple Type. Received %r" % type(Pattern)
+        assert type(Text) is TupleType, "EventContainment: Expected \"Text\" Tuple Type. Received %r" % type(Text)
+        pos = 0
+        for i in range(len(Pattern)):
+            try:
+                pos = Text[pos:].index(Pattern[i])
+            except ValueError:
+                pos = -1
+                #print Pattern, Text, '-1'
+                return False
+            pos = pos + 1
+            if pos == len(Text) and i < len(Pattern) - 1:
+                #print Pattern, Text, '-1'
+                return False
+        #print Pattern, Text, '1'
+        return True
+
     def GetEvents(self, Event_Seq, nxtStart, pointer):
         eventTuple = ()
         currPoint = nxtStart
@@ -59,10 +77,14 @@ class EpisodeMining():
         nxtStart = start_cycle
         while nxtStart <= stop_cycle:
             eventTuple, pointer = self.GetEvents(Event_Seq, nxtStart, pointer)
+            if not eventTuple:
+                nxtStart = nxtStart + window_length
+                continue
             for event in Event_Set:
-                print tuple(event) , eventTuple, tuple(event) < eventTuple
-                if set(event) <= set(eventTuple):
-                #if event < eventTuple:
+                event = tuple(event)
+                print event, eventTuple
+                if self.EventContainment(event, eventTuple):
+                    print "Entered"
                     if event in FreqEpisode.keys():
                         FreqEpisode[event] = FreqEpisode[event] + 1
                     else:
@@ -143,7 +165,8 @@ class EpisodeMining():
         LPrev = self.Freq_Check(Event_Set, Event_Seq)
         #print LPrev
         LCurr = LPrev
-        while index <= 3:
+        #while index <= 2:
+        while True:
             print "Mining Episodes for Iteration : " + str(index)
             CandCurr = self.Cand_Gen(LPrev.keys())
             LCurr = self.Freq_Check(CandCurr, Event_Seq)
