@@ -1,3 +1,12 @@
+'''
+
+Episode Mining written by : Debjit Pal
+Email ID: dpal2@illinois.edu
+Institute: Univerisity of Illinois at Urbana-Champaign
+Paper: Automatic Generation of System Level Assertions from Transaction Level Models, Lingyi Liu et. al 2014
+
+'''
+
 #python episode_mining.py -w 15 -s 2 -m 0 -M 50 -e event.txt -E eventseq.txt
 import os, sys
 import time
@@ -82,9 +91,9 @@ class EpisodeMining():
                 continue
             for event in Event_Set:
                 event = tuple(event)
-                print event, eventTuple
+                #print event, eventTuple
                 if self.EventContainment(event, eventTuple):
-                    print "Entered"
+                    #print "Entered"
                     if event in FreqEpisode.keys():
                         FreqEpisode[event] = FreqEpisode[event] + 1
                     else:
@@ -155,7 +164,8 @@ class EpisodeMining():
         cycle stamp in the format e:t
         '''
         # Dictionary to store frequent episode with the occurence frequency / support
-        FreqEpisode = []
+        FreqEpisode = {}
+        EpisodeConf = {}
         # Two more dictionaries to hold the current and the previous iteration Frequent
         # Episodes. LPrev holds the frequent episodes of the previous iteration
         # And the LCurr holds the frequent episodes of the current iteration
@@ -163,6 +173,7 @@ class EpisodeMining():
         LCurr = {}
         index = 1
         LPrev = self.Freq_Check(Event_Set, Event_Seq)
+        FreqEpisode.update(LPrev)
         #print LPrev
         LCurr = LPrev
         #while index <= 2:
@@ -170,14 +181,36 @@ class EpisodeMining():
             print "Mining Episodes for Iteration : " + str(index)
             CandCurr = self.Cand_Gen(LPrev.keys())
             LCurr = self.Freq_Check(CandCurr, Event_Seq)
-            print LCurr
             if LCurr:
-                FreqEpisode.append(LCurr.keys())
+                #FreqEpisodei.append(tuple(LCurr.keys()))
+                print "Total Frequent Episodes in current oteration: ", len(LCurr), "::", LCurr, "\n\n"
+                for key in LCurr.keys():
+                    if FreqEpisode[self.GetPrefix(key)] == LCurr[key]:
+                        currentKeyConf = {key:1.0}
+                        EpisodeConf.update(currentKeyConf)
+                        try:
+                            del EpisodeConf[self.GetPrefix(key)]
+                        except KeyError:
+                            pass
+                    else:
+                        currentKeyConf = {key: LCurr[key] / float(FreqEpisode[self.GetPrefix(key)]) }
+                        EpisodeConf.update(currentKeyConf)
+                for key in LCurr.keys():
+                    try:
+                        del FreqEpisode[self.GetPrefix(key)]
+                    except KeyError:
+                        pass
+                    try:
+                        del FreqEpisode[self.GetPostfix(key)]
+                    except KeyError:
+                        pass
+                FreqEpisode.update(LCurr)
             else:
+                print "No more Frequent Episodes found in current iteration. Breaking at iteration: ", index, "\n\n"
                 break
             LPrev = LCurr
             index = index + 1
-        return FreqEpisode
+        return FreqEpisode, EpisodeConf
 
 
 class ReadData():
@@ -218,6 +251,6 @@ if __name__ == "__main__":
 
     #FreqEpisode = EpisodeMining.Freq_Check(Event_Set, Event_Seq)
     #EpisodeCurrent = EpisodeMining.Cand_Gen(FreqEpisode.keys())
-    FreqEpisode = EpisodeMining.EpisodeMine(Event_Set, Event_Seq)
-    print "Set of All Frequent Episodes are: ", FreqEpisode
-
+    FreqEpisode, EpisodeConf = EpisodeMining.EpisodeMine(Event_Set, Event_Seq)
+    print "Set of All Frequent Episodes are: ", FreqEpisode, "\n" 
+    print "Confidence of the Frequent Episodes: ", EpisodeConf
