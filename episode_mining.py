@@ -45,14 +45,15 @@ class EpisodeMining():
         assert type(Pattern) is TupleType, "EventContainment: Expected \"Pattern\" Tuple Type. Received %r" % type(Pattern)
         assert type(Text) is TupleType, "EventContainment: Expected \"Text\" Tuple Type. Received %r" % type(Text)
         pos = 0
+        offset = 0
         for i in range(len(Pattern)):
             try:
-                pos = Text[pos:].index(Pattern[i])
+                offset = Text[pos:].index(Pattern[i])
             except ValueError:
                 pos = -1
                 #print Pattern, Text, '-1'
                 return False
-            pos = pos + 1
+            pos = pos + offset + 1
             if pos == len(Text) and i < len(Pattern) - 1:
                 #print Pattern, Text, '-1'
                 return False
