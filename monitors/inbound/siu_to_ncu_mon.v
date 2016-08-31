@@ -41,7 +41,7 @@ always @(posedge (iol2clk && enabled && sii_ncu_req))
 begin
 	if (sii_ncu_req && !sii_ncu_req_asserted)
 	begin
-		`PR_ALWAYS("siu_to_ncu_mon", `ALWAYS, "<sii,ncu,mondopio,txfer>::SIU Signalling a Transfer to NCU");
+		`PR_ALWAYS("siu_to_ncu_mon", `ALWAYS, "<sii,ncu,mondointpio,req>::SIU Signalling a Transfer to NCU");
 		sii_ncu_req_asserted = 1'b1;
 	end
 end
@@ -58,7 +58,7 @@ always @(posedge (iol2clk && enabled && ncu_sii_gnt))
 begin
 	if(ncu_sii_gnt)
 	begin
-		`PR_ALWAYS("siu_to_ncu_mon", `ALWAYS, "<ncu,sii,grant,txfer>::NCU Granting SIU for Transfer");
+		`PR_ALWAYS("siu_to_ncu_mon", `ALWAYS, "<ncu,sii,mondointpio,grant>::NCU Granting SIU for Transfer");
 	end
 end
 
@@ -71,7 +71,7 @@ end
 
 always @(posedge (iol2clk && enabled && ncu_sii_gnt_d))
 begin
-    `PR_ALWAYS("siu_to_ncu_mon", `ALWAYS, "<sii,ncu,headerpayload>::SIU to NCU Header and Payload Cycle");
+    `PR_ALWAYS("siu_to_ncu_mon", `ALWAYS, "<sii,ncu,,headerpayload>::SIU to NCU Header and Payload Cycle");
     /* One cycle of Header */
     repeat(1) @(posedge iol2clk)
     begin
