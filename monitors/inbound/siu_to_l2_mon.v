@@ -65,7 +65,7 @@ wire l2t7_sii_wib_dequeue = `SII.l2t7_sii_wib_dequeue;
 always @(posedge (iol2clk && enabled))
 begin
     if(sii_l2t0_req_vld)
-        `PR_ALWAYS("siu_to_l2_mon", `ALWAYS, "SII_L2T_REQ_VLD Tag = 0");
+        `PR_ALWAYS("siu_to_l2_mon", `ALWAYS, "<sii,l2t0,header,req>::SII_L2T_REQ_VLD Tag = 0");
         /* To get the Header cycle */
         repeat(2) @(posedge iol2clk)
         begin
@@ -78,13 +78,13 @@ end
 always @(posedge (iol2clk && enabled && l2t0_sii_iq_dequeue))
 begin
     if(l2t0_sii_iq_dequeue)
-        `PR_ALWAYS("siu_to_l2_mon", `ALWAYS, "Read Requests from SIU Dequeued from L2Tag = 0 Input Queue");
+        `PR_ALWAYS("siu_to_l2_mon", `ALWAYS, "<l2t0,sii,deque,readr>Read Requests from SIU Dequeued from L2Tag = 0 Input Queue");
 end
 
 always @(posedge (iol2clk && enabled && l2t0_sii_wib_dequeue))
 begin
     if(l2t0_sii_wib_dequeue)
-        `PR_ALWAYS("siu_to_l2_mon", `ALWAYS, "L2Tag = 0 Drained 64 bytes write data. Data enroute to MCU");
+        `PR_ALWAYS("siu_to_l2_mon", `ALWAYS, "<l2t0,sii,64wd,mcud>::L2Tag = 0 Drained 64 bytes write data. Data enroute to MCU");
 end
 
 /* For L2 Tag 1 */

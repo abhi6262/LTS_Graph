@@ -48,7 +48,7 @@ begin
         /* Single and Back-to-Back DMA Read Request from NIU to SIU */
         if(!niu_sii_datareq && !niu_sii_datareq16)
         begin
-            `PR_ALWAYS("niu_to_siu_mon", `ALWAYS, "NIU to SIU DMA Read Request Header Cycle");
+            `PR_ALWAYS("niu_to_siu_mon", `ALWAYS, "<niu,sii,header,dmar>::NIU to SIU DMA Read Request Header Cycle");
             if (niu_sii_reqbypass)
                 `PR_INFO("niu_to_siu_mon", `INFO, "Read Request Sent to SIU Bypass Queue");
             else
@@ -59,7 +59,7 @@ begin
         /* Single and Back-to-Back DMA Write Request from NIU to SIU */
         else if (niu_sii_datareq && !niu_sii_datareq16)
         begin
-            `PR_ALWAYS("niu_to_siu_mon", `ALWAYS, "NIU to SIU DMA Write Request Header Cycle");
+            `PR_ALWAYS("niu_to_siu_mon", `ALWAYS, "<niu,sii,header,dmaw>::NIU to SIU DMA Write Request Header Cycle");
             if (niu_sii_reqbypass)
                 `PR_INFO("niu_to_siu_mon", `INFO, "Write Request Sent to SIU Bypass Queue");
             else
@@ -79,7 +79,7 @@ end
 
 always @(posedge (iol2clk && enabled && write_payload_cycle_detected))
 begin
-    `PR_ALWAYS("niu_to_siu_mon", `ALWAYS, "NIU TO SIU DMA Write Request Payload Cycle");
+    `PR_ALWAYS("niu_to_siu_mon", `ALWAYS, "<niu,sii,payload,dmaw>::NIU TO SIU DMA Write Request Payload Cycle");
     repeat (4) @(posedge iol2clk)
     begin
         `PR_INFO("niu_to_siu_mon", `INFO, "DMA Write Payload = %x", niu_sii_data);
