@@ -1,6 +1,8 @@
 import os, sys
 import multiprocessing, time, operator
 import argparse as agp
+import itertools
+from types import *
 #from termcolor import colored
 
 NUMBER_OF_PROCESSES = multiprocessing.cpu_count()
@@ -81,7 +83,9 @@ def FindTextAtAllOccurence( host, file_name, text):
             line_found_at.append(line_num)
             lines_ = line.split(':')
             if int(lines_[0]) in lines.keys():
-                lines[int(lines_[0])].append(lines_[1] + ':' + lines_[2].rstrip())
+                lines[int(lines_[0])].append(lines_[1].lstrip().rstrip() + ':' + lines_[2].rstrip().lstrip())
+                #print lines_[0]
+                #lines[int(lines_[0])] = lines[int(lines_[0])] + [lines_[1].lstrip().rstrip() + ':' + lines_[2].rstrip().lstrip()]
             else:
                 lines[int(lines_[0])] = [lines_[1] + ':' + lines_[2].rstrip()]
         if m1.tell() > seekEnd or len(line) == 0:
@@ -194,6 +198,12 @@ def main(file_name,text):
 
     return 0
 
+def get_sentences(sentence):
+    d1, d2 = '<', '>'
+    i1, i2 = sentence.find(d1), sentence.find(d2)
+    if -1 < i1 < i2:
+        return d1 + sentence[i1+1:i2] + d2
+
 if __name__ == "__main__":
     subdirectories = os.listdir(path)
     # Dictionary to store test name and the monitors that are sensitized in its run
@@ -226,7 +236,29 @@ if __name__ == "__main__":
                         #total_lines_cum.update(total_lines)
                         total_lines_cum = merge(total_lines_cum, total_lines, lambda x, y:(x,y))
             total_lines_cum_sorted = sorted(total_lines_cum.items(), key = operator.itemgetter(0))
-            diag_log_file.write('\n'.join('%s: %s' % x for x in total_lines_cum_sorted))
+
+            ## The following fragments of code were needed to handle list of lists of the events
+            ## that are created because of merging of dictionaries for various different monitors
+            ## for the single simulation log file
+            for x in total_lines_cum_sorted:
+                if len(x[1]) > 1:
+                    x1merged = []
+                    for length_ in range(len(x[1])):
+                        if type(x[1][length_]) is ListType:
+                            x1merged = x1merged + x[1][length_]
+                        else:
+                            x1merged.append(x[1][length_])
+                    for length in range(len(x1merged)): 
+                        #print x[0], get_sentences(x1merged[length])
+                        diag_log_file.write(get_sentences(x1merged[length]) + "@" + str(x[0]) + "\n")
+                        #for len_ in range(len(x[1][length])):
+                        #    print get_sentences(x[1][len_][length]),"@",x[0]
+                else:
+                    diag_log_file.write(get_sentences(x[1][0]) + "@" + str(x[0]) + "\n")
+                
+            # Stylized way of writing Events in the diag_log_file
+            # We are sacrificing it for the time being
+            # diag_log_file.write('\n'.join('%s@ %s' % x for x in total_lines_cum_sorted))
             diag_log_file.close()
             print '#' * 20 + "\n"
 
