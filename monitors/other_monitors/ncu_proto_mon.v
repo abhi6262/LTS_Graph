@@ -10,7 +10,7 @@ module ncu_proto_mon();
 
 reg enabled;
 reg ncu_dmu_pio_hdr_vld_d;
-reg ncu_cpx_req_cq_d;
+reg [7:0] ncu_cpx_req_cq_d;
 reg ncu_pcx_stall_pq_strobe;
 reg pcx_ncu_data_rdy_px1_strobe;
 reg pcx_ncu_data_rdy_px1_d;
@@ -48,7 +48,7 @@ integer N0_nm;
 initial begin
     enabled = 1'b1;
     ncu_dmu_pio_hdr_vld_d = 1'b0;
-    ncu_cpx_req_cq_d = 1'b0;
+    ncu_cpx_req_cq_d = 8'b0;
     ncu_pcx_stall_pq_strobe = 1'b0;
     pcx_ncu_data_rdy_px1_strobe = 1'b0;
     pcx_ncu_data_rdy_px1_d = 1'b0;
