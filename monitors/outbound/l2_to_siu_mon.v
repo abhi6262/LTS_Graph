@@ -97,7 +97,7 @@ always @(posedge(iol2clk && enabled))
 begin
     if(l2b0_sio_ctag_vld)
     begin
-        `PR_ALWAYS("l2_to_siu_mon", `ALWAYS, "Read Reasponse Cycle from L2B0 to SIO Started");
+        `PR_ALWAYS("l2_to_siu_mon", `ALWAYS, "<l2b0,sio,,readresponse>::Read Reasponse Cycle from L2B0 to SIO Started");
         //repeat (17) @(posedge iol2clk)
         //begin
         `PR_INFO("l2_to_siu_mon", `INFO, "L2B0 TO SIU Read Response  = %x", l2b0_sio_data);
@@ -117,7 +117,7 @@ always @(posedge(iol2clk && enabled))
 begin
     if(l2b1_sio_ctag_vld)
     begin
-        `PR_ALWAYS("l2_to_siu_mon", `ALWAYS, "Read Reasponse Cycle from L2B1 to SIO Started");
+        `PR_ALWAYS("l2_to_siu_mon", `ALWAYS, "<l2b1,sio,,readresponse>::Read Reasponse Cycle from L2B1 to SIO Started");
         //repeat (17) @(posedge iol2clk)
         //begin
         `PR_INFO("l2_to_siu_mon", `INFO, "L2B1 TO SIU Read Response  = %x", l2b1_sio_data);
@@ -137,7 +137,7 @@ always @(posedge(iol2clk && enabled))
 begin
     if(l2b2_sio_ctag_vld)
     begin
-        `PR_ALWAYS("l2_to_siu_mon", `ALWAYS, "Read Reasponse Cycle from L2B2 to SIO Started");
+        `PR_ALWAYS("l2_to_siu_mon", `ALWAYS, "<l2b2,sio,,readresponse>::Read Reasponse Cycle from L2B2 to SIO Started");
         //repeat (17) @(posedge iol2clk)
         //begin
         `PR_INFO("l2_to_siu_mon", `INFO, "L2B2 TO SIU Read Response  = %x", l2b2_sio_data);
@@ -157,7 +157,7 @@ always @(posedge(iol2clk && enabled))
 begin
     if(l2b3_sio_ctag_vld)
     begin
-        `PR_ALWAYS("l2_to_siu_mon", `ALWAYS, "Read Reasponse Cycle from L2B3 to SIO Started");
+        `PR_ALWAYS("l2_to_siu_mon", `ALWAYS, "<l2b3,sio,,readresponse>::Read Reasponse Cycle from L2B3 to SIO Started");
         //repeat (17) @(posedge iol2clk)
         //begin
         `PR_INFO("l2_to_siu_mon", `INFO, "L2B3 TO SIU Read Response  = %x", l2b3_sio_data);
@@ -177,7 +177,7 @@ always @(posedge(iol2clk && enabled))
 begin
     if(l2b4_sio_ctag_vld)
     begin
-        `PR_ALWAYS("l2_to_siu_mon", `ALWAYS, "Read Reasponse Cycle from L2B4 to SIO Started");
+        `PR_ALWAYS("l2_to_siu_mon", `ALWAYS, "<l2b4,sio,,readresponse>::Read Reasponse Cycle from L2B4 to SIO Started");
         //repeat (17) @(posedge iol2clk)
         //begin
         `PR_INFO("l2_to_siu_mon", `INFO, "L2B4 TO SIU Read Response  = %x", l2b4_sio_data);
@@ -197,7 +197,7 @@ always @(posedge(iol2clk && enabled))
 begin
     if(l2b5_sio_ctag_vld)
     begin
-        `PR_ALWAYS("l2_to_siu_mon", `ALWAYS, "Read Reasponse Cycle from L2B5 to SIO Started");
+        `PR_ALWAYS("l2_to_siu_mon", `ALWAYS, "<l2b5,sio,,readresponse>::Read Reasponse Cycle from L2B5 to SIO Started");
         //repeat (17) @(posedge iol2clk)
         //begin
         `PR_INFO("l2_to_siu_mon", `INFO, "L2B5 TO SIU Read Response  = %x", l2b5_sio_data);
@@ -217,7 +217,7 @@ always @(posedge(iol2clk && enabled))
 begin
     if(l2b6_sio_ctag_vld)
     begin
-        `PR_ALWAYS("l2_to_siu_mon", `ALWAYS, "Read Reasponse Cycle from L2B6 to SIO Started");
+        `PR_ALWAYS("l2_to_siu_mon", `ALWAYS, "<l2b6,sio,,readresponse>::Read Reasponse Cycle from L2B6 to SIO Started");
         //repeat (17) @(posedge iol2clk)
         //begin
         `PR_INFO("l2_to_siu_mon", `INFO, "L2B6 TO SIU Read Response  = %x", l2b6_sio_data);
@@ -237,7 +237,7 @@ always @(posedge(iol2clk && enabled))
 begin
     if(l2b7_sio_ctag_vld)
     begin
-        `PR_ALWAYS("l2_to_siu_mon", `ALWAYS, "Read Reasponse Cycle from L2B7 to SIO Started");
+        `PR_ALWAYS("l2_to_siu_mon", `ALWAYS, "<l2b7,sio,,readresponse>::Read Reasponse Cycle from L2B7 to SIO Started");
         //repeat (17) @(posedge iol2clk)
         //begin
         `PR_INFO("l2_to_siu_mon", `INFO, "L2B7 TO SIU Read Response  = %x", l2b7_sio_data);

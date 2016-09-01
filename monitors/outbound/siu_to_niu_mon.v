@@ -46,11 +46,11 @@ always @(posedge (iol2clk && enabled))
 begin
     if(sio_niu_hdr_vld)
     begin
-        `PR_ALWAYS("sio_to_niu_mon", `ALWAYS, "SIU sending packet to NIU sio_niu_hdr_vld = %b", sio_niu_hdr_vld);
+        `PR_ALWAYS("sio_to_niu_mon", `ALWAYS, "<sio,niu,,hdrvld>::SIU sending packet to NIU sio_niu_hdr_vld = %b", sio_niu_hdr_vld);
         if (sio_niu_datareq)
-            `PR_ALWAYS("sio_to_niu_mon", `ALWAYS, "Four Cycle Payload follows with 64 bytes of data from SIU to NIU sio_niu_datareq = %b", sio_niu_datareq);
+            `PR_ALWAYS("sio_to_niu_mon", `ALWAYS, "<sio,niu,,64bpayload>::Four Cycle Payload follows with 64 bytes of data from SIU to NIU sio_niu_datareq = %b", sio_niu_datareq);
         else
-            `PR_ALWAYS("sio_to_niu_mon", `ALWAYS, "Write Acknowledge and No Data Payload follows sio_niu_hdr_vld = %b", sio_niu_hdr_vld);
+            `PR_ALWAYS("sio_to_niu_mon", `ALWAYS, "<sio,niu,,writeacknopayload>::Write Acknowledge and No Data Payload follows sio_niu_hdr_vld = %b", sio_niu_hdr_vld);
         `PR_INFO("sio_to_niu_mon", `INFO, "Header Bits = %x", sio_niu_data);
     end
 end
@@ -62,7 +62,7 @@ always @(posedge (iol2clk & enabled))
 begin
     if (sio_niu_datareq_d)
     begin
-        `PR_ALWAYS("sio_to_niu_mon", `ALWAYS, "Payload cycle initiated");
+        `PR_ALWAYS("sio_to_niu_mon", `ALWAYS, "<sio,niu,,payload>::Payload cycle initiated");
         repeat (4) @(posedge iol2clk)
         begin
             `PR_INFO("sio_to_niu_mon", `INFO, "DMA Response Payload = %x", sio_niu_data);
