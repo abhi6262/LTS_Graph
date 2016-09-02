@@ -16,6 +16,7 @@ from types import *
 # Replacing networkx and matplotlib for drawing directed graph. Networkx and Matplotlib
 # did not give the desired result
 import pydot as pd
+from matplotlib import colors 
 
 
 parser = agp.ArgumentParser(
@@ -35,6 +36,7 @@ min_sup = args.min_sup
 start_cycle = args.start_cycle
 stop_cycle = args.stop_cycle
 event_seq = args.event_seq
+colors_ = colors.cnames
 
 class EpisodeMining():
     def __init__(
@@ -267,7 +269,7 @@ class DrawProtocolGraph():
         self.enabled = enabled
 
     def DrawGraph(self, FrequentEpisodes):
-        assert type(FrequentEpisodes) is ListType, "DrawGraph: Expected \"FrequentEpisodes\" ListType. received %r" % type(FrequentEpisodes)
+        assert type(FrequentEpisodes) is DictType, "DrawGraph: Expected \"FrequentEpisodes\" ListType. received %r" % type(FrequentEpisodes)
         EdgeList, NodeDict = self.GenerateNodeAndEdge(FrequentEpisodes)
 
         graph = pd.Dot(graph_type = 'digraph')
@@ -278,7 +280,7 @@ class DrawProtocolGraph():
 
         ## Add all the edges in the graph
         for edge in EdgeList:
-            graph.add_edge(pd.Edge(NodeDict[edge[0]], NodeDict[edge[1]], label = edge[2]))
+            graph.add_edge(pd.Edge(NodeDict[edge[0]], NodeDict[edge[1]], label=edge[2], labelfontcolor=colors_['brown'], fontsize="9.0", color=colors_['maroon'], penwidth=edge[3]))
 
         diag_name = event_seq[:event_seq.find('.')]
         name_of_png_file = diag_name + ".png"
@@ -289,20 +291,31 @@ class DrawProtocolGraph():
         # Create The Graph as the list of the pair of the nodes connected by an edge
         EdgeList = []
         NodeDict = {}
-        for episode in FrequentEpisodes:
+        maxSupport, minSupport = self.FindMaxMin(FrequentEpisodes)
+        for episode in FrequentEpisodes.keys():
+            ## To handle the pen width in the protocol graph we are making the edge width proportional to the 
+            ## support that an edge has
+            episodeSupport = FrequentEpisodes[episode]
             assert type(episode) is TupleType, "DrawGraph: Expected \"episode\" TupleType. received %r" % type(episode)
             for element in episode:
                 Length = len(element)
                 subelement = element[1:Length-1].split(',')
                 if subelement[0] not in NodeDict.keys():
-                    NodeDict[subelement[0]] = pd.Node(subelement[0])
+                    NodeDict[subelement[0]] = pd.Node(subelement[0], fillcolor=colors_['dodgerblue'], style="filled")
                 if subelement[1] not in NodeDict.keys():
-                    NodeDict[subelement[1]] = pd.Node(subelement[1])
-                edge = tuple([subelement[0], subelement[1], subelement[3]])
+                    NodeDict[subelement[1]] = pd.Node(subelement[1], fillcolor=colors_['dodgerblue'], style="filled")
+                edge = tuple([subelement[0], subelement[1], subelement[3], 1.0 * episodeSupport / (maxSupport - minSupport)])
                 EdgeList.append(edge)
 
         return EdgeList, NodeDict
 
+    def FindMaxMin(self, FrequentEpisodes):
+        maxSupport, minSupport = 0, sys.maxint
+        for key_ in FrequentEpisodes.keys():
+            maxSupport = FrequentEpisodes[key_] if FrequentEpisodes[key_] > maxSupport else maxSupport
+            minSupport = FrequentEpisodes[key_] if FrequentEpisodes[key_] < minSupport else minSupport
+
+        return maxSupport, minSupport
 
 if __name__ == "__main__":
 
@@ -321,4 +334,4 @@ if __name__ == "__main__":
     FreqEpisode, EpisodeConf = EpisodeMining.EpisodeMine(Event_Set, Event_Seq)
     print "Set of All Frequent Episodes are: ", FreqEpisode, "\n" 
     print "Confidence of the Frequent Episodes: ", EpisodeConf
-    DrawProtocolGraph.DrawGraph(FreqEpisode.keys())
+    DrawProtocolGraph.DrawGraph(FreqEpisode)
