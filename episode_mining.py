@@ -13,11 +13,13 @@ import time
 import argparse as agp
 import numpy as np
 from types import *
-import networkx as nx
-import matplotlib.pyplot as plt
+# Replacing networkx and matplotlib for drawing directed graph. Networkx and Matplotlib
+# did not give the desired result
+import pydot as pd
+
 
 parser = agp.ArgumentParser(
-        description='Episode Mining Code for Post-Silicon Traceability of Message Transactions\nAuthor: Debjit Pal\nEmail: dpal2@illinois.edu', formatter_class=agp.RawTextHelpFormatter
+        description='\nEpisode Mining Code for Post-Silicon Traceability of Message Transactions\nAuthor: Debjit Pal\nEmail: dpal2@illinois.edu', formatter_class=agp.RawTextHelpFormatter
         )
 parser.add_argument("-w", "--window-length", help="Length of the window in cycles", type=int, dest="window_length", required=True)
 parser.add_argument("-s", "--min-support", help="Minimum support value", type=int, dest="min_sup", required=True)
@@ -260,72 +262,46 @@ class ReadData():
 class DrawProtocolGraph():
     def __init__(
             self,
-            enabled = 1,
-            labels = None,
-            graph_layout = 'shell',
-            node_size = 1600,
-            node_color = 'blue',
-            node_alpha = 0.3,
-            node_text_size = 12,
-            edge_color = 'blue',
-            edge_alpha = 0.3,
-            edge_thickness = 1,
-            edge_text_pos = 0.3
+            enabled = 1
             ):
         self.enabled = enabled
-        self.labels = labels,
-        self.graph_layout = graph_layout,
-        self.node_size = node_size,
-        self.node_color = node_color,
-        self.node_alpha = node_alpha,
-        self.node_text_size = node_text_size,
-        self.edge_color = edge_color,
-        self.edge_alpha = edge_alpha,
-        self.edge_thickness = edge_thickness,
-        self.edge_text_pos = edge_text_pos
 
     def DrawGraph(self, FrequentEpisodes):
         assert type(FrequentEpisodes) is ListType, "DrawGraph: Expected \"FrequentEpisodes\" ListType. received %r" % type(FrequentEpisodes)
-        graph = self.GenerateNodes(FrequentEpisodes)
+        EdgeList, NodeDict = self.GenerateNodeAndEdge(FrequentEpisodes)
 
-        G = nx.Graph()
-        for edge in graph:
-            G.add_edge(edge[0], edge[1])
+        graph = pd.Dot(graph_type = 'digraph')
+        
+        ## Add all the nodes in the graph
+        for key_ in NodeDict.keys():
+            graph.add_node(NodeDict[key_])
 
-        if self.graph_layout == 'spring':
-            graph_pos = nx.spring_layout(G)
-        elif self.graph_layout == 'spectral':
-            graph_pos = nx.spectral_layout(G)
-        elif self.graph_layout == 'ramdom':
-            graph_pos = nx.random_layout(G)
-        else:
-            graph_pos = nx.shell_layout(G)
-    
-        nx.draw_networkx_nodes(G, graph_pos, node_size = self.node_size, alpha = self.node_alpha, node_color = self.node_color)
-        nx.draw_networkx_edges(G, graph_pos, width = self.edge_tickness, alpha = self.edge_alpha, edge_color = selfedge_color)
-        nx.draw_networkx_labels(G, graph_pos, font_size = self.node_text_size)
-        
-        if labels is None:
-            labels = range(len(graph))
+        ## Add all the edges in the graph
+        for edge in EdgeList:
+            graph.add_edge(pd.Edge(NodeDict[edge[0]], NodeDict[edge[1]], label = edge[2]))
 
-        edge_labels = dict(zip(graph, labels))
-        nx.draw_networkx_edge_labels(G, graph_pos, edge_labels = self.edge_labels, label_pos = self.edge_text_pos)
+        diag_name = event_seq[:event_seq.find('.')]
+        name_of_png_file = diag_name + ".png"
+        graph.write_png(name_of_png_file)
+
         
-        # show graph
-        plt.show()
-        
-    def GenerateNodes(self, FrequentEpisodes):
+    def GenerateNodeAndEdge(self, FrequentEpisodes):
         # Create The Graph as the list of the pair of the nodes connected by an edge
-        graph = []
+        EdgeList = []
+        NodeDict = {}
         for episode in FrequentEpisodes:
             assert type(episode) is TupleType, "DrawGraph: Expected \"episode\" TupleType. received %r" % type(episode)
             for element in episode:
                 Length = len(element)
                 subelement = element[1:Length-1].split(',')
-                edge = tuple([subelement[0], subelement[1]])
-                graph.append(edge)
+                if subelement[0] not in NodeDict.keys():
+                    NodeDict[subelement[0]] = pd.Node(subelement[0])
+                if subelement[1] not in NodeDict.keys():
+                    NodeDict[subelement[1]] = pd.Node(subelement[1])
+                edge = tuple([subelement[0], subelement[1], subelement[3]])
+                EdgeList.append(edge)
 
-        return graph
+        return EdgeList, NodeDict
 
 
 if __name__ == "__main__":
