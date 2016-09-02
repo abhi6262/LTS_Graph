@@ -7,7 +7,7 @@ Paper: Automatic Generation of System Level Assertions from Transaction Level Mo
 
 '''
 
-#python episode_mining.py -w 15 -s 2 -m 0 -M 50 -e event.txt -E eventseq.txt
+#python episode_mining.py -w 15 -s 2 -m 0 -M 50 -E eventseq.txt
 import os, sys
 import time
 import argparse as agp
@@ -22,7 +22,6 @@ parser.add_argument("-s", "--min-support", help="Minimum support value", type=in
 #The following two parameters to segregate the message trace to make sure we are not mining from traces which are not relevant#
 parser.add_argument("-m", "--start-cycle", help="Start cycle of the trace",  type=int, dest="start_cycle",required=True)
 parser.add_argument("-M", "--stop-cycle", help="End cycle of the trace", type=int, dest="stop_cycle", required=True)
-parser.add_argument("-e", "--event-all", help="File containing all possible events", dest="event_all", required=True)
 parser.add_argument("-E", "--event-seq", help="File containing Events happened during execution", dest="event_seq", required=True)
 args = parser.parse_args()
 
@@ -31,7 +30,6 @@ window_length = args.window_length
 min_sup = args.min_sup
 start_cycle = args.start_cycle
 stop_cycle = args.stop_cycle
-event_all = args.event_all
 event_seq = args.event_seq
 
 class EpisodeMining():
@@ -256,6 +254,21 @@ class ReadData():
                 Event_Seq = Event_Seq + tuple([line.rstrip().lstrip()])
         f.close()
         return Event_Set, Event_Seq
+
+class DrawProtocolGraph():
+    def __init__(
+            self,
+            enabled = 1,
+            ):
+        self.enabled = enabled
+
+    def DrawGraph(self, FrequentEpisodes):
+        assert type(FrequentEpisodes) is ListType, "DrawGraph: Expected \"FrequentEpisodes\" ListType. received %r" % type(FrequentEpisodes)
+        for episode in FrequentEpisodes:
+            assert type(episode) is TupleType, "DrawGraph: Expected \"episode\" TupleType. received %r" % type(episode)
+
+    def GenerateNodes(self, ):
+
 
 
 if __name__ == "__main__":
