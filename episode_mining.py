@@ -87,11 +87,15 @@ class EpisodeMining():
         nxtStart = start_cycle
         while nxtStart <= stop_cycle:
             eventTuple, pointer = self.GetEvents(Event_Seq, nxtStart, pointer)
+            #print eventTuple
             if not eventTuple:
                 nxtStart = nxtStart + window_length
                 continue
             for event in Event_Set:
-                event = tuple(event)
+                #print event
+                # A subtle change to handle non-tupletype and tuple type
+                if type(event) is not TupleType:
+                    event = tuple([event])
                 #print event, eventTuple
                 if self.EventContainment(event, eventTuple):
                     #print "Entered"
@@ -127,14 +131,22 @@ class EpisodeMining():
         
                 iPrefix = self.GetPrefix(tuple(FreqEpisodesPrev[i]))
                 jPrefix = self.GetPrefix(tuple(FreqEpisodesPrev[j]))
-
+                
                 # Considering Postfix of i and Prefix of j and concatenating i < j
                 if iPostfix == jPrefix:
-                    newTuple = tuple(FreqEpisodesPrev[i]) + tuple(FreqEpisodesPrev[j][-1])
+                    if FreqEpisodesPrev[j][-1] is not TupleType:
+                        newTuple = tuple(FreqEpisodesPrev[i]) + tuple([FreqEpisodesPrev[j][-1]])
+                    else:
+                        newTuple = tuple(FreqEpisodesPrev[i]) + tuple(FreqEpisodesPrev[j][-1])
+                    # print FreqEpisodesPrev[i], FreqEpisodesPrev[j][-1], newTuple
                     EpisodeCurrent.append(newTuple)
                 # Considering Postfix of j and Prefix of i and concatenating j < i
                 if jPostfix == iPrefix:
-                    newTuple = tuple(FreqEpisodesPrev[j]) + tuple(FreqEpisodesPrev[i][-1])
+                    if FreqEpisodesPrev[i][-1] is not TupleType:
+                        newTuple = tuple(FreqEpisodesPrev[j]) + tuple([FreqEpisodesPrev[i][-1]])
+                    else:
+                        newTuple = tuple(FreqEpisodesPrev[j]) + tuple(FreqEpisodesPrev[i][-1])
+                    # print newTuple
                     EpisodeCurrent.append(newTuple)
         # list(set(A)) : This will convert the list in a SET of unique elements and will then convert it back to a list. So that if Prefix and PostFix 
         # calculation produce duplicate Candidates, they will be removed
@@ -220,7 +232,7 @@ class ReadData():
             enabled = 1,
             ):
         self.enabled = enabled
-
+    '''
     def ReadEventSet(self, EventFileName):
         Event_Set = ()
         with open(EventFileName) as f:
@@ -229,15 +241,21 @@ class ReadData():
                 Event_Set = Event_Set + tuple([line.rstrip().lstrip()])
         f.close()
         return Event_Set
-
+    '''
     def ReadEventSequence(self, EventSeqFile):
+        Event_Set = ()
         Event_Seq = ()
         with open(EventSeqFile) as f:
             for line in f:
                 #print line.rstrip().lstrip()
+                event_ = line[:line.index('@')].rstrip().lstrip()
+                try:
+                    index = Event_Set.index(event_)
+                except ValueError:
+                    Event_Set = Event_Set + tuple([event_])
                 Event_Seq = Event_Seq + tuple([line.rstrip().lstrip()])
         f.close()
-        return Event_Seq
+        return Event_Set, Event_Seq
 
 
 if __name__ == "__main__":
@@ -246,9 +264,10 @@ if __name__ == "__main__":
     EpisodeMining = EpisodeMining()
 
     print "Initializing Episode Mining with the following parameters:"
-    print "Window length = " + str(window_length) + " Minimum Support = " + str(min_sup) + " Start Cycle = " + str(start_cycle) + " Stop Cycle = " + str(stop_cycle)
-    Event_Set = ReadData.ReadEventSet(event_all)
-    Event_Seq = ReadData.ReadEventSequence(event_seq)
+    print "Window length = " + str(window_length) + " Minimum Support = " + str(min_sup) + " Start Cycle = " + str(start_cycle) + " Stop Cycle = " + str(stop_cycle) + "\n"
+    # Event_Set = ReadData.ReadEventSet(event_all)
+    Event_Set, Event_Seq = ReadData.ReadEventSequence(event_seq)
+    # print Event_Set
 
     #FreqEpisode = EpisodeMining.Freq_Check(Event_Set, Event_Seq)
     #EpisodeCurrent = EpisodeMining.Cand_Gen(FreqEpisode.keys())
