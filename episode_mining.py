@@ -13,6 +13,8 @@ import time
 import argparse as agp
 import numpy as np
 from types import *
+import networkx as nx
+import matplotlib.pyplot as plt
 
 parser = agp.ArgumentParser(
         description='Episode Mining Code for Post-Silicon Traceability of Message Transactions\nAuthor: Debjit Pal\nEmail: dpal2@illinois.edu', formatter_class=agp.RawTextHelpFormatter
@@ -259,22 +261,78 @@ class DrawProtocolGraph():
     def __init__(
             self,
             enabled = 1,
+            labels = None,
+            graph_layout = 'shell',
+            node_size = 1600,
+            node_color = 'blue',
+            node_alpha = 0.3,
+            node_text_size = 12,
+            edge_color = 'blue',
+            edge_alpha = 0.3,
+            edge_thickness = 1,
+            edge_text_pos = 0.3
             ):
         self.enabled = enabled
+        self.labels = labels,
+        self.graph_layout = graph_layout,
+        self.node_size = node_size,
+        self.node_color = node_color,
+        self.node_alpha = node_alpha,
+        self.node_text_size = node_text_size,
+        self.edge_color = edge_color,
+        self.edge_alpha = edge_alpha,
+        self.edge_thickness = edge_thickness,
+        self.edge_text_pos = edge_text_pos
 
     def DrawGraph(self, FrequentEpisodes):
         assert type(FrequentEpisodes) is ListType, "DrawGraph: Expected \"FrequentEpisodes\" ListType. received %r" % type(FrequentEpisodes)
+        graph = self.GenerateNodes(FrequentEpisodes)
+
+        G = nx.Graph()
+        for edge in graph:
+            G.add_edge(edge[0], edge[1])
+
+        if self.graph_layout == 'spring':
+            graph_pos = nx.spring_layout(G)
+        elif self.graph_layout == 'spectral':
+            graph_pos = nx.spectral_layout(G)
+        elif self.graph_layout == 'ramdom':
+            graph_pos = nx.random_layout(G)
+        else:
+            graph_pos = nx.shell_layout(G)
+    
+        nx.draw_networkx_nodes(G, graph_pos, node_size = self.node_size, alpha = self.node_alpha, node_color = self.node_color)
+        nx.draw_networkx_edges(G, graph_pos, width = self.edge_tickness, alpha = self.edge_alpha, edge_color = selfedge_color)
+        nx.draw_networkx_labels(G, graph_pos, font_size = self.node_text_size)
+        
+        if labels is None:
+            labels = range(len(graph))
+
+        edge_labels = dict(zip(graph, labels))
+        nx.draw_networkx_edge_labels(G, graph_pos, edge_labels = self.edge_labels, label_pos = self.edge_text_pos)
+        
+        # show graph
+        plt.show()
+        
+    def GenerateNodes(self, FrequentEpisodes):
+        # Create The Graph as the list of the pair of the nodes connected by an edge
+        graph = []
         for episode in FrequentEpisodes:
             assert type(episode) is TupleType, "DrawGraph: Expected \"episode\" TupleType. received %r" % type(episode)
+            for element in episode:
+                Length = len(element)
+                subelement = element[1:Length-1].split(',')
+                edge = tuple([subelement[0], subelement[1]])
+                graph.append(edge)
 
-    def GenerateNodes(self, ):
-
+        return graph
 
 
 if __name__ == "__main__":
 
     ReadData = ReadData()
     EpisodeMining = EpisodeMining()
+    DrawProtocolGraph = DrawProtocolGraph()
 
     print "Initializing Episode Mining with the following parameters:"
     print "Window length = " + str(window_length) + " Minimum Support = " + str(min_sup) + " Start Cycle = " + str(start_cycle) + " Stop Cycle = " + str(stop_cycle) + "\n"
@@ -287,3 +345,4 @@ if __name__ == "__main__":
     FreqEpisode, EpisodeConf = EpisodeMining.EpisodeMine(Event_Set, Event_Seq)
     print "Set of All Frequent Episodes are: ", FreqEpisode, "\n" 
     print "Confidence of the Frequent Episodes: ", EpisodeConf
+    DrawProtocolGraph.DrawGraph(FreqEpisode.keys())
