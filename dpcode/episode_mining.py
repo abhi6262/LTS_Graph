@@ -25,9 +25,10 @@ parser = agp.ArgumentParser(
 parser.add_argument("-w", "--window-length", help="Length of the window in cycles", type=int, dest="window_length", required=True)
 parser.add_argument("-s", "--min-support", help="Minimum support value", type=int, dest="min_sup", required=True)
 #The following two parameters to segregate the message trace to make sure we are not mining from traces which are not relevant#
-parser.add_argument("-m", "--start-cycle", help="Start cycle of the trace",  type=int, dest="start_cycle",required=True)
-parser.add_argument("-M", "--stop-cycle", help="End cycle of the trace", type=int, dest="stop_cycle", required=True)
-parser.add_argument("-E", "--event-seq", help="File containing Events happened during execution", dest="event_seq", required=True)
+parser.add_argument("-m", "--start-cycle", help="Start cycle of the trace",  type=int, dest="start_cycle", default=0)
+parser.add_argument("-M", "--stop-cycle", help="End cycle of the trace", type=int, dest="stop_cycle", default=sys.maxint)
+parser.add_argument("-E", "--event-seq", help="Directory / File containing Events happened during execution", dest="event_seq", required=True)
+parser.add_argument("-p", "--pic-location", help="Protocol Figure Dump Location", dest="pic_location", required=True)
 args = parser.parse_args()
 
 # Variables holding the runtime options
@@ -35,7 +36,14 @@ window_length = args.window_length
 min_sup = args.min_sup
 start_cycle = args.start_cycle
 stop_cycle = args.stop_cycle
-event_seq = args.event_seq
+## To identify is it for all files in a directory or just one file.
+## Single argument should do all of them at once
+if os.path.isdir(args.event_seq):
+    event_seq = os.listdir(args.event_seq)
+elif os.path.isfile(args.event_seq):
+    event_seq = [args.event_seq]
+pic_location = args.pic_location
+
 colors_ = colors.cnames
 
 class EpisodeMining():
@@ -81,7 +89,7 @@ class EpisodeMining():
         #print eventTuple
         return eventTuple, pointer
         
-    def Freq_Check(self, Event_Set, Event_Seq):
+    def Freq_Check(self, Event_Set, Event_Seq, start_cycle, stop_cycle):
         '''
         Event Set: A Tuple
         Event Req: A Tuple
@@ -174,7 +182,7 @@ class EpisodeMining():
         '''
         return FreqEpisode[self.GetPrefix(Episode)]
 
-    def EpisodeMine(self, Event_Set, Event_Seq):
+    def EpisodeMine(self, Event_Set, Event_Seq, start_cycle, stop_cycle):
         '''
         Event_Set: A tuple enlistig all possible events
         Event_Seq: A tuple containing events that happened in the execution along with the
@@ -189,7 +197,7 @@ class EpisodeMining():
         LPrev = {}
         LCurr = {}
         index = 1
-        LPrev = self.Freq_Check(Event_Set, Event_Seq)
+        LPrev = self.Freq_Check(Event_Set, Event_Seq, start_cycle, stop_cycle)
         FreqEpisode.update(LPrev)
         #print LPrev
         LCurr = LPrev
@@ -197,7 +205,7 @@ class EpisodeMining():
         while True:
             print "Mining Episodes for Iteration : " + str(index)
             CandCurr = self.Cand_Gen(LPrev.keys())
-            LCurr = self.Freq_Check(CandCurr, Event_Seq)
+            LCurr = self.Freq_Check(CandCurr, Event_Seq, start_cycle, stop_cycle)
             if LCurr:
                 #FreqEpisodei.append(tuple(LCurr.keys()))
                 print "Total Frequent Episodes in current oteration: ", len(LCurr), "::", LCurr, "\n\n"
@@ -249,17 +257,22 @@ class ReadData():
     def ReadEventSequence(self, EventSeqFile):
         Event_Set = ()
         Event_Seq = ()
+        start_cycle = sys.maxint
+        stop_cycle = 0
         with open(EventSeqFile) as f:
             for line in f:
                 #print line.rstrip().lstrip()
                 event_ = line[:line.index('@')].rstrip().lstrip()
+                currCycle = int(line[line.index('@')+1:].lstrip().rstrip())
                 try:
                     index = Event_Set.index(event_)
                 except ValueError:
                     Event_Set = Event_Set + tuple([event_])
+                start_cycle = currCycle if currCycle < start_cycle else start_cycle
+                stop_cycle = currCycle if currCycle > stop_cycle else stop_cycle
                 Event_Seq = Event_Seq + tuple([line.rstrip().lstrip()])
         f.close()
-        return Event_Set, Event_Seq
+        return Event_Set, Event_Seq, start_cycle, stop_cycle
 
 class DrawProtocolGraph():
     def __init__(
@@ -268,7 +281,7 @@ class DrawProtocolGraph():
             ):
         self.enabled = enabled
 
-    def DrawGraph(self, FrequentEpisodes):
+    def DrawGraph(self, FrequentEpisodes, event_seq):
         assert type(FrequentEpisodes) is DictType, "DrawGraph: Expected \"FrequentEpisodes\" ListType. received %r" % type(FrequentEpisodes)
         EdgeList, NodeDict = self.GenerateNodeAndEdge(FrequentEpisodes)
 
@@ -283,7 +296,7 @@ class DrawProtocolGraph():
             graph.add_edge(pd.Edge(NodeDict[edge[0]], NodeDict[edge[1]], label=edge[2], labelfontcolor=colors_['brown'], fontsize="9.0", color=colors_['maroon'], penwidth=edge[3]))
 
         diag_name = event_seq[:event_seq.find('.')]
-        name_of_png_file = diag_name + ".png"
+        name_of_png_file = pic_location + "/" + diag_name + ".png"
         graph.write_png(name_of_png_file)
 
         
@@ -323,15 +336,17 @@ if __name__ == "__main__":
     EpisodeMining = EpisodeMining()
     DrawProtocolGraph = DrawProtocolGraph()
 
-    print "Initializing Episode Mining with the following parameters:"
-    print "Window length = " + str(window_length) + " Minimum Support = " + str(min_sup) + " Start Cycle = " + str(start_cycle) + " Stop Cycle = " + str(stop_cycle) + "\n"
     # Event_Set = ReadData.ReadEventSet(event_all)
-    Event_Set, Event_Seq = ReadData.ReadEventSequence(event_seq)
-    # print Event_Set
+    for event_seq_ in event_seq:
+        print "Reading Data from file: ", event_seq_
+        Event_Set, Event_Seq, start_cycle, stop_cycle = ReadData.ReadEventSequence(event_seq_)
+        # print Event_Set
 
-    #FreqEpisode = EpisodeMining.Freq_Check(Event_Set, Event_Seq)
-    #EpisodeCurrent = EpisodeMining.Cand_Gen(FreqEpisode.keys())
-    FreqEpisode, EpisodeConf = EpisodeMining.EpisodeMine(Event_Set, Event_Seq)
-    print "Set of All Frequent Episodes are: ", FreqEpisode, "\n" 
-    print "Confidence of the Frequent Episodes: ", EpisodeConf
-    DrawProtocolGraph.DrawGraph(FreqEpisode)
+        print "Initializing Episode Mining with the following parameters:"
+        print "Window length = " + str(window_length) + " Minimum Support = " + str(min_sup) + " Start Cycle = " + str(start_cycle) + " Stop Cycle = " + str(stop_cycle) + "\n"
+        #FreqEpisode = EpisodeMining.Freq_Check(Event_Set, Event_Seq)
+        #EpisodeCurrent = EpisodeMining.Cand_Gen(FreqEpisode.keys())
+        FreqEpisode, EpisodeConf = EpisodeMining.EpisodeMine(Event_Set, Event_Seq, start_cycle, stop_cycle)
+        print "Set of All Frequent Episodes are: ", FreqEpisode, "\n" 
+        print "Confidence of the Frequent Episodes: ", EpisodeConf
+        DrawProtocolGraph.DrawGraph(FreqEpisode, event_seq_)
