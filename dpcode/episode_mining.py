@@ -39,6 +39,7 @@ stop_cycle = args.stop_cycle
 ## To identify is it for all files in a directory or just one file.
 ## Single argument should do all of them at once
 if os.path.isdir(args.event_seq):
+    log_dir = args.event_seq
     event_seq = os.listdir(args.event_seq)
 elif os.path.isfile(args.event_seq):
     event_seq = [args.event_seq]
@@ -338,8 +339,8 @@ if __name__ == "__main__":
 
     # Event_Set = ReadData.ReadEventSet(event_all)
     for event_seq_ in event_seq:
-        print "Reading Data from file: ", event_seq_
-        Event_Set, Event_Seq, start_cycle, stop_cycle = ReadData.ReadEventSequence(event_seq_)
+        print "Reading Data from file: ", os.path.join(log_dir, event_seq_)
+        Event_Set, Event_Seq, start_cycle, stop_cycle = ReadData.ReadEventSequence(os.path.join(log_dir, event_seq_))
         # print Event_Set
 
         print "Initializing Episode Mining with the following parameters:"
