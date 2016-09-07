@@ -42,7 +42,14 @@ if os.path.isdir(args.event_seq):
     log_dir = args.event_seq
     event_seq = os.listdir(args.event_seq)
 elif os.path.isfile(args.event_seq):
-    event_seq = [args.event_seq]
+    try:
+        index = args.event_seq.rindex('/')
+        log_dir = args.event_seq[:index]
+        event_seq = [args.event_seq[index + 1:]]
+    except ValueError:
+        log_dir = '.'
+        event_seq = [args.event_seq]
+
 pic_location = args.pic_location
 
 colors_ = colors.cnames
