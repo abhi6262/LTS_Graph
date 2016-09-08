@@ -19,6 +19,9 @@ import pydot as pd
 from matplotlib import colors 
 import pprint
 
+## To stop traceback
+sys.tracebacklimit=0
+print "\n"
 
 parser = agp.ArgumentParser(
         description='\nEpisode Mining Code for Post-Silicon Traceability of Message Transactions\nAuthor: Debjit Pal\nEmail: dpal2@illinois.edu', formatter_class=agp.RawTextHelpFormatter
@@ -31,6 +34,7 @@ parser.add_argument("-M", "--stop-cycle", help="End cycle of the trace", type=in
 parser.add_argument("-E", "--event-seq", help="Directory / File containing Events happened during execution", dest="event_seq", required=True)
 parser.add_argument("-p", "--pic-location", help="Protocol Figure Dump Location", dest="pic_location", required=True)
 args = parser.parse_args()
+
 
 # Variables holding the runtime options
 window_length = args.window_length
@@ -50,6 +54,8 @@ elif os.path.isfile(args.event_seq):
     except ValueError:
         log_dir = '.'
         event_seq = [args.event_seq]
+else:
+    raise AssertionError("Specified Directory / File: " + args.event_seq + " not found\n")
 
 pic_location = args.pic_location
 
