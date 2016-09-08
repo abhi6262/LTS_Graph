@@ -13,11 +13,12 @@ import ast
 import pickle
 from matplotlib import pyplot as plt
 import networkx as nx
+import pydot as pd
 
 os.system('cls' if os.name == 'nt' else 'clear')
 
 config = ConfigParser.RawConfigParser()
-config.read('../config.cfg')
+config.read('config.cfg')
 listsysdict = [] #list of all dictionaries, where each sys dictionary corresponds to one protocol
 listsysnodes = []
 Protocols = ast.literal_eval(config.get('Configuration','Protocols')) #list of protocols, user input
@@ -93,6 +94,7 @@ with open('ltsdump', 'wb') as f:
 
 f.close()
 
+'''
 G = nx.DiGraph()
 for i in sysnodes:
     G.add_node(sysnodes.index(i))
@@ -112,3 +114,18 @@ edge_labels = nx.get_edge_attributes(G,'msg')
 nx.draw_networkx_edge_labels(G, pos, labels = edge_labels)
 plt.savefig('lts.png')
 plt.show()
+'''
+graph =  pd.Dot(graph_type = 'digraph')
+## Add all nodes in the graph
+NodeDict = {}
+for i in sysnodes:
+    print i
+    NodeDict[i] = pd.Node(i, style="filled", fillcolor="blue")
+    graph.add_node(NodeDict[i])
+
+for i in sysnodes:
+    for j in sys[i]:
+        for k in sys[i][j]:
+            graph.add_edge(pd.Edge(NodeDict[i], NodeDict[k]))
+
+graph.write_png("lts.png")
