@@ -17,6 +17,7 @@ from types import *
 # did not give the desired result
 import pydot as pd
 from matplotlib import colors 
+import pprint
 
 
 parser = agp.ArgumentParser(
@@ -216,7 +217,8 @@ class EpisodeMining():
             LCurr = self.Freq_Check(CandCurr, Event_Seq, start_cycle, stop_cycle)
             if LCurr:
                 #FreqEpisodei.append(tuple(LCurr.keys()))
-                print "Total Frequent Episodes in current oteration: ", len(LCurr), "::", LCurr, "\n\n"
+                print "Total Frequent Episodes in current iteration: ", len(LCurr), "\n"
+                pprint.pprint(LCurr)
                 for key in LCurr.keys():
                     if FreqEpisode[self.GetPrefix(key)] == LCurr[key]:
                         currentKeyConf = {key:1.0}
@@ -355,6 +357,7 @@ if __name__ == "__main__":
         #FreqEpisode = EpisodeMining.Freq_Check(Event_Set, Event_Seq)
         #EpisodeCurrent = EpisodeMining.Cand_Gen(FreqEpisode.keys())
         FreqEpisode, EpisodeConf = EpisodeMining.EpisodeMine(Event_Set, Event_Seq, start_cycle, stop_cycle)
-        print "Set of All Frequent Episodes are: ", FreqEpisode, "\n" 
-        print "Confidence of the Frequent Episodes: ", EpisodeConf
+        print "Set of All Frequent Episodes are: \n"
+        pprint.pprint(FreqEpisode)
+        #print "Confidence of the Frequent Episodes: ", EpisodeConf
         DrawProtocolGraph.DrawGraph(FreqEpisode, event_seq_)
