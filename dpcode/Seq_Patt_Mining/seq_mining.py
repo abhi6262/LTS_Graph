@@ -16,63 +16,69 @@ import re
 import itertools import izip
 import itertools import count
 import argparse as agp
+import numpy as np
 
 
-class ReadConstraints():
+'''
+1. Direct Mining of Discriminative and Essential Frequent Patterns via Model-based Tree (Wei Fan, Kun Zhang, Hong Cheng, Jing Gao, Jiawei Hanm 2008)
+'''
+
+class DiscriminativePattModelSearchTree(SequntialMiningWithConstraints):
     def __init__(
             self,
             enabled = 1,
             ):
+        SequntialMiningWithConstraints.__init__(self)
         self.enabled = enabled
+    
+    def CalcInfoGain(self, C0, C1, P1, P0):
+        '''
+        C0 = Number of Negative Examples
+        C1 = Number of Positive Examples
+        P0 = Number of times a pattern alpha has happened in C0
+        P1 = Number of times a pattern alpha has happened in C1
+        '''
+        infoGain = 0.0
 
-    def ReadDiffConstraints(self, constraint_file):
-        gap_cons = {}
-        gap_cons_count = 0
-        dur_cons = {}
-        dur_cons_count = 0
-        reg_patt = {}
-        reg_patt_count = 0
-        wite open(constraint_file) as f:
-            for line_no, line in izip(count(), f):
-                if line[:2] == 'gap':
-                    gap_cons_count = gap_cons_count + 1
-                    gap_cons[gap_cons_count] = self.ReadGapCons(line)
-                elif line[:2] == 'dur':
-                    dur_cons_count = dur_cons_count + 1
-                    dur_cons[dur_cons_count] = self.ReadDurCons(line)
-                elif line[:2] == 'reg':
-                    reg_patt_count = reg_patt_count + 1
-                    reg_patt[reg_patt_count] = self.ReadRegPatt(line)
-                else:
-                    raise AssertionError(line + " @ Line No: " + line_no + " does not contain a valid constraint in " + constraint_file)
-        f.close()
-        return gap_cons, dur_cons, reg_patt
+        probC0 = 1.0 * C0 / (C0 + C1)
+        probC1 = 1.0 * C1 / (C0 + C1)
+        entropyC = probC0 * np.log(probC0) + probC1 * np.log(probC1)
 
-    def ReadGapCons(self, line):
+        probX0 = 0
+        probX1 = 1
+        probC1X1 = 1.0 * P1 / (P1 + P0)
+        probC0X1 = 1.0 * P0 / (P1 + P0)
+        probC1X0 = 1.0 * (C1 - P1) / (C1 + C0 - P1 - P0) 
+        probC0X0 = 1.0 * (C0 - P0) / (C1 + C0 - P1 - P0)
+        
+        # probX1 and probX0 need to be calculated
+        infoGain = -entropyC + probX0 * (probC1X0 + probC0X0) + probX1 * (probC1X1 + probC0X1)
 
+        return infoGain
 
-    def ReadDurCons(self, line):
+    def BuildModelSearchTree():
+        # Feature Set
+        FS = []
 
-
-    def ReadRegPatt(self, line):
-
-class SequntialMiningWithConstraints():
-    def __init__(
-            self,
-            enabled = 1,
-            ):
-        self.enabled = enabled
+        SeqPatt = SequntialMiningWithConstraints.SeqMine(DataSet, supp_thres)
+        SeqPattInfoGain = {}
+        # Evaluate the fitness of each pattern by calculating the info gain
+        for pattern in SeqPatt:
+            SeqPattInfoGain[pattern] = self.CalcInfoGain()
+        # Choose the best pattern alpha as the feature to split
+        maxInfoGain = -1.0
+        patternMaxInfoGain = ''
+        for key_ in SeqPattInfoGain.keys():
+            if maxInfoGain < SeqPattInfoGain[key_]:
+                patternMaxInfoGain = key_
+                maxInfoGain = SeqPattInfoGain[key_]
+        # Include the new pattern in the Global Feature Set
+        if patternMaxInfoGain:
+            FS.append(patternMaxInfoGain)
 
 
-class DiscriminativePattModelSearchTree():
-    def __init__(
-            self,
-            enabled = 1,
-            ):
-        self.enabled = enabled
 
 
 if __name__ == "__main__":
-    DiscriminativePattModelSearchTree = DiscriminativePattModelSearchTree()
-    SequntialMiningWithConstraints = SequntialMiningWithConstraints()
     ReadConstraints = ReadConstraints()
+    DiscriminativePattModelSearchTree = DiscriminativePattModelSearchTree()
