@@ -87,13 +87,16 @@ class PrefixSpan():
         except AssertionError:
             print "SDB is empty"
             return []
-        # FreqItems is a List storing "local frquent patterns"
+        # FreqItems is a List storing "local frquent patterns" in form of SeqPattern
         FreqItems = []
+        # For frequent items coming from single item transaction
         Items = {}
+        # For Frequent items coming from multiple item transaction
         Items_ = {}
         # Stores the LastItem of the LastElement in the Pattern Sequence
         LastElement = []
-
+        
+        # Similar reasoning why using LastElement while finding Frequent Element of the new Projected Database
         try:
             assert(len(Pattern.Sequence))
             LastElement = Pattern.Sequence[-1]
@@ -101,7 +104,6 @@ class PrefixSpan():
             LastElement = []
 
         for Sequence in SDB:
-            
             IsPrefix = True
             for item in LastElement:
                 if item not in Sequence[0]:
@@ -134,16 +136,20 @@ class PrefixSpan():
                             Items[item] = Items[item] + 1
                         else:
                             Items[item] = 1
-       
+      
+        # Throwing away any item which has support less than user specified minimum support i.e. not Frequent Item
+        # This one is for items coming from multiple item transaction
         FreqItems.extend([SeqPattern([[UNDERSCORE, Pattern]], Support)
                             for Pattern, Support in Items_.iteritems()
                             if Support >= min_sup])
-
+        # Throwing away any item which has support less than user specified minimum support i.e. not Frequent Item
+        # This one is for item coming from single item transaction
         FreqItems.extend([SeqPattern([[Pattern]], Support)
                             for Pattern, Support in Items.iteritems()
                             if Support >= min_sup])
 
-        
+        # Sorting frequent items in terms of Support 
+        # Used sorting help from here: https://wiki.python.org/moin/HowTo/Sorting
         SortedList = sorted(FreqItems, key = lambda Pattern: Pattern.Support)
 
         return SortedList
@@ -151,19 +157,16 @@ class PrefixSpan():
     def FindProjectedDataBase(self, Pattern, SDB):
         assert type(SDB) is ListType, "FindProjectedDataBase: Expected \"SDB\" List Type. Received %r" % type(SDB)
         assert type(Pattern.Sequence) is ListType, "FindProjectedDataBase: Expected \"Pattern\" List Type. Received %r" % type(Pattern)
-        # The following dictionary will contain the Sequences as the key and the projected database
-        # as the value of ket
-        #print "Received Database: ", pprint.pprint(SDB)
+        # Since we are dealing with incremental projected database, we only consider
+        # Last Element (if single item in pattern) / or Last item of an element of Sequence
         ProjectedDataBase = []
         LastElementOfPattern = Pattern.Sequence[-1]
         LastItemOfLastElementOfPattern = LastElementOfPattern[-1]
-        #print "LastElementOfPattern: ", LastElementOfPattern
-        #print "LastItemOfLastElementOfPattern: ", LastItemOfLastElementOfPattern
+        
         for Sequence in SDB:
-            #print "Sequence: ", Sequence
             ProjectedSDB = []
             for element in Sequence:
-                #print "Element: ", element
+                # Going from <a> to <(ab)> using the (_b) Sequence.
                 FoundPrefix = False
                 if UNDERSCORE in element:
                     if LastItemOfLastElementOfPattern in element and len(LastElementOfPattern) > 1:
@@ -174,15 +177,16 @@ class PrefixSpan():
                         if item not in element:
                             FoundPrefix = False
                             break
-
+                # If Prefix found Find the Projected Database
                 if FoundPrefix:
                     ElementIndex = Sequence.index(element)
-                    #print ElementIndex
                     LastItemOfLastElementOfPatternIndex = element.index(LastItemOfLastElementOfPattern)
-                    #print LastItemOfLastElementOfPatternIndex
+                    # Handling a transaction containing a single item / a transaction containing multiple items
+                    # and the last item of the transaction is included in the prefix already
                     if LastItemOfLastElementOfPatternIndex == len(element) - 1:
                         ProjectedSDB = Sequence[ElementIndex + 1:]
-                        #print "From If: ", ProjectedSDB
+                    # handling a transaction containing multiple items and any other item but not the last item 
+                    # is included in the prefix already
                     else:
                         ProjectedSDB = Sequence[ElementIndex:]
                         elementModified = element[LastItemOfLastElementOfPatternIndex:]
@@ -197,18 +201,28 @@ class PrefixSpan():
 
 
     def PrefixSpan(self, Pattern, SDB, min_sup):
+        '''
+        Main Routine of PrefixSpan Algorithm
+        '''
         AllPatterns = []
         assert type(SDB) is ListType, "PrefixSpan: Expected \"SDB\" List Type. Received %r" % type(SDB)
         assert type(min_sup) is IntType, "PrefixSpan: Expected \"min_sup\" Int Type. Received %r" % type(min_sup)
-        
+        # Step 1: Scan S / alpha once, find the set of frequent items b
         FreqItems = self.FindFreqItems(Pattern, SDB, min_sup)
         for Item_ in FreqItems:
+            # Initialize a Sequential Pattern with Current Sequence Pattern and its Support
             SeqPattern_ = SeqPattern(Pattern.Sequence, Pattern.Support)
+            # Assemble b to the last element of Sequence to form a new Sequential Pattern
+            # Append <b> to current Sequential Pattern to form a new Sequential Pattern
             SeqPattern_.Append(Item_)
+            # Output all new Patterns 
             AllPatterns.append(SeqPattern_)
-
+            # Fir each new Sequential Pattern, construct a projected database
             ProjectedDataBase = self.FindProjectedDataBase(SeqPattern_, SDB)
+            # Recursively call PrefixSpan with the new Sequential Pattern, new Projected Database and the
+            # minimum support value
             NewPatterns = self.PrefixSpan(SeqPattern_, ProjectedDataBase, min_sup)
+            # On return from all recursive call, return all Sequential Pattern to main
             AllPatterns.extend(NewPatterns)
         
         return AllPatterns
@@ -227,6 +241,10 @@ if __name__ == "__main__":
     SDB_ = []
     for key in SDB.keys():
         SDB_.append(SDB[key])
-    AllPatterns = PrefixSpan.PrefixSpan(SeqPattern([], sys.maxint), SDB_, 3)
-    for Pattern_ in AllPatterns:
+    # Algorithm 1 of Prefix Span Paper. Call PrefixSpan with Empty Sequence
+    # AllPatterns stores all Sequential Pattern with their support
+    AllPatterns = PrefixSpan.PrefixSpan(SeqPattern([], sys.maxint), SDB_, 2)
+    # Used sorting help from here: https://wiki.python.org/moin/HowTo/Sorting
+    AllPatternsSorted = sorted(AllPatterns, key=lambda Pattern: Pattern.Support, reverse=True)
+    for Pattern_ in AllPatternsSorted:
         print ReadData.PrintPatternInStringFormat(Pattern_.Sequence) + ' :: Support : ' + str(Pattern_.Support) 
