@@ -11,47 +11,10 @@ from types import *
 # Used to identify the item taken in prefix from an element of a sequence containing more than one item
 UNDERSCORE = '_'
 
-class ReadData():
-    def __init__(
-           self,
-           enabled = 1,
-           ):
-        self.enabled = enabled
-    
-    def ReadEventSequence(self, EventSeqFile):
-        '''
-        Returns a Sequence Database in a dictionary format where each entry in dictionary is
-        of the format SID:Data
-        '''
-        SDB = {}
-        SID = 1
-        with open(EventSeqFile) as f:
-            for line in f:
-                elements = line.lstrip().rstrip().split(',')
-                itemSet = []
-                for e in elements:
-                    itemSet.append(e.split())
-                SDB[SID] = itemSet
-                SID = SID + 1
-        return SDB
-
-    def PrintPatternInStringFormat(self, Pattern):
-        '''
-        Take Patterns in List of Lists format and convert them to a String Format for easy understanding
-        '''
-        stringToPrint = '<'
-        for element in Pattern:
-            if len(element) == 1:
-                stringToPrint = stringToPrint + element[0]
-            else:
-                stringToPrint = stringToPrint + '('
-                for item in element:
-                    stringToPrint = stringToPrint + item
-                stringToPrint = stringToPrint + ')'
-        stringToPrint = stringToPrint + '>'
-        return stringToPrint
-
 class SeqPattern():
+    '''
+    A Special Class Structure (Data Structure which holds the Sequence and its Support)
+    '''
     def __init__(
             self,
             Sequence,
@@ -74,6 +37,9 @@ class SeqPattern():
         self.Support = min(self.Support, Pattern.Support)
 
 class PrefixSpan():
+    '''
+    Main PrefixSpan algorithm class implementing PrefixSpan algorithm
+    '''
     def __init__(
             self,
             enabled = 1,
@@ -226,25 +192,3 @@ class PrefixSpan():
             AllPatterns.extend(NewPatterns)
         
         return AllPatterns
-
-
-if __name__ == "__main__":
-    '''
-    Main Functions. Creats instances of required classes
-    '''
-    ReadData = ReadData()
-    PrefixSpan = PrefixSpan()
-    # SDB will be a list of strings. Each string is an element/transaction/itemset of 
-    # the sequence. Every element/transaction/itemset will have one or more than one
-    # item
-    SDB = ReadData.ReadEventSequence('SDB_Data.dat')
-    SDB_ = []
-    for key in SDB.keys():
-        SDB_.append(SDB[key])
-    # Algorithm 1 of Prefix Span Paper. Call PrefixSpan with Empty Sequence
-    # AllPatterns stores all Sequential Pattern with their support
-    AllPatterns = PrefixSpan.PrefixSpan(SeqPattern([], sys.maxint), SDB_, 2)
-    # Used sorting help from here: https://wiki.python.org/moin/HowTo/Sorting
-    AllPatternsSorted = sorted(AllPatterns, key=lambda Pattern: Pattern.Support, reverse=True)
-    for Pattern_ in AllPatternsSorted:
-        print ReadData.PrintPatternInStringFormat(Pattern_.Sequence) + ' :: Support : ' + str(Pattern_.Support) 
