@@ -13,7 +13,7 @@ UNDERSCORE = '_'
 
 class SeqPattern():
     '''
-    A Special Class Structure (Data Structure which holds the Sequence and its Support)
+    A Special Class Structure (Data Structure) which holds the Sequence and its Support
     '''
     def __init__(
             self,
