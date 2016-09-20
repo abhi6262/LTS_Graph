@@ -39,20 +39,25 @@ class ReadData():
         ConstraintID = 1
         with open(ConstraintFile) as f:
             for line in f:
+                if line[0] == '#':
+                    continue
                 elements = line.lstrip().rstrip().split('::')
                 if elements[0].upper() == 'GAP':
                     # ID Type::Support::Items::Operators::Gap
-                    Constraints_ = Constraints(ConstraintID, elements[0], elements[1], elements[2], -1, elements[4], elements[3])
+                    Constraints_ = Constraints(ConstraintID, elements[0], elements[1], [], -1, elements[3], elements[2], -1, None)
                 elif elements[0].upper() == 'DUR':
                     # ID Type::Support::Items::Operators::Duration
-                    Constraints_ = Constraints(ConstraintID, elements[0], elements[1], elements[2], elements[4], -1, elements[3])
-                elif elements[0] == 'IT' or elements[0] == 'RE':
-                    Constraints_ = Constraints(ConstraintID, elements[0], elements[1], elements[2], -1, -1, None)
+                    Constraints_ = Constraints(ConstraintID, elements[0], elements[1], [], elements[3], -1, elements[2], -1, None)
+                elif elements[0] == 'IT':
+                    Constraints_ = Constraints(ConstraintID, elements[0], elements[1], elements[2].split(','), -1, -1, elements[3], -1, None)
+                elif elements[0] == 'RE':
+                    Constraints_ = Constraints(ConstraintID, elements[0], elements[1], [], -1, -1, None, -1, elements[2])
                 elif elements[0] == 'LEN':
-                    Constraints_ = Constraints(ConstraintID, elements[0], elements[1], elements[2], None, -1)
+                    Constraints_ = Constraints(ConstraintID, elements[0], elements[1], [], -1, -1, None, elements[2], None)
                 ConstraintL.append(Constraints_)
                 ConstraintID = ConstraintID + 1
 
+        print "Total Number of constraints specified: ", len(ConstraintL)
         return ConstraintL
 
     def PrintPatternInStringFormat(self, Pattern):

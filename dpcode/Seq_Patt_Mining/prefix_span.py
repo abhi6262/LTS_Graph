@@ -7,10 +7,11 @@ Paper: PrefixSpan: Mining Sequential Patterns Efficiently by Prefix-Projected Pa
 
 import sys
 import argparse as agp
+import regex as rx
 from PrefixSpan import *
 from ReadData import *
 
-sys.tracebacklimit = 0
+#sys.tracebacklimit = 0
 print "\n"
 
 parser = agp.ArgumentParser(
@@ -44,16 +45,28 @@ if __name__ == "__main__":
     SDB = ReadData.ReadEventSequence(event_seq)
     if constraints_file is not None:
         Constraints = ReadData.ReadConstraints(constraints_file)
-    if constraints_file is not None:
-        for Constraint in Constraints:
-            print Constraint.ConstraintID, Constraint.ConstraintType, Constraint.ConstraintItems, Constraint.ConstraintOperator, Constraint.ConstraintDuration
+    #if constraints_file is not None:
+    #    for Constraint in Constraints:
+    #        print Constraint.ConstraintID, Constraint.ConstraintType, Constraint.ConstraintItems, Constraint.ConstraintOperator, Constraint.ConstraintDuration, Constraint.ConstraintLength, Constraint.ConstraintRegExp
     SDB_ = []
-    for key in SDB.keys():
-        SDB_.append(SDB[key])
+    if constraints_file is not None:
+        for key in SDB.keys():
+            for Constraint in Constraints:
+                Prog = Constraint.ConstraintRegExp
+                # Error: SDB[key] is a list. Need to convert it into a string before regex match can be called
+                Match = Prog.match(SDB[key])
+                if Match is not None:
+                    SDB_.append(SDB[key])
+
+    else:
+        for key in SDB.keys():
+            SDB_.append(SDB[key])
+
+    print SDB_
     # Algorithm 1 of Prefix Span Paper. Call PrefixSpan with Empty Sequence
     # AllPatterns stores all Sequential Pattern with their support
-    AllPatterns = PrefixSpan.PrefixSpan(SeqPattern([], sys.maxint), SDB_, min_sup)
+    ## AllPatterns = PrefixSpan.PrefixSpan(SeqPattern([], sys.maxint), SDB_, min_sup)
     # Used sorting help from here: https://wiki.python.org/moin/HowTo/Sorting
-    AllPatternsSorted = sorted(AllPatterns, key=lambda Pattern: Pattern.Support, reverse=True)
-    for Pattern_ in AllPatternsSorted:
-        print ReadData.PrintPatternInStringFormat(Pattern_.Sequence) + ' :: Support : ' + str(Pattern_.Support)
+    ## AllPatternsSorted = sorted(AllPatterns, key=lambda Pattern: Pattern.Support, reverse=True)
+    ## for Pattern_ in AllPatternsSorted:
+    ##    print ReadData.PrintPatternInStringFormat(Pattern_.Sequence) + ' :: Support : ' + str(Pattern_.Support)

@@ -7,6 +7,7 @@ Paper: PrefixSpan: Mining Sequential Patterns Efficiently by Prefix-Projected Pa
 
 import os, sys, pprint
 from types import *
+import regex as rx
 
 # Used to identify the item taken in prefix from an element of a sequence containing more than one item
 UNDERSCORE = '_'
@@ -192,3 +193,8 @@ class PrefixSpan():
             AllPatterns.extend(NewPatterns)
         
         return AllPatterns
+
+    def PrefixSpanWithConstraints(self, Pattern, SDB):
+        '''
+        Main Routine of PrefixSpan with Constraints Algorithm
+        '''
