@@ -60,18 +60,18 @@ class ReadData():
         print "Total Number of constraints specified: ", len(ConstraintL)
         return ConstraintL
 
-    def PrintPatternInStringFormat(self, Pattern):
+    def PrintPatternInStringFormat(self, Pattern, Param):
         '''
         Take Patterns in List of Lists format and convert them to a String Format for easy understanding
         '''
-        stringToPrint = '<'
+        stringToPrint = '<' if Param else ''
         for element in Pattern:
             if len(element) == 1:
                 stringToPrint = stringToPrint + element[0]
             else:
-                stringToPrint = stringToPrint + '('
+                stringToPrint = stringToPrint + '(' if Param else stringToPrint
                 for item in element:
                     stringToPrint = stringToPrint + item
-                stringToPrint = stringToPrint + ')'
-        stringToPrint = stringToPrint + '>'
-        return stringToPrint
+                stringToPrint = stringToPrint + ')' if Param else stringToPrint
+        stringToPrint = stringToPrint + '>' if Param else stringToPrint
+        return stringToPrint.rstrip().lstrip()

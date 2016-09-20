@@ -9,8 +9,11 @@ import os, sys, pprint
 from types import *
 import regex as rx
 
+from ReadData import *
+
 # Used to identify the item taken in prefix from an element of a sequence containing more than one item
 UNDERSCORE = '_'
+ReadData = ReadData()
 
 class SeqPattern():
     '''
@@ -25,6 +28,7 @@ class SeqPattern():
         for element in Sequence:
             self.Sequence.append(list(element))
         self.Support = Support
+        self.Length = len(self.Sequence)
 
     def Append(self, Pattern):
         if Pattern.Sequence[0][0] == UNDERSCORE:
@@ -36,6 +40,7 @@ class SeqPattern():
         else:
             self.Sequence.extend(Pattern.Sequence)
         self.Support = min(self.Support, Pattern.Support)
+        self.Length = len(self.Sequence)
 
 class PrefixSpan():
     '''
@@ -184,7 +189,7 @@ class PrefixSpan():
             SeqPattern_.Append(Item_)
             # Output all new Patterns 
             AllPatterns.append(SeqPattern_)
-            # Fir each new Sequential Pattern, construct a projected database
+            # For each new Sequential Pattern, construct a projected database
             ProjectedDataBase = self.FindProjectedDataBase(SeqPattern_, SDB)
             # Recursively call PrefixSpan with the new Sequential Pattern, new Projected Database and the
             # minimum support value
@@ -194,7 +199,43 @@ class PrefixSpan():
         
         return AllPatterns
 
-    def PrefixSpanWithConstraints(self, Pattern, SDB):
+    def PrefixSpanWithConstraints(self, Pattern, SDB, min_sup, Constraints):
         '''
         Main Routine of PrefixSpan with Constraints Algorithm
         '''
+        AllPatterns = []
+        assert type(SDB) is ListType, "PrefixSpanWithConstraints: Expected \"SDB\" List Type. Received %r" % type(SDB)
+        assert type(min_sup) is IntType, "PrefixSpanWithConstraints: Expected \"min_sup\" Int Type. Received %r" % type(min_sup)
+        assert type(Constraints) is ListType, "PrefixSpanWithConstraints: Expected \"Constraints\" List Type. Received %r" % type(Constraints)
+        # Step 1: Find length 1 patterns and reomve irrelevant sequences
+        FreqItems = self.FindFreqItems(Pattern, SDB, min_sup)
+        for Item_ in FreqItems:
+            print "Working with Item_: ", Item_.Sequence
+            # Initialize a Sequential Pattern with Current Sequence Pattern and Its Support
+            SeqPattern_ = SeqPattern(Pattern.Sequence, Pattern.Support)
+            # Assemble b to the last element of Sequence Pattern to form a new Sequential pattern
+            # Append <b> to current Sequential Pattern to form a new Sequential Pattern
+            SeqPattern_.Append(Item_)
+            # Before outputting a pattern check whether it satisifes the constraint. If it satisfies the constraint
+            # push it in AllPatterns for further growth else throw it off.
+            SequenceNow = ReadData.PrintPatternInStringFormat(SeqPattern_.Sequence, 0)
+            print "SequenceNow: ", SequenceNow
+            Match = ''
+            for Constraint in Constraints:
+                if Constraint.ConstraintType == 'RE':
+                    Prog = Constraint.ConstraintRegExp
+                    Match = Prog.match(SequenceNow, partial=True)
+            if Match:
+                AllPatterns.append(SeqPattern_)
+                print "Appended: ", SeqPattern_.Sequence
+            else:
+                continue
+            # For each new Sequential Pattern, construct a projected database
+            ProjectedDataBase = self.FindProjectedDataBase(SeqPattern_, SDB)
+            # Recursively call PrefixSpan with the new Sequential Pattern, new Projected Database and the
+            # minimum support value
+            NewPatterns = self.PrefixSpan(SeqPattern_, ProjectedDataBase, min_sup)
+            # On return from all recursive call, return all Sequential Pattern to main
+            AllPatterns.extend(NewPatterns)
+
+        return AllPatterns

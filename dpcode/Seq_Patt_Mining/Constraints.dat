@@ -1,4 +1,4 @@
-RE::2::a*{bb|(bc)d|dd}
+RE::2::a*((bb)|((bc)d)|(dd))
 #IT::2::a,b,c,d::subset
 #LEN::2::10
 #DUR::2::>=::10
