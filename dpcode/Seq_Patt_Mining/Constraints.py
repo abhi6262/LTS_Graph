@@ -65,6 +65,7 @@ class Constraints():
                 '<=' : 'le',
                 '>'  : 'gt',
                 '<'  : 'lt',
+                '==' : 'eq',
                 'belong' : 'in',
                 'not belong' : 'nin',
                 'subset' : 'sset'

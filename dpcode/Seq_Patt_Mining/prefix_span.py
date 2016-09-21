@@ -45,9 +45,9 @@ if __name__ == "__main__":
     SDB = ReadData.ReadEventSequence(event_seq)
     if constraints_file is not None:
         Constraints = ReadData.ReadConstraints(constraints_file)
-    if constraints_file is not None:
-        for Constraint in Constraints:
-            print Constraint.ConstraintID, Constraint.ConstraintType, Constraint.ConstraintItems, Constraint.ConstraintOperator, Constraint.ConstraintDuration, Constraint.ConstraintLength, Constraint.ConstraintRegExp
+    #if constraints_file is not None:
+    #    for Constraint in Constraints:
+    #        print Constraint.ConstraintID, Constraint.ConstraintType, Constraint.ConstraintItems, Constraint.ConstraintOperator, Constraint.ConstraintDuration, Constraint.ConstraintLength, Constraint.ConstraintRegExp
     SDB_ = []
     for key in SDB.keys():
         SDB_.append(SDB[key])
@@ -62,4 +62,4 @@ if __name__ == "__main__":
     # Used sorting help from here: https://wiki.python.org/moin/HowTo/Sorting
     AllPatternsSorted = sorted(AllPatterns, key=lambda Pattern: Pattern.Support, reverse=True)
     for Pattern_ in AllPatternsSorted:
-        print ReadData.PrintPatternInStringFormat(Pattern_.Sequence, 1) + ' :: Support : ' + str(Pattern_.Support)
+        print ReadData.PrintPatternInStringFormat(Pattern_.Sequence, 1) + ' :: Support : ' + str(Pattern_.Support) + ' :: Length : ' + str(Pattern_.Length)

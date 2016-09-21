@@ -210,7 +210,7 @@ class PrefixSpan():
         # Step 1: Find length 1 patterns and reomve irrelevant sequences
         FreqItems = self.FindFreqItems(Pattern, SDB, min_sup)
         for Item_ in FreqItems:
-            print "Working with Item_: ", Item_.Sequence
+            #print "Working with Item_: ", Item_.Sequence
             # Initialize a Sequential Pattern with Current Sequence Pattern and Its Support
             SeqPattern_ = SeqPattern(Pattern.Sequence, Pattern.Support)
             # Assemble b to the last element of Sequence Pattern to form a new Sequential pattern
@@ -219,23 +219,40 @@ class PrefixSpan():
             # Before outputting a pattern check whether it satisifes the constraint. If it satisfies the constraint
             # push it in AllPatterns for further growth else throw it off.
             SequenceNow = ReadData.PrintPatternInStringFormat(SeqPattern_.Sequence, 0)
-            print "SequenceNow: ", SequenceNow
-            Match = ''
+            MatchReg = ''
             for Constraint in Constraints:
                 if Constraint.ConstraintType == 'RE':
                     Prog = Constraint.ConstraintRegExp
-                    Match = Prog.match(SequenceNow, partial=True)
-            if Match:
+                    MatchReg = True if Prog.match(SequenceNow, partial=True) is not None else False
+            if MatchReg:
                 AllPatterns.append(SeqPattern_)
-                print "Appended: ", SeqPattern_.Sequence
             else:
                 continue
             # For each new Sequential Pattern, construct a projected database
             ProjectedDataBase = self.FindProjectedDataBase(SeqPattern_, SDB)
             # Recursively call PrefixSpan with the new Sequential Pattern, new Projected Database and the
             # minimum support value
-            NewPatterns = self.PrefixSpan(SeqPattern_, ProjectedDataBase, min_sup)
+            NewPatterns = self.PrefixSpanWithConstraints(SeqPattern_, ProjectedDataBase, min_sup, Constraints)
             # On return from all recursive call, return all Sequential Pattern to main
             AllPatterns.extend(NewPatterns)
-
+       
         return AllPatterns
+
+    '''
+    def SatLength(self, SeqPattern_, Constraint):
+        CLength = int(Constraint.ConstraintLength)
+        COp = Constraint.ConstraintOperator
+        if COp == 'ge':
+            return SeqPattern_.Length >= CLength
+        elif COp == 'le':
+            return SeqPattern_.Length <= CLength
+        elif COp == 'gt':
+            return SeqPattern_.Length > CLength
+        elif COp == 'lt':
+            return SeqPattern_.Length < CLength
+        elif COp == 'eq':
+            return SeqPattern_.Length == CLength
+        else:
+            print "Length Constraint has an Operator: " + COp + " and its unknown to me."
+            return False
+    '''

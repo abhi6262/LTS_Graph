@@ -53,7 +53,7 @@ class ReadData():
                 elif elements[0] == 'RE':
                     Constraints_ = Constraints(ConstraintID, elements[0], elements[1], [], -1, -1, None, -1, elements[2])
                 elif elements[0] == 'LEN':
-                    Constraints_ = Constraints(ConstraintID, elements[0], elements[1], [], -1, -1, None, elements[2], None)
+                    Constraints_ = Constraints(ConstraintID, elements[0], elements[1], [], -1, -1, elements[2], elements[3], None)
                 ConstraintL.append(Constraints_)
                 ConstraintID = ConstraintID + 1
 
