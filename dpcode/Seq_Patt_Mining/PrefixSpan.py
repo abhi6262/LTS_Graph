@@ -199,14 +199,13 @@ class PrefixSpan():
         
         return AllPatterns
 
-    def PrefixSpanWithConstraints(self, Pattern, SDB, min_sup, Constraints):
+    def PrefixSpanWithConstraints(self, Pattern, SDB, min_sup, Constraint):
         '''
         Main Routine of PrefixSpan with Constraints Algorithm
         '''
         AllPatterns = []
         assert type(SDB) is ListType, "PrefixSpanWithConstraints: Expected \"SDB\" List Type. Received %r" % type(SDB)
         assert type(min_sup) is IntType, "PrefixSpanWithConstraints: Expected \"min_sup\" Int Type. Received %r" % type(min_sup)
-        assert type(Constraints) is ListType, "PrefixSpanWithConstraints: Expected \"Constraints\" List Type. Received %r" % type(Constraints)
         # Step 1: Find length 1 patterns and reomve irrelevant sequences
         FreqItems = self.FindFreqItems(Pattern, SDB, min_sup)
         for Item_ in FreqItems:
@@ -219,20 +218,19 @@ class PrefixSpan():
             # Before outputting a pattern check whether it satisifes the constraint. If it satisfies the constraint
             # push it in AllPatterns for further growth else throw it off.
             SequenceNow = ReadData.PrintPatternInStringFormat(SeqPattern_.Sequence, 0)
-            MatchReg = ''
-            for Constraint in Constraints:
-                if Constraint.ConstraintType == 'RE':
-                    Prog = Constraint.ConstraintRegExp
-                    MatchReg = True if Prog.match(SequenceNow, partial=True) is not None else False
-            if MatchReg:
-                AllPatterns.append(SeqPattern_)
-            else:
-                continue
+            Match = ''
+            if Constraint.ConstraintType == 'RE':
+                Prog = Constraint.ConstraintRegExp
+                Match = True if Prog.match(SequenceNow, partial=True) is not None else False
+                if Match:
+                    AllPatterns.append(SeqPattern_)
+                else:
+                    continue
             # For each new Sequential Pattern, construct a projected database
             ProjectedDataBase = self.FindProjectedDataBase(SeqPattern_, SDB)
             # Recursively call PrefixSpan with the new Sequential Pattern, new Projected Database and the
             # minimum support value
-            NewPatterns = self.PrefixSpanWithConstraints(SeqPattern_, ProjectedDataBase, min_sup, Constraints)
+            NewPatterns = self.PrefixSpanWithConstraints(SeqPattern_, ProjectedDataBase, min_sup, Constraint)
             # On return from all recursive call, return all Sequential Pattern to main
             AllPatterns.extend(NewPatterns)
        

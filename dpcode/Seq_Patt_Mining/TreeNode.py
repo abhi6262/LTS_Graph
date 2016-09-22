@@ -9,71 +9,72 @@ class Node():
             self,
             value
             ):
-        self.left = None
-        self.data = value
-        self.right = None
+        self.Left = None
+        self.Data = value
+        self.Right = None
+        self.FeaturePattern = None
         
 # The tree is essentially a Binary Search Tree or BST
 class Tree():
     '''
     Tree Class will provide the a complete Tree and some usual Tree functions
     '''
-    def createNode(self, data):
+    def createNode(self, Data):
         '''
         Only creates an Empty node by calling the Node class and initiate the value of the
-        node with user supplied data
+        node with user supplied Data
         '''
-        return Node(data)
+        return Node(Data)
 
-    def insert(self, node, data):
+    def insert(self, node, Data):
         '''
-        1. If an empty node is supplied it will create a Node with supplied data using createNode
+        1. If an empty node is supplied it will create a Node with supplied Data using createNode
         2. If a non-empty node is supplied, it will search the tree and will create a node and will put appropriate value in that node
         '''
         # Base Case
         if node is None:
-            node = self.createNode(data)
+            node = self.createNode(Data)
         # Recursive Build-Up Case
-        if data < node.data:
-            node.left = self.insert(node.left, data)
-        elif data > node.data:
-            node.right = self.insert(node.right, data)
+        if Data < node.Data:
+            node.Left = self.insert(node.Left, Data)
+        elif Data > node.Data:
+            node.Right = self.insert(node.Right, Data)
 
         return node
 
-    def search(self, node, data):
+    def search(self, node, Data):
         '''
-        Search for the node with the user supplied data
+        Search for the node with the user supplied Data
         '''
         # Base case
-        if node is None or node.data == data:
+        if node is None or node.Data == Data:
             return node
         # Recursive search
-        if node.data < data:
-            return self.search(node.right, data)
+        if node.Data < Data:
+            return self.search(node.Right, Data)
         else:
-            return self.search(node.left, data)
+            return self.search(node.Left, Data)
 
-    def deleteNode(self, node, data):
+    def deleteNode(self, node, Data):
         '''
         Incomplete implementation. Can only delete leaf node now
         '''
         if node is None:
             return None
 
-        if data < node.data:
-            node.left = self.deleteNode(node.left, data)
-        elif data > node.data:
-            node.right = self.deleteNode(node.right, data)
+        if Data < node.Data:
+            node.Left = self.deleteNode(node.Left, Data)
+        elif Data > node.Data:
+            node.Right = self.deleteNode(node.Right, Data)
         else:
-            if node.left is None and node.right is None:
+            if node.Left is None and node.Right is None:
                 del node
-            if node.left == None:
-                temp = node.right
+            if node.Left == None:
+                temp = node.Right
                 del node
                 return temp
-            if node.right == None:
-                temp = node.left
+            if node.Right == None:
+                temp = node.Left
                 del node
                 return temp
 
@@ -85,9 +86,9 @@ class Tree():
         '''
 
         if root is not None:
-            self.traverseInOrder(root.left)
-            print root.data
-            self.traverseInOrder(root.right)
+            self.traverseInOrder(root.Left)
+            print root.Data
+            self.traverseInOrder(root.Right)
 
     def traversePreOrder(self, root):
         '''
@@ -95,9 +96,9 @@ class Tree():
         '''
 
         if root is not None:
-            print root.data
-            self.traversePreOrder(root.left)
-            self.traversePreOrder(root.right)
+            print root.Data
+            self.traversePreOrder(root.Left)
+            self.traversePreOrder(root.Right)
 
     def traversePostOrder(self, root):
         '''
@@ -105,9 +106,9 @@ class Tree():
         '''
 
         if root is not None:
-            self.traversePostOrder(root.left)
-            self.traversePostOrder(root.right)
-            print root.data
+            self.traversePostOrder(root.Left)
+            self.traversePostOrder(root.Right)
+            print root.Data
 
 
 #if __name__ == "__main__":
@@ -132,4 +133,4 @@ class Tree():
 #
 #    deleteNode = tree.deleteNode(root, 'Sanjukta')
 #    if deleteNode is not None:
-#        print deleteNode.data
+#        print deleteNode.Data

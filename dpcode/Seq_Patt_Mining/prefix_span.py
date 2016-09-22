@@ -56,10 +56,14 @@ if __name__ == "__main__":
     # AllPatterns stores all Sequential Pattern with their support
     AllPatterns = []
     if constraints_file is not None:
-        AllPatterns = PrefixSpan.PrefixSpanWithConstraints(SeqPattern([], sys.maxint), SDB_, min_sup, Constraints)
+        # If Constraint is specified then the mining will be done per Constraint. Because accomodating 
+        # multiple Constraint on a single minining may be problematic. 'RE' is handled. 'IT' is handled.
+        # 'LEN' is not working. Need more work.
+        for Constraint in Constraints:
+            AllPatterns = PrefixSpan.PrefixSpanWithConstraints(SeqPattern([], sys.maxint), SDB_, min_sup, Constraint)
+            AllPatternsSorted = sorted(AllPatterns, key=lambda Pattern: Pattern.Support, reverse=True)
+            for Pattern_ in AllPatternsSorted:
+                print ReadData.PrintPatternInStringFormat(Pattern_.Sequence, 1) + ' :: Support : ' + str(Pattern_.Support) + ' :: Length : ' + str(Pattern_.Length)
     else:
         AllPatterns = PrefixSpan.PrefixSpan(SeqPattern([], sys.maxint), SDB_, min_sup)
     # Used sorting help from here: https://wiki.python.org/moin/HowTo/Sorting
-    AllPatternsSorted = sorted(AllPatterns, key=lambda Pattern: Pattern.Support, reverse=True)
-    for Pattern_ in AllPatternsSorted:
-        print ReadData.PrintPatternInStringFormat(Pattern_.Sequence, 1) + ' :: Support : ' + str(Pattern_.Support) + ' :: Length : ' + str(Pattern_.Length)
