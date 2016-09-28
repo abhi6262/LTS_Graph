@@ -24,7 +24,7 @@ class ModelBasedSearchTree():
         # AllPatterns is a List
         AllPatterns = PrefixSpan.PrefixSpan(SeqPattern([], sys.maxint), RootNode.Data, min_sup * len(RootNode.Data))
         # BestPattern is a list expressing the Sequence choosen for the current Node splitting
-        BestPattern = self.CalculateInfoGain(RootNode.Data, AllPatterns)
+        BestPattern = self.CalculateFitness(RootNode.Data, AllPatterns)
         RootNode.FeaturePattern = BestPattern
         Features.append(BestPattern)
         SDBFeatureSeg = self.SegregateData(BestPattern, RootNode.Data)
@@ -45,6 +45,33 @@ class ModelBasedSearchTree():
             print "Made a Right Leaf Node"
 
         return Features
+
+
+    def SegregateData(self, BestPattern, Data):
+        '''
+        This routine is meant to segregate the data into two parts. One part that contains the BestPattern
+        and another part that does not contain the BestPattern
+        '''
+        assert type(BestPattern) is ListType, "SegregateData: Expected \"BestPattern\" List Type. Received %r" % type(SegregateData)
+        assert type(Data) is ListType, "SegregateData: Expected \"Data\" List Type. Received %r", % type(Data)
+
+        SDBFeatureSeg = {'L':[], 'R':[]}
+        for len_ in range(len(Data)):
+            if self.PatternContained(BestPattern, Data[len_]):
+                SDBFeatureSeg.append(Data[len_])
+            else:
+                SDBFeatureSeg.append(Data[len_])
+        return SDBFeatureSeg
+
+    def PatternContained(self, BestPattern, Data):
+
+        return False
+
+    def CalculateFitness(self, Data, AllPatterns):
+        assert type(Data) is ListType, "CalculateFitness: Expected \"Data\" List Type. Received %r" % type(Data)
+        assert type(AllPatterns) is ListType, "CalculateFitness: Expected \"AllPatterns\" List Type. Received %r" % type(AllPatterns)
+        SizeOfPatterns = len(AllPatterns)
+        SizeOfData = len(Data)
 
 
 

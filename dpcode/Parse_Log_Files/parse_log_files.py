@@ -248,13 +248,18 @@ if __name__ == "__main__":
                             x1merged = x1merged + x[1][length_]
                         else:
                             x1merged.append(x[1][length_])
+                    sentence = ''
                     for length in range(len(x1merged)): 
-                        #print x[0], get_sentences(x1merged[length])
-                        diag_log_file.write(get_sentences(x1merged[length]) + "@" + str(x[0]) + "\n")
+                        # print x[0], get_sentences(x1merged[length])
+                        # diag_log_file.write(get_sentences(x1merged[length]) + "@" + str(x[0]) + "\n")
+                        sentence = sentence + get_sentences(x1merged[length]) + " "
                         #for len_ in range(len(x[1][length])):
                         #    print get_sentences(x[1][len_][length]),"@",x[0]
+                    diag_log_file.write(sentence.lstrip().rstrip())
+                    diag_log_file.write("::")
                 else:
-                    diag_log_file.write(get_sentences(x[1][0]) + "@" + str(x[0]) + "\n")
+                    # diag_log_file.write(get_sentences(x[1][0]) + "@" + str(x[0]) + "\n")
+                    diag_log_file.write(get_sentences(x[1][0]) + "::")
                 
             # Stylized way of writing Events in the diag_log_file
             # We are sacrificing it for the time being

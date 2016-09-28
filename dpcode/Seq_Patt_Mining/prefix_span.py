@@ -66,4 +66,8 @@ if __name__ == "__main__":
                 print ReadData.PrintPatternInStringFormat(Pattern_.Sequence, 1) + ' :: Support : ' + str(Pattern_.Support) + ' :: Length : ' + str(Pattern_.Length)
     else:
         AllPatterns = PrefixSpan.PrefixSpan(SeqPattern([], sys.maxint), SDB_, min_sup)
+        AllPatternsSorted = sorted(AllPatterns, key=lambda Pattern: Pattern.Support, reverse=True)
+        for Pattern_ in AllPatternsSorted:
+            print ReadData.PrintPatternInStringFormat(Pattern_.Sequence, 1) + ' :: Support : ' + str(Pattern_.Support) + ' :: Length : ' + str(Pattern_.Length)
+
     # Used sorting help from here: https://wiki.python.org/moin/HowTo/Sorting

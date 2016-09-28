@@ -23,7 +23,8 @@ class ReadData():
         SID = 1
         with open(EventSeqFile) as f:
             for line in f:
-                elements = line.lstrip().rstrip().split(',')
+                # elements = line.lstrip().rstrip().split(',')
+                elements = line.lstrip().rstrip().split('::')
                 itemSet = []
                 for e in elements:
                     itemSet.append(e.split())
