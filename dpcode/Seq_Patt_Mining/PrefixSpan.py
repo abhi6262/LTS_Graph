@@ -57,7 +57,7 @@ class PrefixSpan():
         try:
             assert(len(SDB))
         except AssertionError:
-            print "SDB is empty"
+            #print "SDB is empty"
             return []
         # FreqItems is a List storing "local frquent patterns" in form of SeqPattern
         FreqItems = []
@@ -168,7 +168,7 @@ class PrefixSpan():
                     break
             if ProjectedSDB:
                 ProjectedDataBase.append(ProjectedSDB)
-
+        #print ProjectedDataBase, "\n\n"
         return ProjectedDataBase
 
 
@@ -189,6 +189,7 @@ class PrefixSpan():
             SeqPattern_.Append(Item_)
             # Output all new Patterns 
             AllPatterns.append(SeqPattern_)
+            print "New Pattern Appended: " + ReadData.PrintPatternInStringFormat(SeqPattern_.Sequence, 1) + " Support: " + str(SeqPattern_.Support) + "\n"
             # For each new Sequential Pattern, construct a projected database
             ProjectedDataBase = self.FindProjectedDataBase(SeqPattern_, SDB)
             # Recursively call PrefixSpan with the new Sequential Pattern, new Projected Database and the
