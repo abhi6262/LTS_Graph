@@ -14,14 +14,27 @@ import pickle
 import itertools
 import math
 
+from iterative_msg_sel import *
+
 os.system('cls' if os.name == 'nt' else 'clear')
 
 config = ConfigParser.RawConfigParser()
 config.read('../config.cfg')
 message_width = ast.literal_eval(config.get('Configuration','Message_width'))
 buffer_width = config.getint('Configuration','Buffer_width')
-print "message width:", message_width, "\n"
-print "buffer width in bits:", buffer_width, "\n"
+message_group = ast.literal_eval(config.get('Configuration', 'Message_group'))
+#print "message width:", message_width, "\n"
+#print "buffer width in bits:", buffer_width, "\n"
+#print "message group names:", message_group.keys(), "\n"
+
+##### DP CODE #####
+#for key_ in message_group.keys():
+#    print "Messages in the Group: ", key_, " are: ", message_group[key_]
+
+CommonMsgSegs = FindCommonMsgSegments(message_group)
+print "Common Messages Found Mcomm = ", CommonMsgSegs
+
+##### DP CODE #####
 
 with open('ltsdump', 'rb') as f:
     sysnodes = pickle.load(f)
@@ -29,7 +42,7 @@ with open('ltsdump', 'rb') as f:
 
 f.close()
 
-print "sysnodes: ", sysnodes, "\n", "lensysnodes: ", len(sysnodes), "\n"
+#print "sysnodes: ", sysnodes, "\n", "lensysnodes: ", len(sysnodes), "\n"
 #for i in sysnodes:
 #    print i, ":", sys[i]
 #    print "\n"
@@ -47,9 +60,12 @@ def mut_info(x_dis, y_dis, xy_dis):
 
 #######################################################################
 
-x = [float(1)/len(sysnodes)] * len(sysnodes)
-print "x:", x, "\n"
 
+# Calculation of State Probabilites
+x = [float(1)/len(sysnodes)] * len(sysnodes)
+#print "x:", x, "\n"
+
+# Calculation of Messages in the LTS and the number of occurence in that LTS
 listmsg = []
 countlistmsg = []
 for i in sys:
@@ -62,6 +78,7 @@ for i in sys:
 x_y = [[0 for j in range(len(listmsg))] for i in range(len(sysnodes))]
 #print "x_y:", x_y, "\n"
 
+# Calculation of Join Probabilities
 for k in sys:
 #    print "k:", k, "\n"
     for j in sys.get(k):
@@ -79,11 +96,13 @@ candidates = []
 info_candidates = {}
 msg_width_sum = 0
 
+# Selection of Messages from list of messages in LTS
 for j in range(2,len(listmsg)+1):
+#for j in range(len(listmsg)+1,2,-1):
     for i in itertools.combinations(listmsg, j):
-        print "i:", i, "\n"
         for k in i:
             msg_width_sum += message_width[k]
+        print "i:", i, "Width: ", msg_width_sum, "\n"
         if (msg_width_sum <= buffer_width):
             candidates.append(i)
         msg_width_sum = 0
@@ -92,6 +111,8 @@ print "candidates:", candidates, "\n"
 max_info = {}
 max_candidate = {}
 
+
+# Evaluation of the messages groups
 for c in candidates:
     if len(c) not in max_info:
         max_candidate[len(c)] = c
@@ -117,13 +138,14 @@ for c in candidates:
 #            print x_y[i][listmsg.index(m)]
             xy[i][c.index(m)] = (x_y[i][listmsg.index(m)]/float(countlistmsg[listmsg.index(m)])) * y[c.index(m)]
 
-    print "xy:", xy, "\n"
+    #print "xy:", xy, "\n"
 
     info_candidates[c] = mut_info(x, y, xy)
     print "info_candidate:", info_candidates[c], "\n"
     if (info_candidates[c] > max_info[len(c)]):
         max_info[len(c)] = info_candidates[c]
         max_candidate[len(c)] = c
+
 
 print "================================================================="
 print "*****************************************************************"

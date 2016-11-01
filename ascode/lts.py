@@ -18,7 +18,7 @@ import pydot as pd
 os.system('cls' if os.name == 'nt' else 'clear')
 
 config = ConfigParser.RawConfigParser()
-config.read('config.cfg')
+config.read('../config.cfg')
 listsysdict = [] #list of all dictionaries, where each sys dictionary corresponds to one protocol
 listsysnodes = []
 Protocols = ast.literal_eval(config.get('Configuration','Protocols')) #list of protocols, user input
