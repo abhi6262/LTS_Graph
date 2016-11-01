@@ -51,10 +51,12 @@ def MessageSel(buffer_width, listmsg, countlistmsg, epsilon, message_width, mess
     # Mrem : ListType
     Mrem = [item for item in listmsg if item not in Mtrace.keys()]
     print "Message Set Remaining (Including any groups): ", Mrem
-    ss.exit(0)
     # Bufrem : IntType
-    Bufrem = buffer_width - len(Mtrace)
-    Mtrace = NewGrMessageSel(Mtrace, Bufrem, epsilon, Gninc, Mrem, Mcomm)
+    Bufrem = buffer_width - TotalBits
+    print "Remaining Buffer: ", Bufrem
+    Mtrace, TotalBits, Infocurr = NewGrMessageSel(Mtrace, Bufrem, epsilon, Gninc, Mrem, Mcomm, TotalBits, message_width, sysnodes, listmsg, countlistmsg, x, x_y, Infocurr, Ginc)
+    print "Current Messages To Trace after NewGrMessageSel: ", Mtrace, "Total Bit Width: ", TotalBits
+    ss.exit(0)
     
     Bufrem = buffer_width - len(Mtrace)
     Mtrace = AddMsgInExistingGr(Mtrace, Bufrem, epsilon, Ginc, Mrem, Mcomm)
@@ -64,7 +66,7 @@ def MessageSel(buffer_width, listmsg, countlistmsg, epsilon, message_width, mess
 
     return Mtrace
 
-def NewGrMessageSel(Mtrace, Bufrem, epsilon, Gninc, Mrem, Mcomm):
+def NewGrMessageSel(Mtrace, Bufrem, epsilon, Gninc, Mrem, Mcomm, TotalBits, message_width, sysnodes, listmsg, countlistmsg, x, x_y, Infocurr, Ginc):
     Mpcomm = []
     mp = {}
     for msg in Mrem:
@@ -86,39 +88,48 @@ def NewGrMessageSel(Mtrace, Bufrem, epsilon, Gninc, Mrem, Mcomm):
 	               except KeyError:
 	                   pass
 	           if Mtilde:
+                       ToDelEle = ''
 	               for ele in Mtilde:
 	                   if message_group[msg][ele] > currsize:
-	                       mp[ele] = message_group[msg][ele]
+	                       mp[msg] = message_group[msg][ele]
+                               ToDelEle = ele
 	                       currsize = message_group[msg][ele]
-	               Mcomm.remove(mp.keys()[0])
+	               Mcomm.remove(ToDelEle)
+	               del message_group[msg][ToDelEle]
 	       else:
 	           Mtilde = []
 	           currsize = -1
-	           try:
-	               Mtilde = message_group[msg].keys()
-	           except KeyError:
-	               pass
-	           
+                   for item in message_group[msg].keys():
+                       try:
+                           ItemWidth = message_group[msg][item]
+                           if ItemWidth <= Bufrem:
+                               Mtilde.append(item)
+                       except KeyError:
+                           pass
 	           if Mtilde:
+                       ToDelEle = ''
 	               for ele in Mtilde:
 	                   if message_group[msg][ele] > currsize:
-	                       mp[ele] = message_group[msg][ele]
+	                       mp[msg] = message_group[msg][ele]
+                               ToDelEle = ele
 	                       currsize = message_group[msg][ele]
-	               del message_group[msg][mp.keys()[0]]
+	               del message_group[msg][ToDelEle]
 	       Mtemp.update(mp)
-	       Infonew = FindMessages(sys, Mtemp.keys())
-	       if Infonew > Infocurr:
+               # M and T are placeholder here
+	       M, T, Infonew = EvalMsgGroups(message_width, [tuple(Mtemp.keys())], sysnodes, listmsg, countlistmsg, x, x_y)
+	       if Infonew < Infocurr:
                    Mtrace = Mtemp
-                   Bufrem = len(Mtrace)
+                   TotalBits = TotalBits + mp[mp.keys()[0]]
+                   Bufrem = buffer_width - TotalBits
 	           Infocurr = Infonew
 	           Ginc.append(mp.keys()[0])
 	           Gninc = [item for item in Gninc if item not in mp.keys()]
                else:
                    print "No modification to Mtrace made in NewGrMessageSel\n"
         else:
-            return Mtrace
+            return Mtrace, TotalBits, Infocurr
         mp = {}
-    return Mtrace
+    return Mtrace, TotalBits, Infocurr
 
 def AddMsgInExistingGr(Mtrace, Bufrem, epsilon, Ginc, Mrem, Mcomm):
     mp = {}
@@ -285,5 +296,5 @@ if __name__ == "__main__":
     x = CalculateStateProb(sysnodes)
     listmsg, countlistmsg = CalcMessageInLTS(sys, sysnodes)
     x_y = CalculateStateMsgJointProb(sys, sysnodes, listmsg)
-    MtraceFinal = MessageSel(buffer_width, listmsg, countlistmsg, 2, message_width, message_group, sys, x, x_y) 
+    MtraceFinal = MessageSel(buffer_width, listmsg, countlistmsg, 0, message_width, message_group, sys, x, x_y) 
 
