@@ -28,6 +28,9 @@ def FindCommonMsgSegments(message_group):
     return CommonMsgSegs
 
 def GrIncluded(Mtrace, message_group):
+    '''
+    Checked Ok. Working
+    '''
     GrInTrace =  Mtrace.keys()
     MessageGrs = message_group.keys()
     GrIncluded = [item for item in MessageGrs if item in GrInTrace]
@@ -56,14 +59,18 @@ def MessageSel(buffer_width, listmsg, countlistmsg, epsilon, message_width, mess
     print "Remaining Buffer: ", Bufrem
     Mtrace, TotalBits, Infocurr = NewGrMessageSel(Mtrace, Bufrem, epsilon, Gninc, Mrem, Mcomm, TotalBits, message_width, sysnodes, listmsg, countlistmsg, x, x_y, Infocurr, Ginc)
     print "Current Messages To Trace after NewGrMessageSel: ", Mtrace, "Total Bit Width: ", TotalBits
-    ss.exit(0)
     
-    Bufrem = buffer_width - len(Mtrace)
-    Mtrace = AddMsgInExistingGr(Mtrace, Bufrem, epsilon, Ginc, Mrem, Mcomm)
+    Bufrem = buffer_width - TotalBits
+    print "Remaining Buffer: ", Bufrem
+    Mtrace, TotalBits, Infocurr = AddMsgInExistingGr(Mtrace, Bufrem, epsilon, Ginc, Mrem, Mcomm, TotalBits, message_width, sysnodes, listmsg, countlistmsg, x, x_y, Infocurr)
+    print "Current Messages To Trace after AddMsgInExistingGr: ", Mtrace, "Total Bit Width: ", TotalBits
 
-    Bufrem = buffer_width - len(Mtrace)
-    Mtrace = AddStandAloneMsgs(Mtrace, Bufrem, epsilon)
+    Bufrem = buffer_width - TotalBits
+    print "Remaining Buffer: ", Bufrem
+    Mtrace, TotalBits, Infocurr = AddStandAloneMsgs(Mtrace, Bufrem, epsilon, Mrem, TotalBits, message_width, sysnodes, listmsg, countlistmsg, x, x_y, Infocurr)
+    print "Current Mesages To Trace after AddStandAloneMsgs: ", Mtrace, "Total Bit Width: ", TotalBits
 
+    ss.exit(0)
     return Mtrace
 
 def NewGrMessageSel(Mtrace, Bufrem, epsilon, Gninc, Mrem, Mcomm, TotalBits, message_width, sysnodes, listmsg, countlistmsg, x, x_y, Infocurr, Ginc):
@@ -131,60 +138,63 @@ def NewGrMessageSel(Mtrace, Bufrem, epsilon, Gninc, Mrem, Mcomm, TotalBits, mess
         mp = {}
     return Mtrace, TotalBits, Infocurr
 
-def AddMsgInExistingGr(Mtrace, Bufrem, epsilon, Ginc, Mrem, Mcomm):
+def AddMsgInExistingGr(Mtrace, Bufrem, epsilon, Ginc, Mrem, Mcomm, TotalBits, message_width, sysnodes, listmsg, countlistmsg, x, x_y, Infocurr):
     mp = {}
-    for msg in Mrem:
-        if Bufrem > epsilon:
-            Mtemp = Mtrace
-            if m in Ginc:
-                for key_ in message_group[m].keys():
-                    if message_group[m][key_] <= Bufrem and key in Mcomm:
-                        mp[key] = message_group[m][key_]
-                        Mtemp.update(mp)
-                    Infonew = FindMessages(sys, Mtemp.keys())
-                    if Infonew >= Infocurr:
-                        Mtrace = Mtemp
-                        Bufrem = len(Mtrace)
-                        Infocurr = Infonew
-                    del message_group[m][key_]
-        else:
-            return Mtrace
     for msg in Mrem:
         if Bufrem > epsilon:
             Mtemp = Mtrace
             if msg in Ginc:
-                for key_ in message_group[m].keys():
-                    if message_group[m][key_] <= Bufrem:
-                        mp[key] = message_group[m][key_]
+                for key_ in message_group[msg].keys():
+                    if message_group[msg][key_] <= Bufrem and key_ in Mcomm:
+                        mp[msg] = message_group[msg][key_]
                         Mtemp.update(mp)
-                    Infonew = FindMessages(sys, Mtemp.keys())
-                    if Infonew >= Infocurr:
+                    M, T, Infonew = EvalMsgGroups(message_width, [tuple(Mtemp.keys())], sysnodes, listmsg, countlistmsg, x, x_y)
+                    if Infonew <= Infocurr:
                         Mtrace = Mtemp
-                        Bufrem = len(Mtrace)
+                        TotalBits = TotalBits + mp[mp.keys()[0]]
+                        Bufrem = buffer_width - TotalBits
+                        Infocurr = Infonew
+                    del message_group[msg][key_]
+        else:
+            return Mtrace, TotalBits, Infocurr
+    for msg in Mrem:
+        if Bufrem > epsilon:
+            Mtemp = Mtrace
+            if msg in Ginc:
+                for key_ in message_group[msg].keys():
+                    if message_group[m][key_] <= Bufrem:
+                        mp[msg] = message_group[m][key_]
+                        Mtemp.update(mp)
+                    M, T, Infonew = EvalMsgGroups(message_width, [tuple(Mtemp.keys())], sysnodes, listmsg, countlistmsg, x, x_y)
+                    if Infonew <= Infocurr:
+                        Mtrace = Mtemp
+                        TotalBits = TotalBits + mp[mp.keys()[0]]
+                        Bufrem = buffer_width - TotalBits
                         Infocurr = Infonew
                     del message_group[m][key_]
                 Mrem.remove(msg)
         else:
-            return Mtrace
-    return Mtrace
+            return Mtrace, TotalBits, Infocurr
+    return Mtrace, TotalBits, Infocurr
 
-def AddStandAloneMsgs(Mtrace, bufrem, epsilon):
+def AddStandAloneMsgs(Mtrace, Bufrem, epsilon, Mrem, TotalBits, message_width, sysnodes, listmsg, countlistmsg, x, x_y, Infocurr):
     mp = {}
-    for msg in Mrem.keys():
+    for msg in Mrem:
         Mtemp = Mtrace
         if Bufrem > epsilon:
             if Mrem[msg] <= Bufrem:
                 mp[msg] = Mrem[msg]
                 Mtemp.update(mp)
-                Infonew = FindMessages(sys, Mtemp.keys())
-                if Infonew >= Infocurr:
+                M, T, Infonew = EvalMsgGroups(message_width, [tuple(Mtemp.keys())], sysnodes, listmsg, countlistmsg, x, x_y)
+                if Infonew <= Infocurr:
                     Mtrace= Mtemp
-                    Bufrem = len(Mtrace)
+                    TotalBits = TotalBits + mp[mp.keys()[0]]
+                    Bufrem = buffer_width - TotalBits
                     Infocurr = Infonew
                 Mrem.remove(msg)
         else:
-            return Mtrace
-    return Mtrace
+            return Mtrace, TotalBits, Infocurr
+    return Mtrace, TotalBits, Infocurr
 
 ################## This portion onwards code from Abhishek's file ####################
 
