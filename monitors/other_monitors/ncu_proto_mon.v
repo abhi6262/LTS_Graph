@@ -241,6 +241,8 @@ begin
     ncu_dmu_pio_hdr_vld_d <= ncu_dmu_pio_hdr_vld;
 end
 
+// Correct between this markers
+
 always @(posedge (iol2clk && enabled))
 begin
     if (ncu_dmu_pio_hdr_vld)
@@ -263,6 +265,9 @@ always @(posedge (iol2clk && enabled && ncu_dmu_pio_hdr_vld_d))
 begin
     `PR_ALWAYS("ncu_proto_mon", `ALWAYS, "<ncu,dmu,piowrite,payloadcycle>::Payload Cycle for PIO Write = %x", ncu_dmu_pio_data);
 end
+
+
+// Correct between this markers
 
 /* Mondo Interrupt Monitors Section 7.4.10 Manual Vol 1, Section 1.14.4.15 Manual Vol 2 */
 
