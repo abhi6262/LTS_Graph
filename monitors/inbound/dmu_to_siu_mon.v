@@ -58,37 +58,51 @@ always @(posedge (iol2clk && enabled))
 begin
     if(dmu_sii_hdr_vld)
     begin
-        `PR_INFO("dmu_to_siu_mon", `INFO, "DMU_SIU_HDR niu_sii_hdr_vld = %b", dmu_sii_hdr_vld);
         /* Single and Back-to-Back DMA Read Request from Fire DMU to SIU */
         if(!dmu_sii_datareq && !dmu_sii_datareq16)
         begin
-            `PR_ALWAYS("dmu_to_siu_mon", `ALWAYS, "<dmu,sii,headercycle,dmareadreq>::DMU to SIU DMA Read Request Header Cycle");
+            `PR_ALWAYS("dmu_to_siu_mon", `ALWAYS, "<dmu,sii,rheadercycle,dmuheader,{%x}::DMU  to SIU DMA Read Request Header Cycle", dmu_sii_hdr_vld);
+            `PR_ALWAYS("dmu_to_siu_mon", `ALWAYS, "<dmu,sii,rheadercycle,dmarwm,{%x%x}>::DMU to SIU DMA Read Request", dmu_sii_datareq,dmu_sii_datareq16);
             if (dmu_sii_reqbypass)
-                `PR_INFO("dmu_to_siu_mon", `INFO, "Read Request Sent to SIU Bypass Queue");
+                `PR_ALWAYS("dmu_to_siu_mon", `ALWAYS, "<dmu,sii,rheadercycle,dmudestq,{%x}>::Read Request Sent to SIU Bypass Queue", dmu_sii_reqbypass);
             else
-                `PR_INFO("dmu_to_siu_mon", `INFO, "Read Request Sent to SIU Ordered Queue");
+                `PR_ALWAYS("dmu_to_siu_mon", `ALWAYS, "<dmu,sii,rheadercycle,dmudestq,{%x}>::Read Request Sent to SIU Ordered Queue", dmu_sii_reqbypass);
             `PR_INFO("dmu_to_siu_mon", `INFO, "Header Bits = %x", dmu_sii_data);
             `PR_INFO("dmu_to_siu_mon", `INFO, "Header Cycle Parity = %x", dmu_sii_parity);
+            `PR_ALWAYS("dmu_to_siu_mon", `ALWAYS, "<dmu,sii,rheadercycle,dmutagid,{%x}>::Read Request DMU Tag ID", dmu_sii_data[79:64]);
+            `PR_ALWAYS("dmu_to_siu_mon", `ALWAYS, "<dmu,sii,rheadercycle,dmupa,{%x}>::Read Request PA", dmu_sii_data[39:0]);
         end
         /* Single and Back-to-Back DMA Write Request from Fire DMU to SIU */
         else if (dmu_sii_datareq && !dmu_sii_datareq16)
         begin
-            `PR_ALWAYS("dmu_to_siu_mon", `ALWAYS, "<dmu,sii,headercycle,dmawritereq>::DMU to SIU DMA Write Request Header Cycle");
+            `PR_ALWAYS("dmu_to_siu_mon", `ALWAYS, "<dmu,sii,wheadercycle,dmuheader,{%x}>::DMU  to SIU DMA Write Request Header Cycle", dmu_sii_hdr_vld);
+            `PR_ALWAYS("dmu_to_siu_mon", `ALWAYS, "<dmu,sii,wheadercycle,dmarwm,{%x%x}>::DMU to SIU DMA Write Request", dmu_sii_datareq, dmu_sii_datareq16);
             if (dmu_sii_reqbypass)
-                `PR_INFO("dmu_to_siu_mon", `INFO, "Write Request Sent to SIU Bypass Queue");
+                `PR_ALWAYS("dmu_to_siu_mon", `ALWAYS, "<dmu,sii,wheadercycle,dmadestq,{%x}>::Write Request Sent to SIU Bypass Queue", dmu_sii_reqbypass);
             else
-                `PR_INFO("dmu_to_siu_mon", `INFO, "Write Request Sent to SIU Orderded Queue");
+                `PR_ALWAYS("dmu_to_siu_mon", `ALWAYS, "<dmu,sii,wheadercycle,dmadestq,{%x}>::Write Request Sent to SIU Orderded Queue", dmu_sii_reqbypass);
             `PR_INFO("dmu_to_siu_mon", `INFO, "Header Bits = %x", dmu_sii_data);
             `PR_INFO("dmu_to_siu_mon", `INFO, "Header Cycle Parity = %b", dmu_sii_parity);
+            `PR_ALWAYS("dmu_to_siu_mon", `ALWAYS, "<dmu,sii,wheadercycle,dmutagid,{%x}>::Write Request DMU Tag ID", dmu_sii_data[79:64]);
+            `PR_ALWAYS("dmu_to_siu_mon", `ALWAYS, "<dmu,sii,wheadercycle,dmupa,{%x}>::Write Request PA", dmu_sii_data[39:0]);
         end
         /* Single and Back-to-Back Mondor Interrupt Request from Fire DMU to SIU */
         else if (dmu_sii_datareq && dmu_sii_datareq16)
         begin
-            `PR_INFO("dmu_to_siu_mon", `INFO, "DMU to SIU Mondo Interrupt Request / PIO Read Header Cycle");
             if (!dmu_sii_reqbypass)
-                `PR_ALWAYS("dmu_to_siu_mon", `ALWAYS, "<dmu,sii,mondoint,reqtorderedq>::Mondo Interrupt Request Sent to SIU Ordered Queue");
+            begin
+                `PR_ALWAYS("dmu_to_siu_mon", `ALWAYS, "<dmu,sii,mheadercycle,dmuheader,{%x}>::DMU to SIU Mondo Interrupt Header Cycle", dmu_sii_hdr_vld);
+                `PR_ALWAYS("dmu_to_siu_mon", `ALWAYS, "<dmu,sii,mheadercycle,dmarwm,{%x%x}>::DMU to SIU Mondo Interrupt Request", dmu_sii_datareq, dmu_sii_datareq16);
+                `PR_ALWAYS("dmu_to_siu_mon", `ALWAYS, "<dmu,sii,mheadercycle,dmadestq,{%x}>::Mondo Interrupt Request Sent to SIU Ordered Queue", dmu_sii_reqbypass);
+                `PR_ALWAYS("dmu_to_siu_mon", `ALWYAS, "<dmu,sii,mheadercycle,dmutagid,{%x}>::Mondo Interrupt ID", dmu_sii_data[79:64])
+            end
             else
-                `PR_ALWAYS("dmu_to_siu_mon", `ALWAYS, "<dmu,sii,pioreadreturn,datatobypassq>::PIO Read Data Return Sent to SIU Bypass Queue");
+            begin
+                `PR_ALWAYS("dmu_to_siu_mon", `ALWAYS, "<dmu,sii,pheadercycle,dmuheader,{%x}>::DMU to SIU PIO Read Completion Header Cycle", dmu_sii_hdr_vld);
+                `PR_ALWAYS("dmu_to_siu_mon", `ALWAYS, "<dmu,sii,pheadercycle,dmarwm,{%x%x}>::DMU to SIU PIO Read Header", dmu_sii_datareq, dmu_sii_datareq16);
+                `PR_ALWAYS("dmu_to_siu_mon", `ALWAYS, "<dmu,sii,pheadercycle,dmadestq,{%x}>::PIO Read Data Return Sent to SIU Bypass Queue", dmu_sii_reqbypass);
+                `PR_ALWAYS("dmu_to_siu_mon", `ALWYAS, "<dmu,sii,pheadercycle,dmutagid,{%x}>::PIO NCU Cred ID and CPU Thread ID", dmu_sii_data[79:64])
+            end
             `PR_INFO("dmu_to_siu_mon", `INFO, "Header Bits =%x", dmu_sii_data);
             `PR_INFO("dmu_to_siu_mon", `INFO, "Header Cycle Parity = %x", dmu_sii_parity);
         end
@@ -103,7 +117,7 @@ end
 
 always @(posedge (iol2clk && enabled && write_payload_cycle_detected))
 begin
-    `PR_ALWAYS("dmu_to_siu_mon", `ALWAYS, "<dmu,sii,payloadcycle,dmawritereq>::DMU TO SIU DMA Write Request Payload Cycle");
+    `PR_ALWAYS("dmu_to_siu_mon", `ALWAYS, "<dmu,sii,wpayloadcycle,dmawritepayload>::DMU TO SIU DMA Write Request Payload Cycle");
     repeat (4) @(posedge iol2clk)
     begin
         `PR_INFO("dmu_to_siu_mon", `INFO, "DMA Write Payload = %x", dmu_sii_data);
@@ -120,14 +134,15 @@ end
 
 always @(posedge (iol2clk && enabled && interrupt_pioread_payload_cycle_detected))
 begin
-    `PR_ALWAYS("dmu_to_siu_mon", `ALWAYS, "<dmu,sii,payloadcycle,mondointreqpioreadreturn>::DMU to SIU Mondo Interrupt Request / PIO Read Data Return Payload Cycle");
     if (!dmu_sii_reqbypass_d)
     begin
+        `PR_ALWAYS("dmu_to_siu_mon", `ALWAYS, "<dmu,sii,mpayloadcycle,mondointpayload>::DMU to SIU Mondo Interrupt Request / PIO Read Data Return Payload Cycle");
         `PR_INFO("dmu_to_siu_mon", `INFO, "Mondo Data Payload = %x", dmu_sii_data);
         `PR_INFO("dmu_to_siu_mon", `INFO, "Mondo Payload Parity = %x", dmu_sii_parity);
     end
     else
     begin
+        `PR_ALWAYS("dmu_to_siu_mon", `ALWAYS, "<dmu,sii,ppayloadcycle,pioreadpayload>::DMU to SIU Mondo Interrupt Request / PIO Read Data Return Payload Cycle");
         `PR_INFO("dmu_to_siu_mon", `INFO, "PIO Read Data Payload = %x", dmu_sii_data);
         `PR_INFO("dmu_to_siu_mon", `INFO, "PIO Read Data Payload Parity = %x", dmu_sii_parity);
     end

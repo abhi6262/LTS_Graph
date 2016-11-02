@@ -45,12 +45,14 @@ always @(posedge (iol2clk && enabled))
 begin
     if(sio_dmu_hdr_vld)
     begin
-        `PR_ALWAYS("sio_to_dmu_mon", `ALWAYS, "<sio,dmu,,hdrvld>::SIU sending packet to DMU sio_dmu_hdr_vld = %b", sio_dmu_hdr_vld);
+        `PR_ALWAYS("sio_to_dmu_mon", `ALWAYS, "<sio,dmu,,siodmuhdrvld,{%x}>::SIU sending packet to DMU", sio_dmu_hdr_vld);
         if(sio_dmu_datareq)
-            `PR_ALWAYS("sio_to_dmu_mon", `ALWAYS, "<sio,dmu,,64bpayload>::Four Cycle Payload follows with 64 bytes of data from SIU to DMU sio_dmu_datareq = %b", sio_dmu_datareq);
+            `PR_ALWAYS("sio_to_dmu_mon", `ALWAYS, "<sio,dmu,,siodmu64payload,{%x}>::Four Cycle Payload follows with 64 bytes of data from SIU to DMU", sio_dmu_datareq);
         else
-            `PR_ALWAYS("sio_to_dmu_mon", `ALWAYS, "<sio,dmu,nopayload>::No Data Payload follows sio_dmu_hdr_vld = %b", sio_dmu_datareq);
-        `PR_INFO("sio_to_dmu_mon", `INFO, "Header Bits = %x", sio_dmu_data);
+            `PR_ALWAYS("sio_to_dmu_mon", `ALWAYS, "<sio,dmu,,siodmu64payload,{%x}>::No Data Payload follows", sio_dmu_datareq);
+        `PR_ALWAYS("sio_to_dmu_mon", `ALWAYS, "<sio,dmu,,siodmureadres,{%x}>::SIO to DMU Read Response", sio_dmu_data[127:122]);
+        `PR_ALWAYS("sio_to_dmu_mon", `ALWAYS, "<sio,dmu,,dmutagid,{%x}>::SIO to DMU Read Tag", sio_dmu_data[79:64]);
+        /* For Responses SIO does not return the address and hence sio_dmu_data[39:0] has been neglected here. Manual 1 Page 6-68 */
     end
 end
 
@@ -60,7 +62,7 @@ always @(posedge (iol2clk && enabled))
 begin
     if(sio_dmu_datareq_d)
     begin
-        `PR_ALWAYS("sio_to_dmu_mon", `ALWAYS, "<sio,dmu,,payload>::Payload cycle initiated");
+        `PR_ALWAYS("sio_to_dmu_mon", `ALWAYS, "<sio,dmu,,dmapayload>::SIO to DMU Return Data Payload Cycle");
         repeat (4) @(posedge iol2clk)
         begin
             `PR_INFO("sio_to_dmu_mon", `INFO, "DMA Response Payload = %x", sio_dmu_data);
