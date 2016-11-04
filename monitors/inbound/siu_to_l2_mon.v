@@ -65,11 +65,11 @@ wire l2t7_sii_wib_dequeue = `SII.l2t7_sii_wib_dequeue;
 always @(posedge (iol2clk && enabled))
 begin
     if(sii_l2t0_req_vld)
-        `PR_ALWAYS("siu_to_l2_mon", `ALWAYS, "<sii,l2t0,headercycle,reqvld>::SII_L2T_REQ_VLD Tag = 0");
+        `PR_ALWAYS("siu_to_l2_mon", `ALWAYS, "<sii,l2t0,,siil2treqvld,{%x}>::First cycle of Packet transfer from SIU to L2", sii_l2t0_req_vld);
         /* To get the Header cycle */
         repeat(2) @(posedge iol2clk)
         begin
-            `PR_INFO("siu_to_l2_mon", `INFO, "SII to L2T = 0 Header Cycle Header = %x", sii_l2t0_req);
+            `PR_ALWAYS("siu_to_l2_mon", `ALWAYS, "<sii,l2t0,,siil2theader,{%x}>::Header Cycle from SII to L2", sii_l2t0_req);
         end
         /* To bypass the dummy cycle */
         repeat(3) @(posedge iol2clk);
@@ -78,13 +78,13 @@ end
 always @(posedge (iol2clk && enabled && l2t0_sii_iq_dequeue))
 begin
     if(l2t0_sii_iq_dequeue)
-        `PR_ALWAYS("siu_to_l2_mon", `ALWAYS, "<l2t0,sii,deque,readreq>::Read Requests from SIU Dequeued from L2Tag = 0 Input Queue");
+        `PR_ALWAYS("siu_to_l2_mon", `ALWAYS, "<l2t0,sii,,l2tsiidequeue,{%x}>::Read Requests from SIU Dequeued from L2T Input Queue", l2t0_sii_iq_dequeue);
 end
 
 always @(posedge (iol2clk && enabled && l2t0_sii_wib_dequeue))
 begin
     if(l2t0_sii_wib_dequeue)
-        `PR_ALWAYS("siu_to_l2_mon", `ALWAYS, "<l2t0,sii,datatomcu,64writedata>::L2Tag = 0 Drained 64 bytes write data. Data enroute to MCU");
+        `PR_ALWAYS("siu_to_l2_mon", `ALWAYS, "<l2t0,sii,,l2tsiiwibdeq,{%x}>::L2 moved out 64 byte data from I/O write buffer and data towards MCU", l2t0_sii_wib_dequeue);
 end
 
 /* For L2 Tag 1 */
@@ -92,11 +92,11 @@ end
 always @(posedge (iol2clk && enabled))
 begin
     if(sii_l2t1_req_vld)
-        `PR_ALWAYS("siu_to_l2_mon", `ALWAYS, "<sii,l2t1,headercycle,reqvld>::SII_L2T_REQ_VLD Tag = 1");
+        `PR_ALWAYS("siu_to_l2_mon", `ALWAYS, "<sii,l2t1,,siil2treqvld,{%x}>::First cycle of Packet transfer from SIU to L2", sii_l2t1_req_vld);
         /* To get the Header cycle */
         repeat(2) @(posedge iol2clk)
         begin
-            `PR_INFO("siu_to_l2_mon", `INFO, "SII to L2T = 1 Header Cycle Header = %x", sii_l2t1_req);
+            `PR_ALWAYS("siu_to_l2_mon", `ALWAYS, "<sii,l2t1,,siil2theader,{%x}>::Header Cycle from SII to L2", sii_l2t1_req);
         end
         /* To bypass the dummy cycle */
         repeat(3) @(posedge iol2clk);
@@ -105,13 +105,13 @@ end
 always @(posedge (iol2clk && enabled && l2t1_sii_iq_dequeue))
 begin
     if(l2t1_sii_iq_dequeue)
-        `PR_ALWAYS("siu_to_l2_mon", `ALWAYS, "<l2t1,sii,deque,readreq>::Read Requests from SIU Dequeued from L2Tag = 1 Input Queue");
+        `PR_ALWAYS("siu_to_l2_mon", `ALWAYS, "<l2t1,sii,,l2tsiidequeue,{%x}>::Read Requests from SIU Dequeued from L2 Input Queue", l2t1_sii_iq_dequeue);
 end
 
 always @(posedge (iol2clk && enabled && l2t1_sii_wib_dequeue))
 begin
     if(l2t1_sii_wib_dequeue)
-        `PR_ALWAYS("siu_to_l2_mon", `ALWAYS, "<l2t1,sii,datatomcu,64writedata>::L2Tag = 1 Drained 64 bytes write data. Data enroute to MCU");
+        `PR_ALWAYS("siu_to_l2_mon", `ALWAYS, "<l2t1,sii,,l2tsiiwibdeq,{%x}>::L2 moved out 64 byte data from I/O write buffer and data towards MCU", l2t1_sii_wib_dequeue);
 end
 
 
@@ -120,11 +120,11 @@ end
 always @(posedge (iol2clk && enabled))
 begin
     if(sii_l2t2_req_vld)
-        `PR_ALWAYS("siu_to_l2_mon", `ALWAYS, "<sii,l2t2,headercycle,reqvld>::SII_L2T_REQ_VLD Tag = 2");
+        `PR_ALWAYS("siu_to_l2_mon", `ALWAYS, "<sii,l2t2,,siil2treqvld,{%x}>::First cycle of Packet transfer from SIU to L2", sii_l2t2_req_vld);
         /* To get the Header cycle */
         repeat(2) @(posedge iol2clk)
         begin
-            `PR_INFO("siu_to_l2_mon", `INFO, "SII to L2T = 2 Header Cycle Header = %x", sii_l2t2_req);
+            `PR_ALWAYS("siu_to_l2_mon", `ALWAYS, "<sii,l2t2,,siil2theader,{%x}>::Header Cycle from SII to L2", sii_l2t2_req);
         end
         /* To bypass the dummy cycle */
         repeat(3) @(posedge iol2clk);
@@ -133,13 +133,13 @@ end
 always @(posedge (iol2clk && enabled && l2t2_sii_iq_dequeue))
 begin
     if(l2t2_sii_iq_dequeue)
-        `PR_ALWAYS("siu_to_l2_mon", `ALWAYS, "<l2t2,sii,deque,readreq>::Read Requests from SIU Dequeued from L2Tag = 2 Input Queue");
+        `PR_ALWAYS("siu_to_l2_mon", `ALWAYS, "<l2t2,sii,,l2tsiidequeue,{%x}>::Read Requests from SIU Dequeued from L2 Input Queue", l2t2_sii_iq_dequeue);
 end
 
 always @(posedge (iol2clk && enabled && l2t2_sii_wib_dequeue))
 begin
     if(l2t2_sii_wib_dequeue)
-        `PR_ALWAYS("siu_to_l2_mon", `ALWAYS, "<l2t2,sii,datatomcu,64writedata>::L2Tag = 2 Drained 64 bytes write data. Data enroute to MCU");
+        `PR_ALWAYS("siu_to_l2_mon", `ALWAYS, "<l2t2,sii,,l2tsiiwibdeq,{%x}>::L2 moved out 64 byte data from I/O write buffer and data towards MCU", l2t2_sii_wib_dequeue);
 end
 
 
@@ -148,11 +148,11 @@ end
 always @(posedge (iol2clk && enabled))
 begin
     if(sii_l2t3_req_vld)
-        `PR_ALWAYS("siu_to_l2_mon", `ALWAYS, "<sii,l2t3,headercycle,reqvld>::SII_L2T_REQ_VLD Tag = 3");
+        `PR_ALWAYS("siu_to_l2_mon", `ALWAYS, "<sii,l2t3,,siil2treqvld,{%x}>::First cycle of Packet transfer from SIU to L2", sii_l2t3_req_vld);
         /* To get the Header cycle */
         repeat(2) @(posedge iol2clk)
         begin
-            `PR_INFO("siu_to_l2_mon", `INFO, "SII to L2T = 3 Header Cycle Header = %x", sii_l2t3_req);
+            `PR_ALWAYS("siu_to_l2_mon", `ALWAYS, "<sii,l2t3,,siil2theader,{%x}>::Header Cycle from SII to L2", sii_l2t3_req);
         end
         /* To bypass the dummy cycle */
         repeat(3) @(posedge iol2clk);
@@ -161,13 +161,13 @@ end
 always @(posedge (iol2clk && enabled && l2t3_sii_iq_dequeue))
 begin
     if(l2t3_sii_iq_dequeue)
-        `PR_ALWAYS("siu_to_l2_mon", `ALWAYS, "<l2t3,sii,deque,readreq>::Read Requests from SIU Dequeued from L2Tag = 3 Input Queue");
+        `PR_ALWAYS("siu_to_l2_mon", `ALWAYS, "<l2t3,sii,,l2tsiidequeue,{%x}>::Read Requests from SIU Dequeued from L2 Input Queue", l2t3_sii_iq_dequeue);
 end
 
 always @(posedge (iol2clk && enabled && l2t3_sii_wib_dequeue))
 begin
     if(l2t3_sii_wib_dequeue)
-        `PR_ALWAYS("siu_to_l2_mon", `ALWAYS, "<l2t3,sii,datatomcu,64writedata>::L2Tag = 3 Drained 64 bytes write data. Data enroute to MCU");
+        `PR_ALWAYS("siu_to_l2_mon", `ALWAYS, "<l2t3,sii,,l2tsiiwibdeq,{%x}>::L2 moved out 64 byte data from I/O write buffer and data towards MCU", l2t3_sii_wib_dequeue);
 end
 
 
@@ -176,11 +176,11 @@ end
 always @(posedge (iol2clk && enabled))
 begin
     if(sii_l2t4_req_vld)
-        `PR_ALWAYS("siu_to_l2_mon", `ALWAYS, "<sii,l2t4,headercycle,reqvld>::SII_L2T_REQ_VLD Tag = 4");
+        `PR_ALWAYS("siu_to_l2_mon", `ALWAYS, "<sii,l2t4,,siil2treqvld,{%x}>::First cycle of Packet transfer from SIU to L2", sii_l2t4_req_vld);
         /* To get the Header cycle */
         repeat(2) @(posedge iol2clk)
         begin
-            `PR_INFO("siu_to_l2_mon", `INFO, "SII to L2T = 4 Header Cycle Header = %x", sii_l2t4_req);
+            `PR_ALWAYS("siu_to_l2_mon", `ALWAYS, "<sii,l2t4,,siil2theader,{%x}>::Header Cycle from SII to L2", sii_l2t4_req);
         end
         /* To bypass the dummy cycle */
         repeat(3) @(posedge iol2clk);
@@ -189,13 +189,13 @@ end
 always @(posedge (iol2clk && enabled && l2t4_sii_iq_dequeue))
 begin
     if(l2t4_sii_iq_dequeue)
-        `PR_ALWAYS("siu_to_l2_mon", `ALWAYS, "<l2t4,sii,deque,readreq>::Read Requests from SIU Dequeued from L2Tag = 4 Input Queue");
+        `PR_ALWAYS("siu_to_l2_mon", `ALWAYS, "<l2t4,sii,,l2tsiidequeue,{%x}>::Read Requests from SIU Dequeued from L2 Input Queue", l2t4_sii_iq_dequeue);
 end
 
 always @(posedge (iol2clk && enabled && l2t4_sii_wib_dequeue))
 begin
     if(l2t4_sii_wib_dequeue)
-        `PR_ALWAYS("siu_to_l2_mon", `ALWAYS, "<l2t4,sii,datatomcu,64writedata>::L2Tag = 4 Drained 64 bytes write data. Data enroute to MCU");
+        `PR_ALWAYS("siu_to_l2_mon", `ALWAYS, "<l2t4,sii,,l2tsiiwibdeq,{%x}>::L2 moved out 64 byte data from I/O write buffer and data towards MCU", l2t4_sii_wib_dequeue);
 end
 
 
@@ -204,11 +204,11 @@ end
 always @(posedge (iol2clk && enabled))
 begin
     if(sii_l2t5_req_vld)
-        `PR_ALWAYS("siu_to_l2_mon", `ALWAYS, "<sii,l2t5,headercycle,reqvld>::SII_L2T_REQ_VLD Tag = 5");
+        `PR_ALWAYS("siu_to_l2_mon", `ALWAYS, "<sii,l2t5,,siil2treqvld,{%x}>::First cycle of Packet transfer from SIU to L2", sii_l2t5_req_vld);
         /* To get the Header cycle */
         repeat(2) @(posedge iol2clk)
         begin
-            `PR_INFO("siu_to_l2_mon", `INFO, "SII to L2T = 5 Header Cycle Header = %x", sii_l2t5_req);
+            `PR_ALWAYS("siu_to_l2_mon", `ALWAYS, "<sii,l2t5,,siil2theader,{%x}>::Header Cycle from SII to L2", sii_l2t5_req);
         end
         /* To bypass the dummy cycle */
         repeat(3) @(posedge iol2clk);
@@ -217,13 +217,13 @@ end
 always @(posedge (iol2clk && enabled && l2t5_sii_iq_dequeue))
 begin
     if(l2t5_sii_iq_dequeue)
-        `PR_ALWAYS("siu_to_l2_mon", `ALWAYS, "<l2t5,sii,deque,readreq>::Read Requests from SIU Dequeued from L2Tag = 5 Input Queue");
+        `PR_ALWAYS("siu_to_l2_mon", `ALWAYS, "<l2t5,sii,,l2tsiidequeue,{%x}>::Read Requests from SIU Dequeued from L2 Input Queue", l2t5_sii_iq_dequeue);
 end
 
 always @(posedge (iol2clk && enabled && l2t5_sii_wib_dequeue))
 begin
     if(l2t5_sii_wib_dequeue)
-        `PR_ALWAYS("siu_to_l2_mon", `ALWAYS, "<l2t5,sii,datatomcu,64writedata>::L2Tag = 5 Drained 64 bytes write data. Data enroute to MCU");
+        `PR_ALWAYS("siu_to_l2_mon", `ALWAYS, "<l2t5,sii,,l2tsiiwibdeq,{%x}>::L2 moved out 64 byte data from I/O write buffer and data towards MCU", l2t5_sii_wib_dequeue);
 end
 
 
@@ -232,11 +232,11 @@ end
 always @(posedge (iol2clk && enabled))
 begin
     if(sii_l2t6_req_vld)
-        `PR_ALWAYS("siu_to_l2_mon", `ALWAYS, "<sii,l2t6,headercycle,reqvld>::SII_L2T_REQ_VLD Tag = 6");
+        `PR_ALWAYS("siu_to_l2_mon", `ALWAYS, "<sii,l2t6,,siil2treqvld,{%x}>::First cycle of Packet transfer from SIU to L2", sii_l2t6_req_vld);
         /* To get the Header cycle */
         repeat(2) @(posedge iol2clk)
         begin
-            `PR_INFO("siu_to_l2_mon", `INFO, "SII to L2T = 6 Header Cycle Header = %x", sii_l2t6_req);
+            `PR_ALWAYS("siu_to_l2_mon", `ALWAYS, "<sii,l2t6,,siil2theader,{%x}>::Header Cycle from SII to L2", sii_l2t6_req);
         end
         /* To bypass the dummy cycle */
         repeat(3) @(posedge iol2clk);
@@ -245,13 +245,13 @@ end
 always @(posedge (iol2clk && enabled && l2t6_sii_iq_dequeue))
 begin
     if(l2t6_sii_iq_dequeue)
-        `PR_ALWAYS("siu_to_l2_mon", `ALWAYS, "<l2t6,sii,deque,readreq>::Read Requests from SIU Dequeued from L2Tag = 6 Input Queue");
+        `PR_ALWAYS("siu_to_l2_mon", `ALWAYS, "<l2t6,sii,,l2tsiidequeue,{%x}>::Read Requests from SIU Dequeued from L2 Input Queue", l2t6_sii_iq_dequeue);
 end
 
 always @(posedge (iol2clk && enabled && l2t6_sii_wib_dequeue))
 begin
     if(l2t6_sii_wib_dequeue)
-        `PR_ALWAYS("siu_to_l2_mon", `ALWAYS, "<l2t6,sii,datatomcu,64writedata>::L2Tag = 6 Drained 64 bytes write data. Data enroute to MCU");
+        `PR_ALWAYS("siu_to_l2_mon", `ALWAYS, "<l2t6,sii,,l2tsiiwibdeq,{%x}>::L2 moved out 64 byte data from I/O write buffer and data towards MCU", l2t6_sii_wib_dequeue);
 end
 
 
@@ -260,11 +260,11 @@ end
 always @(posedge (iol2clk && enabled))
 begin
     if(sii_l2t7_req_vld)
-        `PR_ALWAYS("siu_to_l2_mon", `ALWAYS, "<sii,l2t7,headercycle,reqvld>::SII_L2T_REQ_VLD Tag = 7");
+        `PR_ALWAYS("siu_to_l2_mon", `ALWAYS, "<sii,l2t7,,siil2treqvld,{%x}>::First cycle of Packet transfer from SIU to L2", sii_l2t7_req_vld);
         /* To get the Header cycle */
         repeat(2) @(posedge iol2clk)
         begin
-            `PR_INFO("siu_to_l2_mon", `INFO, "SII to L2T = 7 Header Cycle Header = %x", sii_l2t7_req);
+            `PR_ALWAYS("siu_to_l2_mon", `ALWAYS, "<sii,l2t6,,siil2theader,{%x}>::Header Cycle from SII to L2", sii_l2t6_req);
         end
         /* To bypass the dummy cycle */
         repeat(3) @(posedge iol2clk);
@@ -273,13 +273,13 @@ end
 always @(posedge (iol2clk && enabled && l2t7_sii_iq_dequeue))
 begin
     if(l2t7_sii_iq_dequeue)
-        `PR_ALWAYS("siu_to_l2_mon", `ALWAYS, "<l2t7,sii,deque,readreq>::Read Requests from SIU Dequeued from L2Tag = 7 Input Queue");
+        `PR_ALWAYS("siu_to_l2_mon", `ALWAYS, "<l2t7,sii,,l2tsiidequeue,{%x}>::Read Requests from SIU Dequeued from L2 Input Queue", l2t7_sii_iq_dequeue);
 end
 
 always @(posedge (iol2clk && enabled && l2t7_sii_wib_dequeue))
 begin
     if(l2t7_sii_wib_dequeue)
-        `PR_ALWAYS("siu_to_l2_mon", `ALWAYS, "<l2t7,sii,datatomcu,64writedata>::L2Tag = 7 Drained 64 bytes write data. Data enroute to MCU");
+        `PR_ALWAYS("siu_to_l2_mon", `ALWAYS, "<l2t7,sii,,l2tsiiwibdeq,{%x}>::L2 moved out 64 byte data from I/O write buffer and data towards MCU", l2t7_sii_wib_dequeue);
 end
 
 
