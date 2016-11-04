@@ -99,9 +99,9 @@ begin
     if(l2b0_sio_ctag_vld)
     begin
         `PR_ALWAYS("l2_to_siu_mon", `ALWAYS, "<l2b0,sio,,l2bsiovld,{%x}>::Read Reasponse Cycle from L2B to SIO Started", l2b0_sio_ctag_vld);
-        `PR_ALWAYS("l2_to_siu_mon", `ALWAYS, "<l2b0,sio,,l2bsioopes,{%x}>::L2B TO SIU Read Response  = %x", l2b0_sio_data[23:20]);
-        `PR_ALWAYS("l2_to_siu_mon", `ALWAYS, "<l2b0,sio,,l2bsiocba,{%x}>::L2B TO SIU Read Response  = %x", l2b0_sio_data[19:16]);
-        `PR_ALWAYS("l2_to_siu_mon", `ALWAYS, "<l2b0,sio,,l2bsiotag,{%x}>::L2B TO SIU Read Response  = %x", l2b0_sio_data[15:0]);
+        `PR_ALWAYS("l2_to_siu_mon", `ALWAYS, "<l2b0,sio,,l2bsioopes,{%x}>::L2B TO SIU Read Response", l2b0_sio_data[23:20]);
+        `PR_ALWAYS("l2_to_siu_mon", `ALWAYS, "<l2b0,sio,,l2bsiocba,{%x}>::L2B TO SIU Read Response", l2b0_sio_data[19:16]);
+        `PR_ALWAYS("l2_to_siu_mon", `ALWAYS, "<l2b0,sio,,l2bsiotag,{%x}>::L2B TO SIU Read Response", l2b0_sio_data[15:0]);
     end
 end
 
@@ -118,9 +118,9 @@ begin
     if(l2b1_sio_ctag_vld)
     begin
         `PR_ALWAYS("l2_to_siu_mon", `ALWAYS, "<l2b1,sio,,l2bsiovld,{%x}>::Read Reasponse Cycle from L2B to SIO Started", l2b1_sio_ctag_vld);
-        `PR_ALWAYS("l2_to_siu_mon", `ALWAYS, "<l2b1,sio,,l2bsioopes,{%x}>::L2B TO SIU Read Response  = %x", l2b1_sio_data[23:20]);
-        `PR_ALWAYS("l2_to_siu_mon", `ALWAYS, "<l2b1,sio,,l2bsiocba,{%x}>::L2B TO SIU Read Response  = %x", l2b1_sio_data[19:16]);
-        `PR_ALWAYS("l2_to_siu_mon", `ALWAYS, "<l2b1,sio,,l2bsiotag,{%x}>::L2B TO SIU Read Response  = %x", l2b1_sio_data[15:0]);
+        `PR_ALWAYS("l2_to_siu_mon", `ALWAYS, "<l2b1,sio,,l2bsioopes,{%x}>::L2B TO SIU Read Response", l2b1_sio_data[23:20]);
+        `PR_ALWAYS("l2_to_siu_mon", `ALWAYS, "<l2b1,sio,,l2bsiocba,{%x}>::L2B TO SIU Read Response", l2b1_sio_data[19:16]);
+        `PR_ALWAYS("l2_to_siu_mon", `ALWAYS, "<l2b1,sio,,l2bsiotag,{%x}>::L2B TO SIU Read Response", l2b1_sio_data[15:0]);
     end
 end
 
@@ -137,9 +137,9 @@ begin
     if(l2b2_sio_ctag_vld)
     begin
         `PR_ALWAYS("l2_to_siu_mon", `ALWAYS, "<l2b2,sio,,l2bsiovld,{%x}>::Read Reasponse Cycle from L2B to SIO Started", l2b2_sio_ctag_vld);
-        `PR_ALWAYS("l2_to_siu_mon", `ALWAYS, "<l2b2,sio,,l2bsioopes,{%x}>::L2B TO SIU Read Response  = %x", l2b2_sio_data[23:20]);
-        `PR_ALWAYS("l2_to_siu_mon", `ALWAYS, "<l2b2,sio,,l2bsiocba,{%x}>::L2B TO SIU Read Response  = %x", l2b2_sio_data[19:16]);
-        `PR_ALWAYS("l2_to_siu_mon", `ALWAYS, "<l2b2,sio,,l2bsiotag,{%x}>::L2B TO SIU Read Response  = %x", l2b2_sio_data[15:0]);
+        `PR_ALWAYS("l2_to_siu_mon", `ALWAYS, "<l2b2,sio,,l2bsioopes,{%x}>::L2B TO SIU Read Response", l2b2_sio_data[23:20]);
+        `PR_ALWAYS("l2_to_siu_mon", `ALWAYS, "<l2b2,sio,,l2bsiocba,{%x}>::L2B TO SIU Read Response", l2b2_sio_data[19:16]);
+        `PR_ALWAYS("l2_to_siu_mon", `ALWAYS, "<l2b2,sio,,l2bsiotag,{%x}>::L2B TO SIU Read Response", l2b2_sio_data[15:0]);
     end
 end
 
@@ -156,9 +156,9 @@ begin
     if(l2b3_sio_ctag_vld)
     begin
         `PR_ALWAYS("l2_to_siu_mon", `ALWAYS, "<l2b3,sio,,l2bsiovld,{%x}>::Read Reasponse Cycle from L2B to SIO Started", l2b3_sio_ctag_vld);
-        `PR_ALWAYS("l2_to_siu_mon", `ALWAYS, "<l2b3,sio,,l2bsioopes,{%x}>::L2B TO SIU Read Response  = %x", l2b3_sio_data[23:20]);
-        `PR_ALWAYS("l2_to_siu_mon", `ALWAYS, "<l2b3,sio,,l2bsiocba,{%x}>::L2B TO SIU Read Response  = %x", l2b3_sio_data[19:16]);
-        `PR_ALWAYS("l2_to_siu_mon", `ALWAYS, "<l2b3,sio,,l2bsiotag,{%x}>::L2B TO SIU Read Response  = %x", l2b3_sio_data[15:0]);
+        `PR_ALWAYS("l2_to_siu_mon", `ALWAYS, "<l2b3,sio,,l2bsioopes,{%x}>::L2B TO SIU Read Response", l2b3_sio_data[23:20]);
+        `PR_ALWAYS("l2_to_siu_mon", `ALWAYS, "<l2b3,sio,,l2bsiocba,{%x}>::L2B TO SIU Read Response", l2b3_sio_data[19:16]);
+        `PR_ALWAYS("l2_to_siu_mon", `ALWAYS, "<l2b3,sio,,l2bsiotag,{%x}>::L2B TO SIU Read Response", l2b3_sio_data[15:0]);
     end
 end
 
@@ -175,9 +175,9 @@ begin
     if(l2b4_sio_ctag_vld)
     begin
         `PR_ALWAYS("l2_to_siu_mon", `ALWAYS, "<l2b4,sio,,l2bsiovld,{%x}>::Read Reasponse Cycle from L2B to SIO Started", l2b3_sio_ctag_vld);
-        `PR_ALWAYS("l2_to_siu_mon", `ALWAYS, "<l2b4,sio,,l2bsioopes,{%x}>::L2B TO SIU Read Response  = %x", l2b4_sio_data[23:20]);
-        `PR_ALWAYS("l2_to_siu_mon", `ALWAYS, "<l2b4,sio,,l2bsiocba,{%x}>::L2B TO SIU Read Response  = %x", l2b4_sio_data[19:16]);
-        `PR_ALWAYS("l2_to_siu_mon", `ALWAYS, "<l2b4,sio,,l2bsiotag,{%x}>::L2B TO SIU Read Response  = %x", l2b4_sio_data[15:0]);
+        `PR_ALWAYS("l2_to_siu_mon", `ALWAYS, "<l2b4,sio,,l2bsioopes,{%x}>::L2B TO SIU Read Response", l2b4_sio_data[23:20]);
+        `PR_ALWAYS("l2_to_siu_mon", `ALWAYS, "<l2b4,sio,,l2bsiocba,{%x}>::L2B TO SIU Read Response", l2b4_sio_data[19:16]);
+        `PR_ALWAYS("l2_to_siu_mon", `ALWAYS, "<l2b4,sio,,l2bsiotag,{%x}>::L2B TO SIU Read Response", l2b4_sio_data[15:0]);
     end
 end
 
@@ -194,9 +194,9 @@ begin
     if(l2b5_sio_ctag_vld)
     begin
         `PR_ALWAYS("l2_to_siu_mon", `ALWAYS, "<l2b5,sio,,l2bsiovld,{%x}>::Read Reasponse Cycle from L2B to SIO Started", l2b5_sio_ctag_vld);
-        `PR_ALWAYS("l2_to_siu_mon", `ALWAYS, "<l2b5,sio,,l2bsioopes,{%x}>::L2B TO SIU Read Response  = %x", l2b5_sio_data[23:20]);
-        `PR_ALWAYS("l2_to_siu_mon", `ALWAYS, "<l2b5,sio,,l2bsiocba,{%x}>::L2B TO SIU Read Response  = %x", l2b5_sio_data[19:16]);
-        `PR_ALWAYS("l2_to_siu_mon", `ALWAYS, "<l2b5,sio,,l2bsiotag,{%x}>::L2B TO SIU Read Response  = %x", l2b5_sio_data[15:0]);
+        `PR_ALWAYS("l2_to_siu_mon", `ALWAYS, "<l2b5,sio,,l2bsioopes,{%x}>::L2B TO SIU Read Response", l2b5_sio_data[23:20]);
+        `PR_ALWAYS("l2_to_siu_mon", `ALWAYS, "<l2b5,sio,,l2bsiocba,{%x}>::L2B TO SIU Read Response", l2b5_sio_data[19:16]);
+        `PR_ALWAYS("l2_to_siu_mon", `ALWAYS, "<l2b5,sio,,l2bsiotag,{%x}>::L2B TO SIU Read Response", l2b5_sio_data[15:0]);
     end
 end
 
@@ -213,9 +213,9 @@ begin
     if(l2b6_sio_ctag_vld)
     begin
         `PR_ALWAYS("l2_to_siu_mon", `ALWAYS, "<l2b6,sio,,l2bsiovld,{%x}>::Read Reasponse Cycle from L2B to SIO Started", l2b6_sio_ctag_vld);
-        `PR_ALWAYS("l2_to_siu_mon", `ALWAYS, "<l2b6,sio,,l2bsioopes,{%x}>::L2B TO SIU Read Response  = %x", l2b6_sio_data[23:20]);
-        `PR_ALWAYS("l2_to_siu_mon", `ALWAYS, "<l2b6,sio,,l2bsiocba,{%x}>::L2B TO SIU Read Response  = %x", l2b6_sio_data[19:16]);
-        `PR_ALWAYS("l2_to_siu_mon", `ALWAYS, "<l2b6,sio,,l2bsiotag,{%x}>::L2B TO SIU Read Response  = %x", l2b6_sio_data[15:0]);
+        `PR_ALWAYS("l2_to_siu_mon", `ALWAYS, "<l2b6,sio,,l2bsioopes,{%x}>::L2B TO SIU Read Response", l2b6_sio_data[23:20]);
+        `PR_ALWAYS("l2_to_siu_mon", `ALWAYS, "<l2b6,sio,,l2bsiocba,{%x}>::L2B TO SIU Read Response", l2b6_sio_data[19:16]);
+        `PR_ALWAYS("l2_to_siu_mon", `ALWAYS, "<l2b6,sio,,l2bsiotag,{%x}>::L2B TO SIU Read Response", l2b6_sio_data[15:0]);
     end
 end
 
@@ -232,9 +232,9 @@ begin
     if(l2b7_sio_ctag_vld)
     begin
         `PR_ALWAYS("l2_to_siu_mon", `ALWAYS, "<l2b7,sio,,l2bsiovld,{%x}>::Read Reasponse Cycle from L2B to SIO Started", l2b7_sio_ctag_vld);
-        `PR_ALWAYS("l2_to_siu_mon", `ALWAYS, "<l2b7,sio,,l2bsioopes,{%x}>::L2B TO SIU Read Response  = %x", l2b7_sio_data[23:20]);
-        `PR_ALWAYS("l2_to_siu_mon", `ALWAYS, "<l2b7,sio,,l2bsiocba,{%x}>::L2B TO SIU Read Response  = %x", l2b7_sio_data[19:16]);
-        `PR_ALWAYS("l2_to_siu_mon", `ALWAYS, "<l2b7,sio,,l2bsiotag,{%x}>::L2B TO SIU Read Response  = %x", l2b7_sio_data[15:0]);
+        `PR_ALWAYS("l2_to_siu_mon", `ALWAYS, "<l2b7,sio,,l2bsioopes,{%x}>::L2B TO SIU Read Response", l2b7_sio_data[23:20]);
+        `PR_ALWAYS("l2_to_siu_mon", `ALWAYS, "<l2b7,sio,,l2bsiocba,{%x}>::L2B TO SIU Read Response", l2b7_sio_data[19:16]);
+        `PR_ALWAYS("l2_to_siu_mon", `ALWAYS, "<l2b7,sio,,l2bsiotag,{%x}>::L2B TO SIU Read Response", l2b7_sio_data[15:0]);
     end
 end
 
