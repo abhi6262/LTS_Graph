@@ -38,7 +38,7 @@ wire [127:0] dmu_sii_data = `SII.dmu_sii_data;
 wire [7:0] dmu_sii_parity = `SII.dmu_sii_parity;
 wire [15:0] dmu_sii_be = `SII.dmu_sii_be;
 
-wire [1:0] rwm;
+reg [1:0] rwm;
 
 /* Section 6.4.3 and Section 6.4.4.2 Manual Vol 1 */
 

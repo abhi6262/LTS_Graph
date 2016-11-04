@@ -34,7 +34,7 @@ wire [127:0] niu_sii_data = `SII.niu_sii_data;
 wire [7:0] niu_sii_parity = `SII.niu_sii_parity;
 wire [15:0] niu_sii_be = `SII.niu_sii_be;
 
-wire [1:0] rwm;
+reg [1:0] rwm;
 
 /* Section 6.4.3 and Section 6.4.4.1 Manual Vol 1 */
 
