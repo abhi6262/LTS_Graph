@@ -67,9 +67,13 @@ begin
     if(sii_l2t0_req_vld)
         `PR_ALWAYS("siu_to_l2_mon", `ALWAYS, "<sii,l2t0,,siil2treqvld,{%x}>::First cycle of Packet transfer from SIU to L2", sii_l2t0_req_vld);
         /* To get the Header cycle */
-        repeat(2) @(posedge iol2clk)
+        `PR_ALWAYS("siu_to_l2_mon", `ALWAYS, "<sii,l2t0,,siil2topes,{%x}>::Header Cycle from SII to L2", sii_l2t0_req[30:27]);
+        `PR_ALWAYS("siu_to_l2_mon", `ALWAYS, "<sii,l2t0,,siil2tconfig,{%x}>::Header Cycle from SII to L2", sii_l2t0_req[26:24]);
+        `PR_ALWAYS("siu_to_l2_mon", `ALWAYS, "<sii,l2t0,,siil2tag,{%x}>::Header Cycle from SII to L2", sii_l2t0_req[21:8]);
+        `PR_ALWAYS("siu_to_l2_mon", `ALWAYS, "<sii,l2t0,,siil2taddr3932,{%x}>::Header Cycle from SII to L2", sii_l2t0_req[7:0]);
+        repeat(1) @(posedge iol2clk)
         begin
-            `PR_ALWAYS("siu_to_l2_mon", `ALWAYS, "<sii,l2t0,,siil2theader,{%x}>::Header Cycle from SII to L2", sii_l2t0_req);
+            `PR_ALWAYS("siu_to_l2_mon", `ALWAYS, "<sii,l2t0,,siil2taddr310,{%x}>::Header Cycle from SII to L2", sii_l2t0_req);
         end
         /* To bypass the dummy cycle */
         repeat(3) @(posedge iol2clk);
@@ -94,9 +98,13 @@ begin
     if(sii_l2t1_req_vld)
         `PR_ALWAYS("siu_to_l2_mon", `ALWAYS, "<sii,l2t1,,siil2treqvld,{%x}>::First cycle of Packet transfer from SIU to L2", sii_l2t1_req_vld);
         /* To get the Header cycle */
-        repeat(2) @(posedge iol2clk)
+        `PR_ALWAYS("siu_to_l2_mon", `ALWAYS, "<sii,l2t1,,siil2topes,{%x}>::Header Cycle from SII to L2", sii_l2t1_req[30:27]);
+        `PR_ALWAYS("siu_to_l2_mon", `ALWAYS, "<sii,l2t1,,siil2tconfig,{%x}>::Header Cycle from SII to L2", sii_l2t1_req[26:24]);
+        `PR_ALWAYS("siu_to_l2_mon", `ALWAYS, "<sii,l2t1,,siil2tag,{%x}>::Header Cycle from SII to L2", sii_l2t1_req[21:8]);
+        `PR_ALWAYS("siu_to_l2_mon", `ALWAYS, "<sii,l2t1,,siil2taddr3932,{%x}>::Header Cycle from SII to L2", sii_l2t1_req[7:0]);
+        repeat(1) @(posedge iol2clk)
         begin
-            `PR_ALWAYS("siu_to_l2_mon", `ALWAYS, "<sii,l2t1,,siil2theader,{%x}>::Header Cycle from SII to L2", sii_l2t1_req);
+            `PR_ALWAYS("siu_to_l2_mon", `ALWAYS, "<sii,l2t1,,siil2taddr310,{%x}>::Header Cycle from SII to L2", sii_l2t1_req);
         end
         /* To bypass the dummy cycle */
         repeat(3) @(posedge iol2clk);
@@ -122,9 +130,13 @@ begin
     if(sii_l2t2_req_vld)
         `PR_ALWAYS("siu_to_l2_mon", `ALWAYS, "<sii,l2t2,,siil2treqvld,{%x}>::First cycle of Packet transfer from SIU to L2", sii_l2t2_req_vld);
         /* To get the Header cycle */
-        repeat(2) @(posedge iol2clk)
+        `PR_ALWAYS("siu_to_l2_mon", `ALWAYS, "<sii,l2t2,,siil2topes,{%x}>::Header Cycle from SII to L2", sii_l2t2_req[30:27]);
+        `PR_ALWAYS("siu_to_l2_mon", `ALWAYS, "<sii,l2t2,,siil2tconfig,{%x}>::Header Cycle from SII to L2", sii_l2t2_req[26:24]);
+        `PR_ALWAYS("siu_to_l2_mon", `ALWAYS, "<sii,l2t2,,siil2tag,{%x}>::Header Cycle from SII to L2", sii_l2t2_req[21:8]);
+        `PR_ALWAYS("siu_to_l2_mon", `ALWAYS, "<sii,l2t2,,siil2taddr3932,{%x}>::Header Cycle from SII to L2", sii_l2t2_req[7:0]);
+        repeat(1) @(posedge iol2clk)
         begin
-            `PR_ALWAYS("siu_to_l2_mon", `ALWAYS, "<sii,l2t2,,siil2theader,{%x}>::Header Cycle from SII to L2", sii_l2t2_req);
+            `PR_ALWAYS("siu_to_l2_mon", `ALWAYS, "<sii,l2t2,,siil2taddr310,{%x}>::Header Cycle from SII to L2", sii_l2t2_req);
         end
         /* To bypass the dummy cycle */
         repeat(3) @(posedge iol2clk);
@@ -150,9 +162,13 @@ begin
     if(sii_l2t3_req_vld)
         `PR_ALWAYS("siu_to_l2_mon", `ALWAYS, "<sii,l2t3,,siil2treqvld,{%x}>::First cycle of Packet transfer from SIU to L2", sii_l2t3_req_vld);
         /* To get the Header cycle */
-        repeat(2) @(posedge iol2clk)
+        `PR_ALWAYS("siu_to_l2_mon", `ALWAYS, "<sii,l2t3,,siil2topes,{%x}>::Header Cycle from SII to L2", sii_l2t3_req[30:27]);
+        `PR_ALWAYS("siu_to_l2_mon", `ALWAYS, "<sii,l2t3,,siil2tconfig,{%x}>::Header Cycle from SII to L2", sii_l2t3_req[26:24]);
+        `PR_ALWAYS("siu_to_l2_mon", `ALWAYS, "<sii,l2t3,,siil2tag,{%x}>::Header Cycle from SII to L2", sii_l2t3_req[21:8]);
+        `PR_ALWAYS("siu_to_l2_mon", `ALWAYS, "<sii,l2t3,,siil2taddr3932,{%x}>::Header Cycle from SII to L2", sii_l2t3_req[7:0]);
+        repeat(1) @(posedge iol2clk)
         begin
-            `PR_ALWAYS("siu_to_l2_mon", `ALWAYS, "<sii,l2t3,,siil2theader,{%x}>::Header Cycle from SII to L2", sii_l2t3_req);
+            `PR_ALWAYS("siu_to_l2_mon", `ALWAYS, "<sii,l2t3,,siil2taddr310,{%x}>::Header Cycle from SII to L2", sii_l2t3_req);
         end
         /* To bypass the dummy cycle */
         repeat(3) @(posedge iol2clk);
@@ -178,9 +194,13 @@ begin
     if(sii_l2t4_req_vld)
         `PR_ALWAYS("siu_to_l2_mon", `ALWAYS, "<sii,l2t4,,siil2treqvld,{%x}>::First cycle of Packet transfer from SIU to L2", sii_l2t4_req_vld);
         /* To get the Header cycle */
-        repeat(2) @(posedge iol2clk)
+        `PR_ALWAYS("siu_to_l2_mon", `ALWAYS, "<sii,l2t4,,siil2topes,{%x}>::Header Cycle from SII to L2", sii_l2t4_req[30:27]);
+        `PR_ALWAYS("siu_to_l2_mon", `ALWAYS, "<sii,l2t4,,siil2tconfig,{%x}>::Header Cycle from SII to L2", sii_l2t4_req[26:24]);
+        `PR_ALWAYS("siu_to_l2_mon", `ALWAYS, "<sii,l2t4,,siil2tag,{%x}>::Header Cycle from SII to L2", sii_l2t4_req[21:8]);
+        `PR_ALWAYS("siu_to_l2_mon", `ALWAYS, "<sii,l2t4,,siil2taddr3932,{%x}>::Header Cycle from SII to L2", sii_l2t4_req[7:0]);
+        repeat(1) @(posedge iol2clk)
         begin
-            `PR_ALWAYS("siu_to_l2_mon", `ALWAYS, "<sii,l2t4,,siil2theader,{%x}>::Header Cycle from SII to L2", sii_l2t4_req);
+            `PR_ALWAYS("siu_to_l2_mon", `ALWAYS, "<sii,l2t4,,siil2taddr310,{%x}>::Header Cycle from SII to L2", sii_l2t4_req);
         end
         /* To bypass the dummy cycle */
         repeat(3) @(posedge iol2clk);
@@ -206,9 +226,13 @@ begin
     if(sii_l2t5_req_vld)
         `PR_ALWAYS("siu_to_l2_mon", `ALWAYS, "<sii,l2t5,,siil2treqvld,{%x}>::First cycle of Packet transfer from SIU to L2", sii_l2t5_req_vld);
         /* To get the Header cycle */
-        repeat(2) @(posedge iol2clk)
+        `PR_ALWAYS("siu_to_l2_mon", `ALWAYS, "<sii,l2t5,,siil2topes,{%x}>::Header Cycle from SII to L2", sii_l2t5_req[30:27]);
+        `PR_ALWAYS("siu_to_l2_mon", `ALWAYS, "<sii,l2t5,,siil2tconfig,{%x}>::Header Cycle from SII to L2", sii_l2t5_req[26:24]);
+        `PR_ALWAYS("siu_to_l2_mon", `ALWAYS, "<sii,l2t5,,siil2tag,{%x}>::Header Cycle from SII to L2", sii_l2t5_req[21:8]);
+        `PR_ALWAYS("siu_to_l2_mon", `ALWAYS, "<sii,l2t5,,siil2taddr3932,{%x}>::Header Cycle from SII to L2", sii_l2t5_req[7:0]);
+        repeat(1) @(posedge iol2clk)
         begin
-            `PR_ALWAYS("siu_to_l2_mon", `ALWAYS, "<sii,l2t5,,siil2theader,{%x}>::Header Cycle from SII to L2", sii_l2t5_req);
+            `PR_ALWAYS("siu_to_l2_mon", `ALWAYS, "<sii,l2t5,,siil2taddr310,{%x}>::Header Cycle from SII to L2", sii_l2t5_req);
         end
         /* To bypass the dummy cycle */
         repeat(3) @(posedge iol2clk);
@@ -234,9 +258,13 @@ begin
     if(sii_l2t6_req_vld)
         `PR_ALWAYS("siu_to_l2_mon", `ALWAYS, "<sii,l2t6,,siil2treqvld,{%x}>::First cycle of Packet transfer from SIU to L2", sii_l2t6_req_vld);
         /* To get the Header cycle */
-        repeat(2) @(posedge iol2clk)
+        `PR_ALWAYS("siu_to_l2_mon", `ALWAYS, "<sii,l2t6,,siil2topes,{%x}>::Header Cycle from SII to L2", sii_l2t6_req[30:27]);
+        `PR_ALWAYS("siu_to_l2_mon", `ALWAYS, "<sii,l2t6,,siil2tconfig,{%x}>::Header Cycle from SII to L2", sii_l2t6_req[26:24]);
+        `PR_ALWAYS("siu_to_l2_mon", `ALWAYS, "<sii,l2t6,,siil2tag,{%x}>::Header Cycle from SII to L2", sii_l2t6_req[21:8]);
+        `PR_ALWAYS("siu_to_l2_mon", `ALWAYS, "<sii,l2t6,,siil2taddr3932,{%x}>::Header Cycle from SII to L2", sii_l2t6_req[7:0]);
+        repeat(1) @(posedge iol2clk)
         begin
-            `PR_ALWAYS("siu_to_l2_mon", `ALWAYS, "<sii,l2t6,,siil2theader,{%x}>::Header Cycle from SII to L2", sii_l2t6_req);
+            `PR_ALWAYS("siu_to_l2_mon", `ALWAYS, "<sii,l2t6,,siil2taddr310,{%x}>::Header Cycle from SII to L2", sii_l2t6_req);
         end
         /* To bypass the dummy cycle */
         repeat(3) @(posedge iol2clk);
@@ -262,9 +290,13 @@ begin
     if(sii_l2t7_req_vld)
         `PR_ALWAYS("siu_to_l2_mon", `ALWAYS, "<sii,l2t7,,siil2treqvld,{%x}>::First cycle of Packet transfer from SIU to L2", sii_l2t7_req_vld);
         /* To get the Header cycle */
-        repeat(2) @(posedge iol2clk)
+        `PR_ALWAYS("siu_to_l2_mon", `ALWAYS, "<sii,l2t7,,siil2topes,{%x}>::Header Cycle from SII to L2", sii_l2t7_req[30:27]);
+        `PR_ALWAYS("siu_to_l2_mon", `ALWAYS, "<sii,l2t7,,siil2tconfig,{%x}>::Header Cycle from SII to L2", sii_l2t7_req[26:24]);
+        `PR_ALWAYS("siu_to_l2_mon", `ALWAYS, "<sii,l2t7,,siil2tag,{%x}>::Header Cycle from SII to L2", sii_l2t7_req[21:8]);
+        `PR_ALWAYS("siu_to_l2_mon", `ALWAYS, "<sii,l2t7,,siil2taddr3932,{%x}>::Header Cycle from SII to L2", sii_l2t7_req[7:0]);
+        repeat(1) @(posedge iol2clk)
         begin
-            `PR_ALWAYS("siu_to_l2_mon", `ALWAYS, "<sii,l2t6,,siil2theader,{%x}>::Header Cycle from SII to L2", sii_l2t6_req);
+            `PR_ALWAYS("siu_to_l2_mon", `ALWAYS, "<sii,l2t7,,siil2taddr310,{%x}>::Header Cycle from SII to L2", sii_l2t7_req);
         end
         /* To bypass the dummy cycle */
         repeat(3) @(posedge iol2clk);

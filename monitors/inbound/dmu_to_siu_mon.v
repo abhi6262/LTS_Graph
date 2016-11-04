@@ -118,7 +118,9 @@ end
 always @(posedge (iol2clk && enabled && write_payload_cycle_detected))
 begin
     `PR_ALWAYS("dmu_to_siu_mon", `ALWAYS, "<dmu,sii,wpayloadcycle,dmawritepayload>::DMU TO SIU DMA Write Request Payload Cycle");
-    repeat (4) @(posedge iol2clk)
+    `PR_INFO("dmu_to_siu_mon", `INFO, "DMA Write Payload = %x", dmu_sii_data);
+    `PR_INFO("dmu_to_siu_mon", `INFO, "Write Payload Parity = %x", dmu_sii_parity);
+    repeat (3) @(posedge iol2clk)
     begin
         `PR_INFO("dmu_to_siu_mon", `INFO, "DMA Write Payload = %x", dmu_sii_data);
         `PR_INFO("dmu_to_siu_mon", `INFO, "Write Payload Parity = %x", dmu_sii_parity);

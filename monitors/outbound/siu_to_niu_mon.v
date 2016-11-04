@@ -65,7 +65,9 @@ begin
     if (sio_niu_datareq_d)
     begin
         `PR_ALWAYS("sio_to_niu_mon", `ALWAYS, "<sio,niu,,dmapayload>::SIO to DMU Return Data Payload Cycle");
-        repeat (4) @(posedge iol2clk)
+        `PR_INFO("sio_to_niu_mon", `INFO, "DMA Response Payload = %x", sio_niu_data);
+        `PR_INFO("sio_to_niu_mon", `INFO, "DMA Response Parity = %x", sio_niu_parity);
+        repeat (3) @(posedge iol2clk)
         begin
             `PR_INFO("sio_to_niu_mon", `INFO, "DMA Response Payload = %x", sio_niu_data);
             `PR_INFO("sio_to_niu_mon", `INFO, "DMA Response Parity = %x", sio_niu_parity);

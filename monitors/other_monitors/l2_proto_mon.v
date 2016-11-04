@@ -522,7 +522,8 @@ begin
         if(l2b0_mcu0_data_vld_r5)
         begin
             `PR_ALWAYS("l2_proto_mon", `ALWAYS, "<l2b0,mcu0,,l2bmcudatavld,{%x}>::L2B0 to MCU0 Data Valid and Write Data Cycle", l2b0_mcu0_data_vld_r5);
-            repeat (8) @(posedge cmp_clk)
+            `PR_INFO("l2_proto_mon", `INFO, "L2B0 to MCU0 Write Data = %x", l2b0_mcu0_wr_data_r5);
+            repeat (7) @(posedge cmp_clk)
             begin
                 `PR_INFO("l2_proto_mon", `INFO, "L2B0 to MCU0 Write Data = %x", l2b0_mcu0_wr_data_r5);
             end
@@ -550,7 +551,8 @@ begin
         if(l2b1_mcu0_data_vld_r5)
         begin
             `PR_ALWAYS("l2_proto_mon", `ALWAYS, "<l2b1,mcu0,,l2bmcudatavld,{%x}>::L2B1 to MCU0 Data Valid and Write Data Cycle", l2b1_mcu0_data_vld_r5);
-            repeat (8) @(posedge cmp_clk)
+            `PR_INFO("l2_proto_mon", `INFO, "L2B1 to MCU0 Write Data = %x", l2b1_mcu0_wr_data_r5);
+            repeat (7) @(posedge cmp_clk)
             begin
                 `PR_INFO("l2_proto_mon", `INFO, "L2B1 to MCU0 Write Data = %x", l2b1_mcu0_wr_data_r5);
             end
@@ -579,7 +581,8 @@ begin
         if(l2b2_mcu1_data_vld_r5)
         begin
             `PR_ALWAYS("l2_proto_mon", `ALWAYS, "<l2b2,mcu1,,l2bmcudatavld,{%x}>::L2B2 to MCU1 Data Valid and Write Data Cycle", l2b2_mcu1_data_vld_r5);
-            repeat (8) @(posedge cmp_clk)
+            `PR_INFO("l2_proto_mon", `INFO, "L2B2 to MCU1 Write Data = %x", l2b2_mcu1_wr_data_r5);
+            repeat (7) @(posedge cmp_clk)
             begin
                 `PR_INFO("l2_proto_mon", `INFO, "L2B2 to MCU1 Write Data = %x", l2b2_mcu1_wr_data_r5);
             end
@@ -608,7 +611,8 @@ begin
         if(l2b3_mcu1_data_vld_r5)
         begin
             `PR_ALWAYS("l2_proto_mon", `ALWAYS, "<l2b3,mcu1,,l2bmcudatavld,{%x}>::L2B3 to MCU1 Data Valid and Write Data Cycle", l2b3_mcu1_data_vld_r5);
-            repeat (8) @(posedge cmp_clk)
+            `PR_INFO("l2_proto_mon", `INFO, "L2B3 to MCU1 Write Data = %x", l2b3_mcu1_wr_data_r5);
+            repeat (7) @(posedge cmp_clk)
             begin
                 `PR_INFO("l2_proto_mon", `INFO, "L2B3 to MCU1 Write Data = %x", l2b3_mcu1_wr_data_r5);
             end
@@ -636,7 +640,8 @@ begin
         if(l2b4_mcu2_data_vld_r5)
         begin
             `PR_ALWAYS("l2_proto_mon", `ALWAYS, "<l2b4,mcu2,,l2bmcudatavld,{%x}>::L2B4 to MCU2 Data Valid and Write Data Cycle", l2b4_mcu2_data_vld_r5);
-            repeat (8) @(posedge cmp_clk)
+            `PR_INFO("l2_proto_mon", `INFO, "L2B4 to MCU2 Write Data = %x", l2b4_mcu2_wr_data_r5);
+            repeat (7) @(posedge cmp_clk)
             begin
                 `PR_INFO("l2_proto_mon", `INFO, "L2B4 to MCU2 Write Data = %x", l2b4_mcu2_wr_data_r5);
             end
@@ -664,7 +669,8 @@ begin
         if(l2b5_mcu2_data_vld_r5)
         begin
             `PR_ALWAYS("l2_proto_mon", `ALWAYS, "<l2b5,mcu2,,l2bmcudatavld,{%x}>::L2B5 to MCU2 Data Valid and Write Data Cycle", l2b5_mcu2_data_vld_r5);
-            repeat (8) @(posedge cmp_clk)
+            `PR_INFO("l2_proto_mon", `INFO, "L2B5 to MCU2 Write Data = %x", l2b5_mcu2_wr_data_r5);
+            repeat (7) @(posedge cmp_clk)
             begin
                 `PR_INFO("l2_proto_mon", `INFO, "L2B5 to MCU2 Write Data = %x", l2b5_mcu2_wr_data_r5);
             end
@@ -692,7 +698,8 @@ begin
         if(l2b6_mcu3_data_vld_r5)
         begin
             `PR_ALWAYS("l2_proto_mon", `ALWAYS, "<l2b6,mcu3,,l2bmcudatavld,{%x}>::L2B6 to MCU3 Data Valid and Write Data Cycle", l2b6_mcu3_data_vld_r5);
-            repeat (8) @(posedge cmp_clk)
+            `PR_INFO("l2_proto_mon", `INFO, "L2B6 to MCU3 Write Data = %x", l2b6_mcu3_wr_data_r5);
+            repeat (7) @(posedge cmp_clk)
             begin
                 `PR_INFO("l2_proto_mon", `INFO, "L2B6 to MCU3 Write Data = %x", l2b6_mcu3_wr_data_r5);
             end
@@ -720,7 +727,8 @@ begin
         if(l2b7_mcu3_data_vld_r5)
         begin
             `PR_ALWAYS("l2_proto_mon", `ALWAYS, "<l2b7,mcu3,,l2bmcudatavld,{%x}>::L2B7 to MCU3 Data Valid and Write Data Cycle", l2b7_mcu3_data_vld_r5);
-            repeat (8) @(posedge cmp_clk)
+            `PR_INFO("l2_proto_mon", `INFO, "L2B7 to MCU3 Write Data = %x", l2b7_mcu3_wr_data_r5);
+            repeat (7) @(posedge cmp_clk)
             begin
                 `PR_INFO("l2_proto_mon", `INFO, "L2B7 to MCU3 Write Data = %x", l2b7_mcu3_wr_data_r5);
             end
