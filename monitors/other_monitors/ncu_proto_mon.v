@@ -221,7 +221,7 @@ always @(posedge (cmp_clk && enabled))
 begin
     if(ncu_cpx_req_cq_d != 8'b0)
     begin
-        `PR_ALWAYS("ncu_proto_mon", `ALWAYS, "<ncu,cpx,,ncucpxdata,{%x,%x}>::NCU transferring data to CPX for CPU", ncu_cpx_data_ca, ncu_cpx_req_cq_d);
+        `PR_ALWAYS("ncu_proto_mon", `ALWAYS, "<ncu,cpx,,ncucpxdata,{%x}>::NCU transferring data to CPX for CPU", ncu_cpx_req_cq_d);
     end
 end
 
@@ -313,11 +313,20 @@ begin
         `PR_INFO("ncu_proto_mon", `INFO, "NCU to MCU0 Transaction Initiated");
         ncu_mcu0_vld_strobe = 1'b1;
         if(ncu_mcu0_data == 4'b0100)
-            `PR_ALWAYS("ncu_proto_mon", `ALWAYS, "<ncu,mcu0,,readreqpcx,{%x,%x}>::NCU to MCU0 READ_REQ for PCX Packet", ncu_mcu0_vld, ncu_mcu0_data);
+        begin
+            `PR_ALWAYS("ncu_proto_mon", `ALWAYS, "<ncu,mcu0,,readreqpcx,{%x}>::NCU to MCU0 READ_REQ for PCX Packet", ncu_mcu0_vld);
+            `PR_ALWAYS("ncu_proto_mon", `ALWAYS, "<ncu,mcu0,,readreqpcx,{%x}>::NCU to MCU0 READ_REQ for PCX Packet", ncu_mcu0_data);
+        end
         else if(ncu_mcu0_data == 4'b0101)
-            `PR_ALWAYS("ncu_proto_mon", `ALWAYS, "<ncu,mcu0,,writereqpcx,{%x,%x}>::NCU to MCU0 WRITE_REQ for PCX Packet", ncu_mcu0_vld, ncu_mcu0_data);
+        begin
+            `PR_ALWAYS("ncu_proto_mon", `ALWAYS, "<ncu,mcu0,,writereqpcx,{%x}>::NCU to MCU0 WRITE_REQ for PCX Packet", ncu_mcu0_vld);
+            `PR_ALWAYS("ncu_proto_mon", `ALWAYS, "<ncu,mcu0,,writereqpcx,{%x}>::NCU to MCU0 WRITE_REQ for PCX Packet", ncu_mcu0_data);
+        end
         else if(ncu_mcu0_data == 4'b0110)
-            `PR_ALWAYS("ncu_proto_mon", `ALWAYS, "<ncu,mcu0,,ifillpcx,{%x,%x}>::NCU to MCU0 IFILL_REQ for PCX Packet", ncu_mcu0_vld, ncu_mcu0_data);
+        begin
+            `PR_ALWAYS("ncu_proto_mon", `ALWAYS, "<ncu,mcu0,,ifillpcx,{%x}>::NCU to MCU0 IFILL_REQ for PCX Packet", ncu_mcu0_vld);
+            `PR_ALWAYS("ncu_proto_mon", `ALWAYS, "<ncu,mcu0,,ifillpcx,{%x}>::NCU to MCU0 IFILL_REQ for PCX Packet", ncu_mcu0_data);
+        end
     end
 end
 
@@ -398,11 +407,20 @@ begin
         `PR_INFO("ncu_proto_mon", `INFO, "NCU to MCU1 Transaction Initiated");
         ncu_mcu1_vld_strobe = 1'b1;
         if(ncu_mcu1_data == 4'b0100)
-            `PR_ALWAYS("ncu_proto_mon", `ALWAYS, "<ncu,mcu1,,readreqpcx,{%x,%x}>::NCU to MCU1 READ_REQ for PCX Packet", ncu_mcu1_vld, ncu_mcu1_data);
+        begin
+            `PR_ALWAYS("ncu_proto_mon", `ALWAYS, "<ncu,mcu1,,readreqpcx,{%x}>::NCU to MCU1 READ_REQ for PCX Packet", ncu_mcu1_vld);
+            `PR_ALWAYS("ncu_proto_mon", `ALWAYS, "<ncu,mcu1,,readreqpcx,{%x}>::NCU to MCU1 READ_REQ for PCX Packet", ncu_mcu1_data);
+        end
         else if(ncu_mcu1_data == 4'b0101)
-            `PR_ALWAYS("ncu_proto_mon", `ALWAYS, "<ncu,mcu1,,writereqpcx,{%x,%x}>::NCU to MCU1 WRITE_REQ for PCX Packet", ncu_mcu1_vld, ncu_mcu1_data);
+        begin
+            `PR_ALWAYS("ncu_proto_mon", `ALWAYS, "<ncu,mcu1,,writereqpcx,{%x}>::NCU to MCU1 WRITE_REQ for PCX Packet", ncu_mcu1_vld);
+            `PR_ALWAYS("ncu_proto_mon", `ALWAYS, "<ncu,mcu1,,writereqpcx,{%x}>::NCU to MCU1 WRITE_REQ for PCX Packet", ncu_mcu1_data);
+        end
         else if(ncu_mcu1_data == 4'b0110)
-            `PR_ALWAYS("ncu_proto_mon", `ALWAYS, "<ncu,mcu1,,ifillpcx,{%x,%x}>::NCU to MCU1 IFILL_REQ for PCX Packet", ncu_mcu1_vld, ncu_mcu1_data);
+        begin
+            `PR_ALWAYS("ncu_proto_mon", `ALWAYS, "<ncu,mcu1,,ifillpcx,{%x}>::NCU to MCU1 IFILL_REQ for PCX Packet", ncu_mcu1_vld);
+            `PR_ALWAYS("ncu_proto_mon", `ALWAYS, "<ncu,mcu1,,ifillpcx,{%x}>::NCU to MCU1 IFILL_REQ for PCX Packet", ncu_mcu1_data);
+        end
     end
 end
 
@@ -487,11 +505,20 @@ begin
         `PR_INFO("ncu_proto_mon", `INFO, "NCU to MCU2 Transaction Initiated");
         ncu_mcu2_vld_strobe = 1'b1;
         if(ncu_mcu2_data == 4'b0100)
-            `PR_ALWAYS("ncu_proto_mon", `ALWAYS, "<ncu,mcu2,,readreqpcx,{%x,%x}>::NCU to MCU2 READ_REQ for PCX Packet", ncu_mcu2_vld, ncu_mcu2_data);
+        begin
+            `PR_ALWAYS("ncu_proto_mon", `ALWAYS, "<ncu,mcu2,,readreqpcx,{%x}>::NCU to MCU2 READ_REQ for PCX Packet", ncu_mcu2_vld);
+            `PR_ALWAYS("ncu_proto_mon", `ALWAYS, "<ncu,mcu2,,readreqpcx,{%x}>::NCU to MCU2 READ_REQ for PCX Packet", ncu_mcu2_data);
+        end
         else if(ncu_mcu2_data == 4'b0101)
-            `PR_ALWAYS("ncu_proto_mon", `ALWAYS, "<ncu,mcu2,,writereqpcx,{%x,%x}>::NCU to MCU2 WRITE_REQ for PCX Packet", ncu_mcu2_vld, ncu_mcu2_data);
+        begin
+            `PR_ALWAYS("ncu_proto_mon", `ALWAYS, "<ncu,mcu2,,writereqpcx,{%x}>::NCU to MCU2 WRITE_REQ for PCX Packet", ncu_mcu2_vld);
+            `PR_ALWAYS("ncu_proto_mon", `ALWAYS, "<ncu,mcu2,,writereqpcx,{%x}>::NCU to MCU2 WRITE_REQ for PCX Packet", ncu_mcu2_data);
+        end
         else if(ncu_mcu2_data == 4'b0110)
-            `PR_ALWAYS("ncu_proto_mon", `ALWAYS, "<ncu,mcu2,,ifillpcx,{%x,%x}>::NCU to MCU2 IFILL_REQ for PCX Packet", ncu_mcu2_vld, ncu_mcu2_data);
+        begin
+            `PR_ALWAYS("ncu_proto_mon", `ALWAYS, "<ncu,mcu2,,ifillpcx,{%x}>::NCU to MCU2 IFILL_REQ for PCX Packet", ncu_mcu2_vld);
+            `PR_ALWAYS("ncu_proto_mon", `ALWAYS, "<ncu,mcu2,,ifillpcx,{%x}>::NCU to MCU2 IFILL_REQ for PCX Packet", ncu_mcu2_data);
+        end
     end
 end
 
@@ -575,11 +602,20 @@ begin
         `PR_INFO("ncu_proto_mon", `INFO, "NCU to MCU3 Transaction Initiated");
         ncu_mcu3_vld_strobe = 1'b1;
         if(ncu_mcu3_data == 4'b0100)
-            `PR_ALWAYS("ncu_proto_mon", `ALWAYS, "<ncu,mcu3,,readreqpcx,{%x,%x}>::NCU to MCU3 READ_REQ for PCX Packet", ncu_mcu3_vld, ncu_mcu3_data);
+        begin
+            `PR_ALWAYS("ncu_proto_mon", `ALWAYS, "<ncu,mcu3,,readreqpcx,{%x}>::NCU to MCU3 READ_REQ for PCX Packet", ncu_mcu3_vld);
+            `PR_ALWAYS("ncu_proto_mon", `ALWAYS, "<ncu,mcu3,,readreqpcx,{%x}>::NCU to MCU3 READ_REQ for PCX Packet", ncu_mcu3_data);
+        end
         else if(ncu_mcu3_data == 4'b0101)
-            `PR_ALWAYS("ncu_proto_mon", `ALWAYS, "<ncu,mcu3,,writereqpcx,{%x,%x}>::NCU to MCU3 WRITE_REQ for PCX Packet", ncu_mcu3_vld, ncu_mcu3_data);
+        begin
+            `PR_ALWAYS("ncu_proto_mon", `ALWAYS, "<ncu,mcu3,,writereqpcx,{%x}>::NCU to MCU3 WRITE_REQ for PCX Packet", ncu_mcu3_vld);
+            `PR_ALWAYS("ncu_proto_mon", `ALWAYS, "<ncu,mcu3,,writereqpcx,{%x}>::NCU to MCU3 WRITE_REQ for PCX Packet", ncu_mcu3_data);
+        end
         else if(ncu_mcu3_data == 4'b0110)
-            `PR_ALWAYS("ncu_proto_mon", `ALWAYS, "<ncu,mcu3,,ifillpcx,{%x,%x}>::NCU to MCU3 IFILL_REQ for PCX Packet", ncu_mcu3_vld, ncu_mcu3_data);
+        begin
+            `PR_ALWAYS("ncu_proto_mon", `ALWAYS, "<ncu,mcu3,,ifillpcx,{%x}>::NCU to MCU3 IFILL_REQ for PCX Packet", ncu_mcu3_vld);
+            `PR_ALWAYS("ncu_proto_mon", `ALWAYS, "<ncu,mcu3,,ifillpcx,{%x}>::NCU to MCU3 IFILL_REQ for PCX Packet", ncu_mcu3_data);
+        end
     end
 end
 
@@ -665,17 +701,35 @@ begin
         `PR_INFO("ncu_proto_mon", `INFO, "MCU0 to NCU Transaction Initiated");
         mcu0_ncu_vld_strobe = 1'b1;
         if(mcu0_ncu_data == 4'b0000)
-            `PR_ALWAYS("ncu_proto_mon", `ALWAYS, "<mcu0,ncu,,readnackcpxncuload,{%x,%x}>::MCU0 to NCU READ NACK for CPX NCU Load Return", mcu0_ncu_vld, mcu0_ncu_data);
+        begin
+            `PR_ALWAYS("ncu_proto_mon", `ALWAYS, "<mcu0,ncu,,readnackcpxncuload,{%x}>::MCU0 to NCU READ NACK for CPX NCU Load Return", mcu0_ncu_vld);
+            `PR_ALWAYS("ncu_proto_mon", `ALWAYS, "<mcu0,ncu,,readnackcpxncuload,{%x}>::MCU0 to NCU READ NACK for CPX NCU Load Return", mcu0_ncu_data);
+        end
         else if(mcu0_ncu_data == 4'b0001)
-            `PR_ALWAYS("ncu_proto_mon", `ALWAYS, "<mcu0,ncu,,readackcpxncuload,{%x,%x}>::MCU0 to NCU READ ACK for CPX NCU Load Reaturn", mcu0_ncu_vld, mcu0_ncu_data);
+        begin
+            `PR_ALWAYS("ncu_proto_mon", `ALWAYS, "<mcu0,ncu,,readackcpxncuload,{%x}>::MCU0 to NCU READ ACK for CPX NCU Load Reaturn", mcu0_ncu_vld);
+            `PR_ALWAYS("ncu_proto_mon", `ALWAYS, "<mcu0,ncu,,readackcpxncuload,{%x}>::MCU0 to NCU READ ACK for CPX NCU Load Reaturn", mcu0_ncu_data);
+        end
         else if(mcu0_ncu_data == 4'b0011)
-            `PR_ALWAYS("ncu_proto_mon", `ALWAYS, "<mcu0,ncu,,ifillackcpxncuifill,{%x,%x}>::MCU0 to NCU IFILL ACK for CPX NCU Ifill Return", mcu0_ncu_vld, mcu0_ncu_data);
+        begin
+            `PR_ALWAYS("ncu_proto_mon", `ALWAYS, "<mcu0,ncu,,ifillackcpxncuifill,{%x}>::MCU0 to NCU IFILL ACK for CPX NCU Ifill Return", mcu0_ncu_vld);
+            `PR_ALWAYS("ncu_proto_mon", `ALWAYS, "<mcu0,ncu,,ifillackcpxncuifill,{%x}>::MCU0 to NCU IFILL ACK for CPX NCU Ifill Return", mcu0_ncu_data);
+        end
         else if(mcu0_ncu_data == 4'b0111)
-            `PR_ALWAYS("ncu_proto_mon", `ALWAYS, "<mcu0,ncu,,ifillnackcpxncuifill,{%x,%x}>::MCU0 to NCU IFILL NACK for CPX NCU Ifill Return", mcu0_ncu_vld, mcu0_ncu_data);
+        begin
+            `PR_ALWAYS("ncu_proto_mon", `ALWAYS, "<mcu0,ncu,,ifillnackcpxncuifill,{%x}>::MCU0 to NCU IFILL NACK for CPX NCU Ifill Return", mcu0_ncu_vld);
+            `PR_ALWAYS("ncu_proto_mon", `ALWAYS, "<mcu0,ncu,,ifillnackcpxncuifill,{%x}>::MCU0 to NCU IFILL NACK for CPX NCU Ifill Return", mcu0_ncu_data);
+        end
         else if(mcu0_ncu_data == 4'b1000)
-            `PR_ALWAYS("ncu_proto_mon", `ALWAYS, "<mcu0,ncu,,int,{%x,%x}>::MCU0 to NCU INT", mcu0_ncu_vld, mcu0_ncu_data);
+        begin
+            `PR_ALWAYS("ncu_proto_mon", `ALWAYS, "<mcu0,ncu,,int,{%x}>::MCU0 to NCU INT", mcu0_ncu_vld);
+            `PR_ALWAYS("ncu_proto_mon", `ALWAYS, "<mcu0,ncu,,int,{%x}>::MCU0 to NCU INT", mcu0_ncu_data);
+        end
         else if(mcu0_ncu_data == 4'b1100)
-            `PR_ALWAYS("ncu_proto_mon", `ALWAYS, "<mcu0,ncu,,intvec,{%x,%x}>::MCU0 to NCU INT_VEC", mcu0_ncu_vld, mcu0_ncu_data);
+        begin
+            `PR_ALWAYS("ncu_proto_mon", `ALWAYS, "<mcu0,ncu,,intvec,{%x}>::MCU0 to NCU INT_VEC", mcu0_ncu_vld);
+            `PR_ALWAYS("ncu_proto_mon", `ALWAYS, "<mcu0,ncu,,intvec,{%x}>::MCU0 to NCU INT_VEC", mcu0_ncu_data);
+        end
     end
 end
 
@@ -759,17 +813,35 @@ begin
         `PR_INFO("ncu_proto_mon", `INFO, "MCU1 to NCU Transaction Initiated");
         mcu1_ncu_vld_strobe = 1'b1;
         if(mcu1_ncu_data == 4'b0000)
-            `PR_ALWAYS("ncu_proto_mon", `ALWAYS, "<mcu1,ncu,,readnackcpxncuload,{%x,%x}>::MCU1 to NCU READ NACK for CPX NCU Load Return", mcu1_ncu_vld, mcu1_ncu_data);
+        begin
+            `PR_ALWAYS("ncu_proto_mon", `ALWAYS, "<mcu1,ncu,,readnackcpxncuload,{%x}>::MCU1 to NCU READ NACK for CPX NCU Load Return", mcu1_ncu_vld);
+            `PR_ALWAYS("ncu_proto_mon", `ALWAYS, "<mcu1,ncu,,readnackcpxncuload,{%x}>::MCU1 to NCU READ NACK for CPX NCU Load Return", mcu1_ncu_data);
+        end
         else if(mcu1_ncu_data == 4'b0001)
-            `PR_ALWAYS("ncu_proto_mon", `ALWAYS, "<mcu1,ncu,,readackcpxncuload,{%x,%x}>::MCU1 to NCU READ ACK for CPX NCU Load Reaturn", mcu1_ncu_vld, mcu1_ncu_data);
+        begin
+            `PR_ALWAYS("ncu_proto_mon", `ALWAYS, "<mcu1,ncu,,readackcpxncuload,{%x}>::MCU1 to NCU READ ACK for CPX NCU Load Reaturn", mcu1_ncu_vld);
+            `PR_ALWAYS("ncu_proto_mon", `ALWAYS, "<mcu1,ncu,,readackcpxncuload,{%x}>::MCU1 to NCU READ ACK for CPX NCU Load Reaturn", mcu1_ncu_data);
+        end
         else if(mcu1_ncu_data == 4'b0011)
-            `PR_ALWAYS("ncu_proto_mon", `ALWAYS, "<mcu1,ncu,,ifillackcpxncuifill,{%x,%x}>::MCU1 to NCU IFILL ACK for CPX NCU Ifill Return", mcu1_ncu_vld, mcu1_ncu_data);
+        begin
+            `PR_ALWAYS("ncu_proto_mon", `ALWAYS, "<mcu1,ncu,,ifillackcpxncuifill,{%x}>::MCU1 to NCU IFILL ACK for CPX NCU Ifill Return", mcu1_ncu_vld);
+            `PR_ALWAYS("ncu_proto_mon", `ALWAYS, "<mcu1,ncu,,ifillackcpxncuifill,{%x}>::MCU1 to NCU IFILL ACK for CPX NCU Ifill Return", mcu1_ncu_data);
+        end
         else if(mcu1_ncu_data == 4'b0111)
-            `PR_ALWAYS("ncu_proto_mon", `ALWAYS, "<mcu1,ncu,,ifillnackcpxncuifill,{%x,%x}>::MCU1 to NCU IFILL NACK for CPX NCU Ifill Return", mcu1_ncu_vld, mcu1_ncu_data);
+        begin
+            `PR_ALWAYS("ncu_proto_mon", `ALWAYS, "<mcu1,ncu,,ifillnackcpxncuifill,{%x}>::MCU1 to NCU IFILL NACK for CPX NCU Ifill Return", mcu1_ncu_vld);
+            `PR_ALWAYS("ncu_proto_mon", `ALWAYS, "<mcu1,ncu,,ifillnackcpxncuifill,{%x}>::MCU1 to NCU IFILL NACK for CPX NCU Ifill Return", mcu1_ncu_data);
+        end
         else if(mcu1_ncu_data == 4'b1000)
-            `PR_ALWAYS("ncu_proto_mon", `ALWAYS, "<mcu1,ncu,,int,{%x,%x}>::MCU1 to NCU INT", mcu1_ncu_vld, mcu1_ncu_data);
+        begin
+            `PR_ALWAYS("ncu_proto_mon", `ALWAYS, "<mcu1,ncu,,int,{%x}>::MCU1 to NCU INT", mcu1_ncu_vld);
+            `PR_ALWAYS("ncu_proto_mon", `ALWAYS, "<mcu1,ncu,,int,{%x}>::MCU1 to NCU INT", mcu1_ncu_data);
+        end
         else if(mcu1_ncu_data == 4'b1100)
-            `PR_ALWAYS("ncu_proto_mon", `ALWAYS, "<mcu1,ncu,,intvec,{%x,%x}>::MCU1 to NCU INT_VEC", mcu1_ncu_vld, mcu1_ncu_data);
+        begin
+            `PR_ALWAYS("ncu_proto_mon", `ALWAYS, "<mcu1,ncu,,intvec,{%x}>::MCU1 to NCU INT_VEC", mcu1_ncu_vld);
+            `PR_ALWAYS("ncu_proto_mon", `ALWAYS, "<mcu1,ncu,,intvec,{%x}>::MCU1 to NCU INT_VEC", mcu1_ncu_data);
+        end
     end
 end
 
@@ -854,17 +926,35 @@ begin
         `PR_INFO("ncu_proto_mon", `INFO, "MCU2 to NCU Transaction Initiated");
         mcu2_ncu_vld_strobe = 1'b1;
         if(mcu2_ncu_data == 4'b0000)
-            `PR_ALWAYS("ncu_proto_mon", `ALWAYS, "<mcu2,ncu,,readnackcpxncuload,{%x,%x}>::MCU2 to NCU READ NACK for CPX NCU Load Return", mcu2_ncu_vld, mcu2_ncu_data);
+        begin
+            `PR_ALWAYS("ncu_proto_mon", `ALWAYS, "<mcu2,ncu,,readnackcpxncuload,{%x}>::MCU2 to NCU READ NACK for CPX NCU Load Return", mcu2_ncu_vld);
+            `PR_ALWAYS("ncu_proto_mon", `ALWAYS, "<mcu2,ncu,,readnackcpxncuload,{%x}>::MCU2 to NCU READ NACK for CPX NCU Load Return", mcu2_ncu_data);
+        end
         else if(mcu2_ncu_data == 4'b0001)
-            `PR_ALWAYS("ncu_proto_mon", `ALWAYS, "<mcu2,ncu,,readackcpxncuload,{%x,%x}>::MCU2 to NCU READ ACK for CPX NCU Load Reaturn", mcu2_ncu_vld, mcu2_ncu_data);
+        begin
+            `PR_ALWAYS("ncu_proto_mon", `ALWAYS, "<mcu2,ncu,,readackcpxncuload,{%x}>::MCU2 to NCU READ ACK for CPX NCU Load Reaturn", mcu2_ncu_vld);
+            `PR_ALWAYS("ncu_proto_mon", `ALWAYS, "<mcu2,ncu,,readackcpxncuload,{%x}>::MCU2 to NCU READ ACK for CPX NCU Load Reaturn", mcu2_ncu_data);
+        end
         else if(mcu2_ncu_data == 4'b0011)
-            `PR_ALWAYS("ncu_proto_mon", `ALWAYS, "<mcu2,ncu,,ifillackcpxncuifill,{%x,%x}>::MCU2 to NCU IFILL ACK for CPX NCU Ifill Return", mcu2_ncu_vld, mcu2_ncu_data);
+        begin
+            `PR_ALWAYS("ncu_proto_mon", `ALWAYS, "<mcu2,ncu,,ifillackcpxncuifill,{%x}>::MCU2 to NCU IFILL ACK for CPX NCU Ifill Return", mcu2_ncu_vld);
+            `PR_ALWAYS("ncu_proto_mon", `ALWAYS, "<mcu2,ncu,,ifillackcpxncuifill,{%x}>::MCU2 to NCU IFILL ACK for CPX NCU Ifill Return", mcu2_ncu_data);
+        end
         else if(mcu2_ncu_data == 4'b0111)
-            `PR_ALWAYS("ncu_proto_mon", `ALWAYS, "<mcu2,ncu,,ifillnackcpxncuifill,{%x,%x}>::MCU2 to NCU IFILL NACK for CPX NCU Ifill Return", mcu2_ncu_vld, mcu2_ncu_data);
+        begin
+            `PR_ALWAYS("ncu_proto_mon", `ALWAYS, "<mcu2,ncu,,ifillnackcpxncuifill,{%x}>::MCU2 to NCU IFILL NACK for CPX NCU Ifill Return", mcu2_ncu_vld);
+            `PR_ALWAYS("ncu_proto_mon", `ALWAYS, "<mcu2,ncu,,ifillnackcpxncuifill,{%x}>::MCU2 to NCU IFILL NACK for CPX NCU Ifill Return", mcu2_ncu_data);
+        end
         else if(mcu2_ncu_data == 4'b1000)
-            `PR_ALWAYS("ncu_proto_mon", `ALWAYS, "<mcu2,ncu,,int,{%x,%x}>::MCU2 to NCU INT", mcu2_ncu_vld, mcu2_ncu_data);
+        begin
+            `PR_ALWAYS("ncu_proto_mon", `ALWAYS, "<mcu2,ncu,,int,{%x}>::MCU2 to NCU INT", mcu2_ncu_vld);
+            `PR_ALWAYS("ncu_proto_mon", `ALWAYS, "<mcu2,ncu,,int,{%x}>::MCU2 to NCU INT", mcu2_ncu_data);
+        end
         else if(mcu2_ncu_data == 4'b1100)
-            `PR_ALWAYS("ncu_proto_mon", `ALWAYS, "<mcu2,ncu,,intvec,{%x,%x}>::MCU2 to NCU INT_VEC", mcu2_ncu_vld, mcu2_ncu_data);
+        begin
+            `PR_ALWAYS("ncu_proto_mon", `ALWAYS, "<mcu2,ncu,,intvec,{%x}>::MCU2 to NCU INT_VEC", mcu2_ncu_vld);
+            `PR_ALWAYS("ncu_proto_mon", `ALWAYS, "<mcu2,ncu,,intvec,{%x}>::MCU2 to NCU INT_VEC", mcu2_ncu_data);
+        end
     end
 end
 
@@ -948,17 +1038,35 @@ begin
         `PR_INFO("ncu_proto_mon", `INFO, "MCU3 to NCU Initiated");
         mcu3_ncu_vld_strobe = 1'b1;
         if(mcu3_ncu_data == 4'b0000)
-            `PR_ALWAYS("ncu_proto_mon", `ALWAYS, "<mcu3,ncu,,readnackcpxncuload{%x,%x}>::MCU3 to NCU READ NACK for CPX NCU Load Return", mcu3_ncu_vld, mcu3_ncu_data);
+        begin
+            `PR_ALWAYS("ncu_proto_mon", `ALWAYS, "<mcu3,ncu,,readnackcpxncuload{%x}>::MCU3 to NCU READ NACK for CPX NCU Load Return", mcu3_ncu_vld);
+            `PR_ALWAYS("ncu_proto_mon", `ALWAYS, "<mcu3,ncu,,readnackcpxncuload{%x}>::MCU3 to NCU READ NACK for CPX NCU Load Return", mcu3_ncu_data);
+        end
         else if(mcu3_ncu_data == 4'b0001)
-            `PR_ALWAYS("ncu_proto_mon", `ALWAYS, "<mcu3,ncu,,readackcpxncuload{%x,%x}>::MCU3 to NCU READ ACK for CPX NCU Load Reaturn", mcu3_ncu_vld, mcu3_ncu_data);
+        begin
+            `PR_ALWAYS("ncu_proto_mon", `ALWAYS, "<mcu3,ncu,,readackcpxncuload{%x}>::MCU3 to NCU READ ACK for CPX NCU Load Reaturn", mcu3_ncu_vld);
+            `PR_ALWAYS("ncu_proto_mon", `ALWAYS, "<mcu3,ncu,,readackcpxncuload{%x}>::MCU3 to NCU READ ACK for CPX NCU Load Reaturn", mcu3_ncu_data);
+        end
         else if(mcu3_ncu_data == 4'b0011)
-            `PR_ALWAYS("ncu_proto_mon", `ALWAYS, "<mcu3,ncu,,ifillackcpxncuifill{%x,%x}>::MCU3 to NCU IFILL ACK for CPX NCU Ifill Return", mcu3_ncu_vld, mcu3_ncu_data);
+        begin
+            `PR_ALWAYS("ncu_proto_mon", `ALWAYS, "<mcu3,ncu,,ifillackcpxncuifill{%x}>::MCU3 to NCU IFILL ACK for CPX NCU Ifill Return", mcu3_ncu_vld);
+            `PR_ALWAYS("ncu_proto_mon", `ALWAYS, "<mcu3,ncu,,ifillackcpxncuifill{%x}>::MCU3 to NCU IFILL ACK for CPX NCU Ifill Return", mcu3_ncu_data);
+        end
         else if(mcu3_ncu_data == 4'b0111)
-            `PR_ALWAYS("ncu_proto_mon", `ALWAYS, "<mcu3,ncu,,ifillnackcpxncuifill{%x,%x}>::MCU3 to NCU IFILL NACK for CPX NCU Ifill Return", mcu3_ncu_vld, mcu3_ncu_data);
+        begin
+            `PR_ALWAYS("ncu_proto_mon", `ALWAYS, "<mcu3,ncu,,ifillnackcpxncuifill{%x}>::MCU3 to NCU IFILL NACK for CPX NCU Ifill Return", mcu3_ncu_vld);
+            `PR_ALWAYS("ncu_proto_mon", `ALWAYS, "<mcu3,ncu,,ifillnackcpxncuifill{%x}>::MCU3 to NCU IFILL NACK for CPX NCU Ifill Return", mcu3_ncu_data);
+        end
         else if(mcu3_ncu_data == 4'b1000)
-            `PR_ALWAYS("ncu_proto_mon", `ALWAYS, "<mcu3,ncu,,int{%x,%x}>::MCU3 to NCU INT", mcu3_ncu_vld, mcu3_ncu_data);
+        begin
+            `PR_ALWAYS("ncu_proto_mon", `ALWAYS, "<mcu3,ncu,,int{%x}>::MCU3 to NCU INT", mcu3_ncu_vld);
+            `PR_ALWAYS("ncu_proto_mon", `ALWAYS, "<mcu3,ncu,,int{%x}>::MCU3 to NCU INT", mcu3_ncu_data);
+        end
         else if(mcu3_ncu_data == 4'b1100)
-            `PR_ALWAYS("ncu_proto_mon", `ALWAYS, "<mcu3,ncu,,intvec{%x,%x}>::MCU3 to NCU INT_VEC", mcu3_ncu_vld, mcu3_ncu_data);
+        begin
+            `PR_ALWAYS("ncu_proto_mon", `ALWAYS, "<mcu3,ncu,,intvec{%x}>::MCU3 to NCU INT_VEC", mcu3_ncu_vld);
+            `PR_ALWAYS("ncu_proto_mon", `ALWAYS, "<mcu3,ncu,,intvec{%x}>::MCU3 to NCU INT_VEC", mcu3_ncu_data);
+        end
     end
 end
 

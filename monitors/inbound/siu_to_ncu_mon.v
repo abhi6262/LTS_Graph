@@ -71,7 +71,8 @@ end
 
 always @(posedge (iol2clk && enabled && ncu_sii_gnt_d))
 begin
-    `PR_ALWAYS("siu_to_ncu_mon", `ALWAYS, "<sii,ncu,,siincuheader,{%x,%x,%x}>::SIU to NCU Header and Payload Cycle", sii_ncu_data[15:13], sii_ncu_data[12:9], sii_ncu_data[8:0]);
+    //`PR_ALWAYS("siu_to_ncu_mon", `ALWAYS, "<sii,ncu,,siincuheader,{%x,%x,%x}>::SIU to NCU Header and Payload Cycle", sii_ncu_data[15:13], sii_ncu_data[12:9], sii_ncu_data[8:0]);
+    `PR_ALWAYS("siu_to_ncu_mon", `ALWAYS, "<sii,ncu,,siincuheader,{%x}>::SIU to NCU Header and Payload Cycle", sii_ncu_data[15:0]);
     /* Four cycles of Payload and Parity */
     `PR_INFO("siu_to_ncu_mon", `INFO, "SIU to NCU Payload = %x", sii_ncu_data);
     `PR_INFO("siu_to_ncu_mon", `INFO, "SIU to NCU Payload Parity = %x", sii_ncu_dparity);

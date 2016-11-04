@@ -34,6 +34,7 @@ wire [127:0] niu_sii_data = `SII.niu_sii_data;
 wire [7:0] niu_sii_parity = `SII.niu_sii_parity;
 wire [15:0] niu_sii_be = `SII.niu_sii_be;
 
+wire [1:0] rwm;
 
 /* Section 6.4.3 and Section 6.4.4.1 Manual Vol 1 */
 
@@ -44,11 +45,12 @@ always @(posedge (iol2clk && enabled))
 begin
     if(niu_sii_hdr_vld)
     begin
+        rwm = {niu_sii_datareq, niu_sii_datareq16}
         /* Single and Back-to-Back DMA Read Request from NIU to SIU */
         if(!niu_sii_datareq && !niu_sii_datareq16)
         begin
             `PR_ALWAYS("niu_to_siu_mon", `ALWAYS, "<niu,sii,rheadercycle,niuheader,{%x}>::NIU to SIU DMA Read Request Header Cycle", niu_sii_hdr_vld);
-            `PR_ALWAYS("niu_to_siu_mon", `ALWAYS, "<niu,sii,rheadercycle,dmarw,{%x%x}>::NIU to SIU DMA Read Request", niu_sii_datareq, niu_sii_datareq16);
+            `PR_ALWAYS("niu_to_siu_mon", `ALWAYS, "<niu,sii,rheadercycle,dmarw,{%x}>::NIU to SIU DMA Read Request", rwm);
             if (niu_sii_reqbypass)
                 `PR_ALWYAS("niu_to_siu_mon", `ALWAYS, "<niu,sii,rheadercycle,niudestq,{%x}>::Read Request Sent to SIU Bypass Queue", niu_sii_reqbypass);
             else
@@ -62,7 +64,7 @@ begin
         else if (niu_sii_datareq && !niu_sii_datareq16)
         begin
             `PR_ALWAYS("niu_to_siu_mon", `ALWAYS, "<niu,sii,wheadercycle,niuheader,{%x}>::NIU to SIU DMA Write Request Header Cycle", niu_sii_hdr_vld)
-            `PR_ALWAYS("niu_to_siu_mon", `ALWAYS, "<niu,sii,wheadercycle,dmarw,{%x%x}>::NIU to SIU DMA Write Request", niu_sii_datareq, niu_sii_datareq16);
+            `PR_ALWAYS("niu_to_siu_mon", `ALWAYS, "<niu,sii,wheadercycle,dmarw,{%x}>::NIU to SIU DMA Write Request", rwm);
             `PR_ALWAYS("niu_to_siu_mon", `ALWAYS, "<niu,sii,header,dmaw>::NIU to SIU DMA Write Request Header Cycle");
             if (niu_sii_reqbypass)
                 `PR_ALWAYS("niu_to_siu_mon", `ALWAYS, "<niu,sii,wheadercycle,niudestq,{%x}>::Write Request Sent to SIU Bypass Queue", niu_sii_reqbypass);

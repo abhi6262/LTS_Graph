@@ -38,6 +38,7 @@ wire [127:0] dmu_sii_data = `SII.dmu_sii_data;
 wire [7:0] dmu_sii_parity = `SII.dmu_sii_parity;
 wire [15:0] dmu_sii_be = `SII.dmu_sii_be;
 
+wire [1:0] rwm;
 
 /* Section 6.4.3 and Section 6.4.4.2 Manual Vol 1 */
 
@@ -58,11 +59,12 @@ always @(posedge (iol2clk && enabled))
 begin
     if(dmu_sii_hdr_vld)
     begin
+        rwm = {dmu_sii_datareq,dmu_sii_datareq16};
         /* Single and Back-to-Back DMA Read Request from Fire DMU to SIU */
         if(!dmu_sii_datareq && !dmu_sii_datareq16)
         begin
             `PR_ALWAYS("dmu_to_siu_mon", `ALWAYS, "<dmu,sii,rheadercycle,dmuheader,{%x}::DMU  to SIU DMA Read Request Header Cycle", dmu_sii_hdr_vld);
-            `PR_ALWAYS("dmu_to_siu_mon", `ALWAYS, "<dmu,sii,rheadercycle,dmarwm,{%x%x}>::DMU to SIU DMA Read Request", dmu_sii_datareq,dmu_sii_datareq16);
+            `PR_ALWAYS("dmu_to_siu_mon", `ALWAYS, "<dmu,sii,rheadercycle,dmarwm,{%x}>::DMU to SIU DMA Read Request", rwm);
             if (dmu_sii_reqbypass)
                 `PR_ALWAYS("dmu_to_siu_mon", `ALWAYS, "<dmu,sii,rheadercycle,dmudestq,{%x}>::Read Request Sent to SIU Bypass Queue", dmu_sii_reqbypass);
             else
@@ -76,7 +78,7 @@ begin
         else if (dmu_sii_datareq && !dmu_sii_datareq16)
         begin
             `PR_ALWAYS("dmu_to_siu_mon", `ALWAYS, "<dmu,sii,wheadercycle,dmuheader,{%x}>::DMU  to SIU DMA Write Request Header Cycle", dmu_sii_hdr_vld);
-            `PR_ALWAYS("dmu_to_siu_mon", `ALWAYS, "<dmu,sii,wheadercycle,dmarwm,{%x%x}>::DMU to SIU DMA Write Request", dmu_sii_datareq, dmu_sii_datareq16);
+            `PR_ALWAYS("dmu_to_siu_mon", `ALWAYS, "<dmu,sii,wheadercycle,dmarwm,{%x}>::DMU to SIU DMA Write Request", rwm);
             if (dmu_sii_reqbypass)
                 `PR_ALWAYS("dmu_to_siu_mon", `ALWAYS, "<dmu,sii,wheadercycle,dmadestq,{%x}>::Write Request Sent to SIU Bypass Queue", dmu_sii_reqbypass);
             else
@@ -92,14 +94,14 @@ begin
             if (!dmu_sii_reqbypass)
             begin
                 `PR_ALWAYS("dmu_to_siu_mon", `ALWAYS, "<dmu,sii,mheadercycle,dmuheader,{%x}>::DMU to SIU Mondo Interrupt Header Cycle", dmu_sii_hdr_vld);
-                `PR_ALWAYS("dmu_to_siu_mon", `ALWAYS, "<dmu,sii,mheadercycle,dmarwm,{%x%x}>::DMU to SIU Mondo Interrupt Request", dmu_sii_datareq, dmu_sii_datareq16);
+                `PR_ALWAYS("dmu_to_siu_mon", `ALWAYS, "<dmu,sii,mheadercycle,dmarwm,{%x}>::DMU to SIU Mondo Interrupt Request", rwm);
                 `PR_ALWAYS("dmu_to_siu_mon", `ALWAYS, "<dmu,sii,mheadercycle,dmadestq,{%x}>::Mondo Interrupt Request Sent to SIU Ordered Queue", dmu_sii_reqbypass);
                 `PR_ALWAYS("dmu_to_siu_mon", `ALWYAS, "<dmu,sii,mheadercycle,dmutagid,{%x}>::Mondo Interrupt ID", dmu_sii_data[79:64])
             end
             else
             begin
                 `PR_ALWAYS("dmu_to_siu_mon", `ALWAYS, "<dmu,sii,pheadercycle,dmuheader,{%x}>::DMU to SIU PIO Read Completion Header Cycle", dmu_sii_hdr_vld);
-                `PR_ALWAYS("dmu_to_siu_mon", `ALWAYS, "<dmu,sii,pheadercycle,dmarwm,{%x%x}>::DMU to SIU PIO Read Header", dmu_sii_datareq, dmu_sii_datareq16);
+                `PR_ALWAYS("dmu_to_siu_mon", `ALWAYS, "<dmu,sii,pheadercycle,dmarwm,{%x}>::DMU to SIU PIO Read Header", rwm);
                 `PR_ALWAYS("dmu_to_siu_mon", `ALWAYS, "<dmu,sii,pheadercycle,dmadestq,{%x}>::PIO Read Data Return Sent to SIU Bypass Queue", dmu_sii_reqbypass);
                 `PR_ALWAYS("dmu_to_siu_mon", `ALWYAS, "<dmu,sii,pheadercycle,dmutagid,{%x}>::PIO NCU Cred ID and CPU Thread ID", dmu_sii_data[79:64])
             end
