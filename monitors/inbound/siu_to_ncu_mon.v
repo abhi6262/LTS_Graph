@@ -58,7 +58,7 @@ always @(posedge (iol2clk && enabled))
 begin
 	if(ncu_sii_gnt)
 	begin
-		`PR_ALWAYS("siu_to_ncu_mon", `ALWAYS, "<ncu,sii,,ncusiignt>::NCU is ready to accept SIU transfer", ncu_sii_gnt);
+		`PR_ALWAYS("siu_to_ncu_mon", `ALWAYS, "<ncu,sii,,ncusiignt,{%x}>::NCU is ready to accept SIU transfer", ncu_sii_gnt);
 	end
 end
 
