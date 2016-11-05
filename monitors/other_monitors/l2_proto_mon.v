@@ -744,11 +744,13 @@ always @(posedge (cmp_clk && enabled))
 begin
     pcx_l2t0_data_rdy_px1_d <= pcx_l2t0_data_rdy_px1;
     if(pcx_l2t0_data_rdy_px1)
+    begin
         `PR_ALWAYS("l2_proto_mon", `ALWAYS, "<pcx,l2t0,,pcxl2tdatavld,{%x}>::L2T0 receiving a Request from PCX", pcx_l2t0_data_rdy_px1);
         if(pcx_l2t0_atm_px1)
             `PR_ALWAYS("l2_proto_mon", `ALWAYS, "<pcx,l2t0,,pcxl2tatminst,{%x}>::Atomic Request Received at L2T0 from PCX", pcx_l2t0_atm_px1);
         else
             `PR_ALWAYS("l2_proto_mon", `ALWAYS, "<pcx,l2t0,,pcxl2tatminst,{%x}>::Non-Atomic Request Received at L2T0 from PCX", pcx_l2t0_atm_px1);
+    end
 end
 
 always @(posedge (cmp_clk && enabled))
@@ -764,11 +766,13 @@ always @(posedge (cmp_clk && enabled))
 begin
     pcx_l2t1_data_rdy_px1_d <= pcx_l2t1_data_rdy_px1;
     if(pcx_l2t1_data_rdy_px1)
+    begin
         `PR_ALWAYS("l2_proto_mon", `ALWAYS, "<pcx,l2t1,,pcxl2tdatavld,{%x}>::L2T1 receiving a Request from PCX", pcx_l2t1_data_rdy_px1);
         if(pcx_l2t1_atm_px1)
             `PR_ALWAYS("l2_proto_mon", `ALWAYS, "<pcx,l2t1,,pcxl2tatminst,{%x}>::Atomic Request Received at L2T1 from PCX", pcx_l2t1_atm_px1);
         else
             `PR_ALWAYS("l2_proto_mon", `ALWAYS, "<pcx,l2t1,,pcxl2tatminst,{%x}>::Non-Atomic Request Received at L2T1 from PCX", pcx_l2t1_atm_px1);
+    end
 end
 
 always @(posedge (cmp_clk && enabled))
@@ -784,11 +788,13 @@ always @(posedge (cmp_clk && enabled))
 begin
     pcx_l2t2_data_rdy_px1_d <= pcx_l2t2_data_rdy_px1;
     if(pcx_l2t2_data_rdy_px1)
+    begin
         `PR_ALWAYS("l2_proto_mon", `ALWAYS, "<pcx,l2t2,,pcxl2tdatavld,{%x}>::L2T2 receiving a Request from PCX", pcx_l2t2_data_rdy_px1);
         if(pcx_l2t2_atm_px1)
             `PR_ALWAYS("l2_proto_mon", `ALWAYS, "<pcx,l2t2,,pcxl2tatminst,{%x}>::Atomic Request Received at L2T2 from PCX", pcx_l2t2_atm_px1);
         else
             `PR_ALWAYS("l2_proto_mon", `ALWAYS, "<pcx,l2t2,,pcxl2tatminst,{%x}>::Non-Atomic Request Received at L2T2 from PCX", pcx_l2t2_atm_px1);
+    end
 end
 
 always @(posedge (cmp_clk && enabled))
@@ -804,11 +810,13 @@ always @(posedge (cmp_clk && enabled))
 begin
     pcx_l2t3_data_rdy_px1_d <= pcx_l2t3_data_rdy_px1;
     if(pcx_l2t3_data_rdy_px1)
+    begin
         `PR_ALWAYS("l2_proto_mon", `ALWAYS, "<pcx,l2t3,,pcxl2tdatavld,{%x}>::L2T3 receiving a Request from PCX", pcx_l2t3_data_rdy_px1);
         if(pcx_l2t3_atm_px1)
             `PR_ALWAYS("l2_proto_mon", `ALWAYS, "<pcx,l2t3,,pcxl2tatminst,{%x}>::Atomic Request Received at L2T3 from PCX", pcx_l2t3_atm_px1);
         else
             `PR_ALWAYS("l2_proto_mon", `ALWAYS, "<pcx,l2t3,,pcxl2tatminst,{%x}>::Non-Atomic Request Received at L2T3 from PCX", pcx_l2t3_atm_px1);
+    end
 end
 
 always @(posedge (cmp_clk && enabled))
@@ -824,11 +832,13 @@ always @(posedge (cmp_clk && enabled))
 begin
     pcx_l2t4_data_rdy_px1_d <= pcx_l2t4_data_rdy_px1;
     if(pcx_l2t4_data_rdy_px1)
+    begin
         `PR_ALWAYS("l2_proto_mon", `ALWAYS, "<pcx,l2t4,,pcxl2tdatavld,{%x}>::L2T4 receiving a Request from PCX", pcx_l2t4_data_rdy_px1);
         if(pcx_l2t4_atm_px1)
             `PR_ALWAYS("l2_proto_mon", `ALWAYS, "<pcx,l2t4,,pcxl2tatminst,{%x}>::Atomic Request Received at L2T4 from PCX", pcx_l2t4_atm_px1);
         else
             `PR_ALWAYS("l2_proto_mon", `ALWAYS, "<pcx,l2t4,,pcxl2tatminst,{%x}>::Non-Atomic Request Received at L2T4 from PCX", pcx_l2t4_atm_px1);
+    end
 end
 
 always @(posedge (cmp_clk && enabled))
@@ -844,11 +854,13 @@ always @(posedge (cmp_clk && enabled))
 begin
     pcx_l2t5_data_rdy_px1_d <= pcx_l2t5_data_rdy_px1;
     if(pcx_l2t5_data_rdy_px1)
+    begin
         `PR_ALWAYS("l2_proto_mon", `ALWAYS, "<pcx,l2t5,,pcxl2tdatavld,{%x}>::L2T5 receiving a Request from PCX", pcx_l2t5_data_rdy_px1);
         if(pcx_l2t5_atm_px1)
             `PR_ALWAYS("l2_proto_mon", `ALWAYS, "<pcx,l2t5,,pcxl2tatminst,{%x}>::Atomic Request Received at L2T5 from PCX", pcx_l2t5_atm_px1);
         else
             `PR_ALWAYS("l2_proto_mon", `ALWAYS, "<pcx,l2t5,,pcxl2tatminst,{%x}>::Non-Atomic Request Received at L2T5 from PCX", pcx_l2t5_atm_px1);
+    end
 end
 
 always @(posedge (cmp_clk && enabled))
@@ -864,11 +876,13 @@ always @(posedge (cmp_clk && enabled))
 begin
     pcx_l2t6_data_rdy_px1_d <= pcx_l2t6_data_rdy_px1;
     if(pcx_l2t6_data_rdy_px1)
+    begin
         `PR_ALWAYS("l2_proto_mon", `ALWAYS, "<pcx,l2t6,,pcxl2tdatavld,{%x}>::L2T6 receiving a Request from PCX", pcx_l2t6_data_rdy_px1);
         if(pcx_l2t6_atm_px1)
             `PR_ALWAYS("l2_proto_mon", `ALWAYS, "<pcx,l2t6,,pcxl2tatminst,{%x}>::Atomic Request Received at L2T6 from PCX", pcx_l2t6_atm_px1);
         else
             `PR_ALWAYS("l2_proto_mon", `ALWAYS, "<pcx,l2t6,,pcxl2tatminst,{%x}>::Non-Atomic Request Received at L2T6 from PCX", pcx_l2t6_atm_px1);
+    end
 end
 
 always @(posedge (cmp_clk && enabled))
@@ -884,11 +898,13 @@ always @(posedge (cmp_clk && enabled))
 begin
     pcx_l2t7_data_rdy_px1_d <= pcx_l2t7_data_rdy_px1;
     if(pcx_l2t7_data_rdy_px1)
+    begin
         `PR_ALWAYS("l2_proto_mon", `ALWAYS, "<pcx,l2t7,,pcxl2tdatavld,{%x}>::L2T7 receiving a Request from PCX", pcx_l2t7_data_rdy_px1);
         if(pcx_l2t7_atm_px1)
             `PR_ALWAYS("l2_proto_mon", `ALWAYS, "<pcx,l2t7,,pcxl2tatminst,{%x}>::Atomic Request Received at L2T7 from PCX", pcx_l2t7_atm_px1);
         else
             `PR_ALWAYS("l2_proto_mon", `ALWAYS, "<pcx,l2t7,,pcxl2tatminst,{%x}>::Non-Atomic Request Received at L2T7 from PCX", pcx_l2t7_atm_px1);
+    end
 end
 
 always @(posedge (cmp_clk && enabled))
