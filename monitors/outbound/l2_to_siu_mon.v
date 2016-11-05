@@ -30,7 +30,7 @@ initial begin
         enabled = 1'b0;
     end
     else
-        `PR_ALWAYS("l2_to_siu_mon", `ALWAYS, "l2_to_siu_mon ENABLED");
+        `PR_INFO("l2_to_siu_mon", `ALWAYS, "l2_to_siu_mon ENABLED");
 end
 
 /* From L2 to SIU monitoring OUTBOUND Messages */
