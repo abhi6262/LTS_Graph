@@ -7,6 +7,7 @@ import pickle as pk
 import ConfigParser
 from types import *
 
+global_dict = {}
 
 def FindCommonMsgSegments(message_group):
     '''
@@ -70,7 +71,6 @@ def MessageSel(buffer_width, listmsg, countlistmsg, epsilon, message_width, mess
     Mtrace, TotalBits, Infocurr = AddStandAloneMsgs(Mtrace, Bufrem, epsilon, Mrem, TotalBits, message_width, sysnodes, listmsg, countlistmsg, x, x_y, Infocurr)
     print "Current Mesages To Trace after AddStandAloneMsgs: ", Mtrace, "Total Bit Width: ", TotalBits
 
-    ss.exit(0)
     return Mtrace
 
 def NewGrMessageSel(Mtrace, Bufrem, epsilon, Gninc, Mrem, Mcomm, TotalBits, message_width, sysnodes, listmsg, countlistmsg, x, x_y, Infocurr, Ginc):
@@ -80,6 +80,7 @@ def NewGrMessageSel(Mtrace, Bufrem, epsilon, Gninc, Mrem, Mcomm, TotalBits, mess
         Mtemp = Mtrace
         if Bufrem > epsilon:
            if msg in Gninc:
+               ToDelEle = ''
                try:
                    Mpcomm = [item for item in Mcomm if item in message_group[msg].keys()]
                except KeyError:
@@ -95,7 +96,6 @@ def NewGrMessageSel(Mtrace, Bufrem, epsilon, Gninc, Mrem, Mcomm, TotalBits, mess
 	               except KeyError:
 	                   pass
 	           if Mtilde:
-                       ToDelEle = ''
 	               for ele in Mtilde:
 	                   if message_group[msg][ele] > currsize:
 	                       mp[msg] = message_group[msg][ele]
@@ -114,7 +114,6 @@ def NewGrMessageSel(Mtrace, Bufrem, epsilon, Gninc, Mrem, Mcomm, TotalBits, mess
                        except KeyError:
                            pass
 	           if Mtilde:
-                       ToDelEle = ''
 	               for ele in Mtilde:
 	                   if message_group[msg][ele] > currsize:
 	                       mp[msg] = message_group[msg][ele]
@@ -130,6 +129,10 @@ def NewGrMessageSel(Mtrace, Bufrem, epsilon, Gninc, Mrem, Mcomm, TotalBits, mess
                    Bufrem = buffer_width - TotalBits
 	           Infocurr = Infonew
 	           Ginc.append(mp.keys()[0])
+                   if mp.keys()[0] in global_dict.keys():
+                       global_dict[mp.keys()[0]].extend(ToDelEle)
+                   else:
+                       global_dict[mp.keys()[0]] = [ToDelEle] 
 	           Gninc = [item for item in Gninc if item not in mp.keys()]
                else:
                    print "No modification to Mtrace made in NewGrMessageSel\n"
@@ -154,6 +157,8 @@ def AddMsgInExistingGr(Mtrace, Bufrem, epsilon, Ginc, Mrem, Mcomm, TotalBits, me
                         TotalBits = TotalBits + mp[mp.keys()[0]]
                         Bufrem = buffer_width - TotalBits
                         Infocurr = Infonew
+                        if msg in global_dict.keys():
+                            global_dict[msg].extend(message_group[msg][key_])
                     del message_group[msg][key_]
         else:
             return Mtrace, TotalBits, Infocurr
@@ -182,7 +187,7 @@ def AddStandAloneMsgs(Mtrace, Bufrem, epsilon, Mrem, TotalBits, message_width, s
     for msg in Mrem:
         Mtemp = Mtrace
         if Bufrem > epsilon:
-            if Mrem[msg] <= Bufrem:
+            if message_width[msg] <= Bufrem:
                 mp[msg] = Mrem[msg]
                 Mtemp.update(mp)
                 M, T, Infonew = EvalMsgGroups(message_width, [tuple(Mtemp.keys())], sysnodes, listmsg, countlistmsg, x, x_y)
@@ -247,6 +252,9 @@ def EvalMsgGroups(message_width, candidates, sysnodes, listmsg, countlistmsg, x,
     max_info = {}
     max_candidate = {}
     info_candidates = {}
+    totaledges = 0
+    for ele in range(len(countlistmsg)):
+        totaledges = totaledges + countlistmsg[ele]
     for c in candidates:
         if len(c) not in max_info:
             max_candidate[len(c)] = c
@@ -255,12 +263,13 @@ def EvalMsgGroups(message_width, candidates, sysnodes, listmsg, countlistmsg, x,
         #print candidates.index(c)+1, ":candidate:", c, "\n"
         y = [0 for i in range(len(c))]
         xy = [[0 for i in range(len(c))] for j in range(len(sysnodes))]
-        tempsum = 0
+        #tempsum = 0
         for m in c:
             y[c.index(m)] += countlistmsg[listmsg.index(m)]
-            tempsum += y[c.index(m)]
+            #tempsum += y[c.index(m)]
         for m in c:
-            y[c.index(m)] = y[c.index(m)]/float(tempsum)
+            #y[c.index(m)] = y[c.index(m)]/float(tempsum)
+            y[c.index(m)] = y[c.index(m)]/float(totaledges)
         #print "y:", y, "\n"
         for i in range(len(sysnodes)):
             for m in c:
@@ -307,4 +316,18 @@ if __name__ == "__main__":
     listmsg, countlistmsg = CalcMessageInLTS(sys, sysnodes)
     x_y = CalculateStateMsgJointProb(sys, sysnodes, listmsg)
     MtraceFinal = MessageSel(buffer_width, listmsg, countlistmsg, 0, message_width, message_group, sys, x, x_y) 
+    print global_dict
+
+    MtraceFinal = {}
+    MtraceFinal['RxInfo'] = 1
+    totalState = 0
+    for list_ in x_y:
+        for msg_ in MtraceFinal.keys():
+            if list_[listmsg.index(msg_)] != 0:
+                totalState = totalState + 1
+                break
+
+    print "Total States Reachable: ", totalState
+    print "Total Space Coverage: ", float(totalState)/float(len(sysnodes))
+
 
