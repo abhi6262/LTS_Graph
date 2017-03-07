@@ -7,7 +7,7 @@
 
 
 import os
-import sys
+import sys as ss
 import ConfigParser
 import ast
 import pickle
@@ -33,6 +33,7 @@ queue = [] #to keep new nodes which are found in the construction process
 sys = listsysdict[0] #list of nodes for constructed LTS
 tempsysnodes = []
 tempsys = {}
+print "Sys:", sys
 
 for x in range(1,len(Protocols)):
     temp1 = sysnodes[0]+listsysnodes[x][0] #starting node of intermediate LTS and next protocol
@@ -40,21 +41,25 @@ for x in range(1,len(Protocols)):
 
     while queue:
         temp = queue.pop() #pop one node on wueue and add its outgoing edges
+        print "Temp", temp
         tempsysnodes.append(temp) 
         tempsys[temp] = {} 
 
         k = sys.get(temp[:len(temp)-1]) #get the outgoing edges of a node in the tuple
+        print "From sys:", k
         if k: #check if there are any outgoing edges
             for i in k:
                 for j in k.get(i): #outgoing edge for one message at a time
                     if i not in tempsys[temp]:
                         tempsys[temp][i] = []
+                    print j+temp[len(temp)-1:]
                     tempsys[temp][i].append(j+temp[len(temp)-1:])
                     if (j+temp[len(temp)-1:]) not in tempsysnodes:
                         if (j+temp[len(temp)-1:]) not in queue:
                             queue.append(j+temp[len(temp)-1:])
             
         k = listsysdict[x].get(temp[len(temp)-1:]) #get the outgoing edges of a node in the tuple
+        print "From listsysdict:", k
         if k: #check if there are any outgoing edges
             for i in k:
                 for j in k.get(i): #outgoing edge for one message at a time
@@ -68,6 +73,12 @@ for x in range(1,len(Protocols)):
     sys = tempsys
     tempsysnodes = []
     tempsys = {}
+
+    print "x:", x
+    print "Sys at the end of for loop:", sys
+    print "SysNodes at the end of for loop:", sysnodes
+
+ss.exit(0)
 
 print "number of nodes:", len(sysnodes)
 print "sysnodes: ", sysnodes
