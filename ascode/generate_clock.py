@@ -44,6 +44,7 @@ for i in range(NumberOfStates):
 
 
 clock_cfg_file = open('clock_config.cfg', 'w')
+clock_cfg_file.write('[Configuration]\n')
 clock_cfg_file.write('[clock_state_machine]\n')
 clk_states = ", ".join(str(tuple([i])) for i in ListClkNodes)
 protocol_dict = {}
@@ -74,19 +75,32 @@ for i in range(NumberOfStates):
                 protocol_dict[tuple([ListClkNodes[i]])] = tempdict
 
 
-for key in protocol_dict.keys():
-    contains = protocol_dict[key]
-    if 'True' in contains.keys() and len(contains.keys()) > 1:
-        del(contains['True'])
-    protocol_dict[key] = contains
+#for key in protocol_dict.keys():
+#    contains = protocol_dict[key]
+#    if 'True' in contains.keys() and len(contains.keys()) > 1:
+#        del(contains['True'])
+#    protocol_dict[key] = contains
 
 clock_cfg_file.write('protocolnodes: [' + clk_states + ']\n')
-clock_cfg_file.write('protocol:' + str(protocol_dict))
+clock_cfg_file.write('protocol:' + str(protocol_dict) + '\n')
+clock_cfg_file.write('initstate: [' + str(tuple([ListClkNodes[0]])) + ']')
 clock_cfg_file.close()
 
 print "Reference Clock Frequency is: ", RefClockFreq
-print "Clock State Machine States are: ", ListClkNodes
-print "Adjacent Matrix is: ", adj_mat
+#print "Clock State Machine States are: ", ListClkNodes
+#print "Adjacent Matrix is: ", adj_mat
+
+clock_graph = pd.Dot(graph_type = 'digraph')
+NodeDict = {}
+for i in ListClkNodes:
+    NodeDict[i] = pd.Node(i, style="filled", fillcolor="blue")
+    clock_graph.add_node(NodeDict[i])
+
+for i in ListClkNodes:
+    for j in protocol_dict[tuple([i])]:
+        for k in protocol_dict[tuple([i])][j]:
+            clock_graph.add_edge(pd.Edge(NodeDict[i], NodeDict[k[0]], label=j ))
 
 
-
+clock_graph.write_pdf("clock_state_machine.pdf")
+clock_graph.write_png("clock_state_machine.png")
