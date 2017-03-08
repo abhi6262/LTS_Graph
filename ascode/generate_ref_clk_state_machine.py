@@ -50,16 +50,16 @@ for i in range(len(proto_nodes)):
         for k in range(len(proto_nodes[i])):
             state_name = proto_nodes[i][k][0] + ', ' + clock_nodes[0][j][0]
             ListStateMachineNodes.append(state_name)
-    print "Total number of states in the converted protocol:", len(ListStateMachineNodes)
-    print "States of the converted state protocol state machine are:", ListStateMachineNodes
+    print "Total number of states in the enhanced protocol state machine:", len(ListStateMachineNodes)
+    print "States of the enhanced state protocol state machine are:", ListStateMachineNodes
     StateMachineDict = {}
     InitState = tuple(proto_init_state[0][0] + clock_init_state[0][0])
     
     StatesExplored = []
     StatesYetToExplore = []
     StatesYetToExplore.append(InitState)
-
-    print StatesYetToExplore
+    print "Init State Queued:", InitState
+        
     # Extending one protocol with the reference clock state machine
     while StatesYetToExplore:
         StateNowExploring = StatesYetToExplore.pop()
@@ -81,7 +81,8 @@ for i in range(len(proto_nodes)):
             NxtClockState = EdgeOfClk['True'][0][0]
             QStateToExplore = tuple([StateNowExploring[0]] + [NxtClockState])
             if QStateToExplore not in StatesExplored:
-                StatesYetToExplore.append(QStateToExplore)\
+                StatesYetToExplore.append(QStateToExplore)
+                print "Ref 1: New State Queued:", QStateToExplore
         # Case 2: The edge of the clock has one or more than one clock labeling along with 'True'
         else:
             CurrentClocks = EdgeOfClk.keys()
@@ -106,6 +107,7 @@ for i in range(len(proto_nodes)):
                             QStateToExplore = tuple([NxtProtoState] + [NxtClkState])
                             if QStateToExplore not in StatesExplored:
                                 StatesYetToExplore.append(QStateToExplore)
+                                print "Ref 2: State Queued:", QStateToExplore
                         # Case 2b.2: If the clock labeling og the protocol state machine and the clock
                         # state machine does not match, then advance the clock state machine state but 
                         # not the state of the protocol state machine
@@ -113,7 +115,7 @@ for i in range(len(proto_nodes)):
                             QStateToExplore = tuple([StateNowExploring[0]] + [NxtClockState])
                             if QStateToExplore not in StatesExplored:
                                 StatesYetToExplore.append(QStateToExplore)
+                                print "Ref 3: State Queued:", QStateToExplore
 
-        
         print EdgeOfProto
         print EdgeOfClk
