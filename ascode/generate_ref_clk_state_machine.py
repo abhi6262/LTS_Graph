@@ -70,13 +70,14 @@ for iter1 in range(len(proto_nodes)):
         
     # Extending one protocol with the reference clock state machine
     while StatesYetToExplore:
-        print "States Yet to Explore: ", StatesYetToExplore
+        #print "States Yet to Explore: ", StatesYetToExplore
         StateNowExploring = StatesYetToExplore.pop()
         print "Current State being Explored: ", StateNowExploring
         StatesExplored.append(StateNowExploring)
         #print "States explored:", StatesExplored, "\n\n"
         try:
             assert (len(StatesYetToExplore) + len(StatesExplored)) <= len(ListStateMachineNodes)
+            #assert len(StatesExplored) <= len(ListStateMachineNodes)
         except AssertionError:
             print "Number of States Yet to Explore: ", len(StatesYetToExplore)
             print "Number of States Explored: ", len(StatesExplored)
@@ -97,13 +98,13 @@ for iter1 in range(len(proto_nodes)):
             tempdict['True'] = QStateToExplore
             # Reconstructing the transition relation in the extended transition system
             if StateNowExploring in Xtended_proto_state_machine.keys():
-                Xtended_proto_state_machine.update(tempdict)
+                Xtended_proto_state_machine[StateNowExploring].update(tempdict)
             else:
                 Xtended_proto_state_machine[StateNowExploring] = tempdict
            
-            if QStateToExplore not in StatesExplored:
+            if QStateToExplore not in StatesExplored and QStateToExplore not in StatesYetToExplore:
                 StatesYetToExplore.append(QStateToExplore)
-                print "Ref 1: New State Queued:", QStateToExplore, "\n\n"
+                #print "Ref 1: New State Queued:", QStateToExplore, "\n\n"
         # Case 2: The edge of the clock has one or more than one clock labeling along with 'True'
         else:
             CurrentClocks = EdgeOfClk.keys()
@@ -128,19 +129,20 @@ for iter1 in range(len(proto_nodes)):
                     tempdict = {}
                     #print "Solving: Case 2a.1\n"
                     NxtProtoState = EdgeOfProto[msg][0][0]
-                    #print "NxtProtoState:", NxtProtoState
+                    #print "NxtProtoState:", NxtProtoState, " and NextClockState:", NextClockState
                     QStateToExplore = tuple([NxtProtoState + ':' + NextClockState])
                     tempdict[msg[:msg.find(':')]] = QStateToExplore
                     #print "QStateToExplore:", QStateToExplore
+                    #print "tempdict:", tempdict
                     # Reconstructing the transition relation in the extended transition system
                     if StateNowExploring in Xtended_proto_state_machine.keys():
-                        Xtended_proto_state_machine.update(tempdict)
+                        Xtended_proto_state_machine[StateNowExploring].update(tempdict)
                     else:
                         Xtended_proto_state_machine[StateNowExploring] = tempdict
 
-                    if QStateToExplore not in StatesExplored:
+                    if QStateToExplore not in StatesExplored and QStateToExplore not in StatesYetToExplore:
                         StatesYetToExplore.append(QStateToExplore)
-                        print "Ref 2: State Queued:", QStateToExplore, "\n\n"
+                        #print "Ref 2: State Queued:", QStateToExplore, "\n\n"
                 # Case 2a.2: If the clock labeling og the protocol state machine and the clock
                 # state machine does not match, then advance the clock state machine state but 
                 # not the state of the protocol state machine
@@ -152,13 +154,13 @@ for iter1 in range(len(proto_nodes)):
                     #print "Case 2a.2 QStateToExplore:", QStateToExplore
                     # Reconstructing the transition relation in the extended transition system
                     if StateNowExploring in Xtended_proto_state_machine.keys():
-                        Xtended_proto_state_machine.update(tempdict)
+                        Xtended_proto_state_machine[StateNowExploring].update(tempdict)
                     else:
                         Xtended_proto_state_machine[StateNowExploring] = tempdict
 
-                    if QStateToExplore not in StatesExplored:
+                    if QStateToExplore not in StatesExplored and QStateToExplore not in StatesYetToExplore:
                         StatesYetToExplore.append(QStateToExplore)
-                        print "Ref 3: State Queued:", QStateToExplore, "\n\n"
+                        #print "Ref 3: State Queued:", QStateToExplore, "\n\n"
 
     protocol_states = ", ".join(str(tuple([i])) for i in ListStateMachineNodes) 
     Xtended_proto_cfg_file.write('protocolnodes: [' + protocol_states + ']\n')
@@ -170,18 +172,17 @@ for iter1 in range(len(proto_nodes)):
     extended_state_machine_graph = pd.Dot(graph_type = 'digraph')
     NodeDict = {}
     for i in ListStateMachineNodes:
-        print "I:", i
-        NodeDict[i] = pd.Node(i.replace(':', '_'), style="filled", fillcolor="blue")
+        NodeDict[i] = pd.Node(i.replace(':', '_'), style="filled", fillcolor="gray")
         extended_state_machine_graph.add_node(NodeDict[i])
-    print NodeDict
+    #print NodeDict
     Xtended_state_machine_states = Xtended_proto_state_machine.keys()
     for i in ListStateMachineNodes:
         if tuple([i]) in Xtended_state_machine_states:
-            print "i:", i
+            #print "i:", i
             for j in Xtended_proto_state_machine[tuple([i])]:
-                print "j:", j
+                #print "j:", j
                 for k in Xtended_proto_state_machine[tuple([i])][j]:
-                    print "k:", k
+                    #print "k:", k
                     extended_state_machine_graph.add_edge(pd.Edge(NodeDict[i], NodeDict[k], label = j))
 
     extended_state_machine_graph.write_pdf(Protocols[iter1]+".pdf")
