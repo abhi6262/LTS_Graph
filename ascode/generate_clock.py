@@ -93,7 +93,7 @@ print "Reference Clock Frequency is: ", RefClockFreq
 clock_graph = pd.Dot(graph_type = 'digraph')
 NodeDict = {}
 for i in ListClkNodes:
-    NodeDict[i] = pd.Node(i, style="filled", fillcolor="blue")
+    NodeDict[i] = pd.Node(i, style="filled", fillcolor="gray")
     clock_graph.add_node(NodeDict[i])
 
 for i in ListClkNodes:
