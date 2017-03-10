@@ -93,8 +93,6 @@ clock_cfg_file.write('initstate: [' + str(tuple([ListClkNodes[0]])) + ']')
 clock_cfg_file.close()
 
 print "Reference Clock Frequency is: ", RefClockFreq
-#print "Clock State Machine States are: ", ListClkNodes
-#print "Adjacent Matrix is: ", adj_mat
 
 clock_graph = pd.Dot(graph_type = 'digraph')
 NodeDict = {}
