@@ -21,6 +21,10 @@ def lcm(x, y):
     return lcm
 
 
+# Config file should mention the frequency ratio of
+# the component protocol clocks. Rest should be taken care
+# of by the code itself
+
 config = ConfigParser.RawConfigParser()
 config.read('config_mclock.cfg')
 Clocks = ast.literal_eval(config.get('Configuration', 'Clocks'))
@@ -30,18 +34,20 @@ for key in Clocks.keys():
     RefClockFreq = lcm(RefClockFreq, Clocks[key]) 
 NumberOfStates = RefClockFreq
 
+# A dictionary that holds how often a clocks tick should happen.
+# in other words, this dictionary holds after how many states, a 
+# clock tick should happen. Higher the frequency of the clock,
+# lower will be the number of states between two successive occurence of
+# the same clock
+
+Clocks_ = {}
+for key in Clocks.keys():
+    Clocks_[key] = RefClockFreq / Clocks[key]
+
 ListClkNodes = []
 for i in range(NumberOfStates):
     state_name = 'CS_' + str(i)
     ListClkNodes.append(state_name)
-
-adj_mat = [[0 for j in range(NumberOfStates)] for i in range(NumberOfStates)]
-for i in range(NumberOfStates):
-    if i == NumberOfStates - 1:
-        adj_mat[i][0] = 1
-    else:
-        adj_mat[i][i+1] = 1
-
 
 clock_cfg_file = open('clock_config.cfg', 'w')
 clock_cfg_file.write('[Configuration]\n')
@@ -50,9 +56,9 @@ clk_states = ", ".join(str(tuple([i])) for i in ListClkNodes)
 protocol_dict = {}
 for i in range(NumberOfStates):
     if i == NumberOfStates -1:
-        for key in Clocks.keys():
+        for key in Clocks_.keys():
             tempdict = {}
-            if (i + 1) % Clocks[key] == 0:
+            if (i + 1) % Clocks_[key] == 0:
                 tempdict[key] = [tuple([ListClkNodes[0]])]
             else:
                 tempdict['True'] = [tuple([ListClkNodes[0]])]
@@ -62,9 +68,9 @@ for i in range(NumberOfStates):
             else:
                 protocol_dict[tuple([ListClkNodes[i]])] = tempdict
     else:     
-        for key in Clocks.keys():
+        for key in Clocks_.keys():
             tempdict = {}
-            if (i + 1) % Clocks[key] == 0:
+            if (i + 1) % Clocks_[key] == 0:
                 tempdict[key] = [tuple([ListClkNodes[i+1]])]
             else:
                 tempdict['True'] = [tuple([ListClkNodes[i+1]])]
