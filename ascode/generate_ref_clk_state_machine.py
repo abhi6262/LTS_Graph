@@ -169,13 +169,20 @@ for iter1 in range(len(proto_nodes)):
     
     #print Xtended_proto_state_machine.keys()
 
+    Xtended_state_machine_states = Xtended_proto_state_machine.keys()
     extended_state_machine_graph = pd.Dot(graph_type = 'digraph')
     NodeDict = {}
     for i in ListStateMachineNodes:
-        NodeDict[i] = pd.Node(i.replace(':', '_'), style="filled", fillcolor="gray")
+        if i == InitState[0]:
+            NodeDict[i] = pd.Node(i.replace(':', '_'), style="filled", fillcolor="green")
+        else:
+            if tuple([i]) in Xtended_state_machine_states:
+                NodeDict[i] = pd.Node(i.replace(':', '_'), style="filled", fillcolor="gray")
+            else:
+                NodeDict[i] = pd.Node(i.replace(':', '_'), style="filled", fillcolor="red")
         extended_state_machine_graph.add_node(NodeDict[i])
     #print NodeDict
-    Xtended_state_machine_states = Xtended_proto_state_machine.keys()
+    
     for i in ListStateMachineNodes:
         if tuple([i]) in Xtended_state_machine_states:
             #print "i:", i
