@@ -54,7 +54,7 @@ for iter1 in range(len(proto_nodes)):
     Xtended_proto_cfg_file.write('[' + Protocols[iter1] + ']\n')
     ListStateMachineNodes = []
     for j in range(len(clock_nodes[0])):
-        for k in range(len(proto_nodes[i])):
+        for k in range(len(proto_nodes[iter1])):
             state_name = proto_nodes[iter1][k][0] + ':' + clock_nodes[0][j][0]
             ListStateMachineNodes.append(state_name)
     print "Total number of states in the enhanced protocol state machine:", len(ListStateMachineNodes)
