@@ -40,6 +40,8 @@ for i in range(len(Protocols)):
 
 Xtended_proto_cfg_file = open('Xtended_proto.cfg', 'w')
 Xtended_proto_cfg_file.write('[Configuration]\n')
+Xtended_proto_cfg_file.write('Protocols: ' + str(Protocols) + '\n')
+Xtended_proto_cfg_file.write('Clock_Nodes: [\'' + str(len(clock_nodes[0])) + '\']\n\n')
 
 for iter1 in range(len(proto_nodes)):
     print "Enhancing protocol state machine:", Protocols[iter1]
