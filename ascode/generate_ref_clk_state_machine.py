@@ -41,7 +41,7 @@ for i in range(len(Protocols)):
 Xtended_proto_cfg_file = open('Xtended_proto.cfg', 'w')
 Xtended_proto_cfg_file.write('[Configuration]\n')
 Xtended_proto_cfg_file.write('Protocols: ' + str(Protocols) + '\n')
-Xtended_proto_cfg_file.write('Clock_Nodes: [\'' + str(len(clock_nodes[0])) + '\']\n\n')
+Xtended_proto_cfg_file.write('Clock_Nodes: ' + str(len(clock_nodes[0])) + '\n\n')
 
 for iter1 in range(len(proto_nodes)):
     print "Enhancing protocol state machine:", Protocols[iter1]
@@ -53,7 +53,6 @@ for iter1 in range(len(proto_nodes)):
             state_name = proto_nodes[iter1][k][0] + ':' + clock_nodes[0][j][0]
             ListStateMachineNodes.append(state_name)
     print "Possible States of the enhanced state protocol state machine are:", ListStateMachineNodes
-    StateMachineDict = {}
     InitState = tuple([proto_init_state[iter1][0][0] + ':' + clock_init_state[0][0][0]])
     
     StatesExplored = []
