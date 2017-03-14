@@ -9,6 +9,33 @@ import pydot as pd
 
 os.system('cls' if os.name == 'nt' else 'clear')
 
+def draw_dot(Interleaved_lts_machine, Interleaved_lts_machine_init, iter1):
+    Interleaved_lts_graph = open('Interleaved_lts_graph_' + str(iter1) + '.dot', 'w') 
+    Interleaved_lts_graph.write('digraph graphme {\n')
+    Interleaved_lts_states = Interleaved_lts_machine.keys()
+    #print Interleaved_lts_states
+    #print Interleaved_lts_machine_init
+    TotalNoEdges = 0
+    for state in Interleaved_lts_states:
+        #print "state: ", state
+        if state == Interleaved_lts_machine_init[0]:
+             Interleaved_lts_graph.write('\t\t' + state[0].replace(':', '_') + ' [style=\"filled\", fillcolor=\"green\"];')
+        for j in Interleaved_lts_machine[state]:
+            #print "j: ", j
+            for k_ in Interleaved_lts_machine[state][j]:
+                #print "k_: ", k_
+                TotalNoEdges = TotalNoEdges + 1
+                Interleaved_lts_graph.write('\t\t' + state[0].replace(':', '_') + ' -> ' + k_.replace(':', '_') + '[label=\"' + j + '\"];\n')
+    Interleaved_lts_graph.write('}')
+            
+    print '#' * 20
+    print "Total number of states: ", len(Interleaved_lts_states)
+    print "Total number of edges: ", TotalNoEdges
+    #print "States in Interleaved LTS: ", Interleaved_lts_states
+    print '#' * 20
+
+
+
 config_proto = ConfigParser.RawConfigParser()
 config_proto.read('Xtended_proto.cfg')
 
@@ -128,6 +155,7 @@ for iter1 in range(1, len(proto_tran_rel)):
     print "\n"
     print "Initial state of the Interleaved state machine now: ", Interleaved_lts_machine_init, '\n'
     print '*' * 20, 'Iteration: ', (iter1 - 1), ' complete ', '*' * 20, '\n'
+    draw_dot(Interleaved_lts_machine, Interleaved_lts_machine_init, iter1)
     
 Interleaved_lts_states = Interleaved_lts_machine.keys()
 
@@ -160,24 +188,5 @@ Interleaved_lockstep_lts_file.close()
 #            TotalNoEdges = TotalNoEdges + 1
 #            Interleaved_lts_graph.add_edge(pd.Edge(NodeDict[state], NodeDict[tuple([k_])], label = j))
 
-Interleaved_lts_graph = open('Interleaved_lts_graph.dot', 'w') 
-Interleaved_lts_graph.write('digraph hraphme {\n')
-
-TotalNoEdges = 0
-for state in Interleaved_lts_states:
-    #print "state: ", state
-    for j in Interleaved_lts_machine[state]:
-        #print "j: ", j
-        for k_ in Interleaved_lts_machine[state][j]:
-            #print "k_: ", k_
-            TotalNoEdges = TotalNoEdges + 1
-            Interleaved_lts_graph.write('\t\t' + state[0].replace(':', '_') + ' -> ' + k_.replace(':', '_') + '[label=\"' + j + '\"];\n')
-Interleaved_lts_graph.write('}')
-            
-print '#' * 20
-print "Total number of states: ", len(Interleaved_lts_states)
-print "Total number of edges: ", TotalNoEdges
-#print "States in Interleaved LTS: ", Interleaved_lts_states
-print '#' * 20
 
 #Interleaved_lts_graph.write_png('Interleaved_lockstep_lts.png')
