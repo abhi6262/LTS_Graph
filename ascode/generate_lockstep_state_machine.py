@@ -122,15 +122,20 @@ for iter1 in range(1, len(proto_tran_rel)):
         Interleaved_lts_machine[tuple([newkey])] = TempMachine_1[key]
     
 
+Interleaved_lts_states = Interleaved_lts_machine.keys()
+
 print "\n\n"
 print '#' * 20
-print "Total number of states: ", len(Interleaved_lts_machine.keys())
-print "States in Interleaved LTS: ", Interleaved_lts_machine.keys()
+print "Total number of states: ", len(Interleaved_lts_states)
+print "States in Interleaved LTS: ", Interleaved_lts_states
 print '#' * 20
 
+
+Interleaved_lockstep_lts_file.write('protocolnodes: ' + str(Interleaved_lts_states) + '\n')
+Interleaved_lockstep_lts_file.write('protocol: ' + str(Interleaved_lts_machine) + '\n')
+Interleaved_lockstep_lts_file.write('initstate: ' + str([Initstate]) + '\n')
 Interleaved_lockstep_lts_file.close()
 
-Interleaved_lts_states = Interleaved_lts_machine.keys()
 Interleaved_lts_graph = pd.Dot(graph_type = 'digraph')
 NodeDict = {}
 for i in Interleaved_lts_states:
