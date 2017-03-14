@@ -34,9 +34,9 @@ Interleaved_lockstep_lts_file.write('[Configuration]\n')
 
 Interleaved_lts_machine = {}
 Interleaved_lts_machine = proto_tran_rel[0]
-print Interleaved_lts_machine
+#print Interleaved_lts_machine
 Interleaved_lts_machine_init = proto_init_state[0]
-print Interleaved_lts_machine_init
+#print Interleaved_lts_machine_init
 
 for iter1 in range(1, len(proto_tran_rel)):
     ListStateMachineNodes = []
@@ -46,6 +46,7 @@ for iter1 in range(1, len(proto_tran_rel)):
     TempMachine_2_init = proto_init_state[iter1]
     
     Interleaved_lts_machine_keys = Interleaved_lts_machine.keys()
+    #print Interleaved_lts_machine_keys
     TempMachine_2_keys = TempMachine_2.keys()
     for i in range(len(Interleaved_lts_machine_keys)):
         for j in range(len(TempMachine_2_keys)):
@@ -63,7 +64,7 @@ for iter1 in range(1, len(proto_tran_rel)):
     StatesExplored = []
     StatesYetToExplore = []
     StatesYetToExplore.append(Initstate)
-    print "Init state queued:", Initstate, "\n"
+    print "Init state queued:", Initstate
 
     # Calculating constrained product of the two state machine under consideration
     while StatesYetToExplore:
@@ -79,6 +80,7 @@ for iter1 in range(1, len(proto_tran_rel)):
             ss.exit(1)
         
         Interleaved_lts_machine_state = StateNowExploring[0][:StateNowExploring[0].find(':')]
+        #print Interleaved_lts_machine_state
         Interleaved_lts_machine_clkstate =  StateNowExploring[0][StateNowExploring[0].rfind(':') + 1:]
         EdgeOf_Interleaved_lts_machine = Interleaved_lts_machine[tuple([Interleaved_lts_machine_state + ':' + Interleaved_lts_machine_clkstate])]
         #print EdgeOf_Interleaved_lts_machine
@@ -106,7 +108,7 @@ for iter1 in range(1, len(proto_tran_rel)):
                     #print ComposedMsg
                     QStateToExplore = tuple([NextState_of_Interleaved[:NextState_of_Interleaved.find(':')] + ':' + NextState_of_TempMachine_2[:NextState_of_TempMachine_2.find(':')] + ':' + NextState_of_Interleaved[NextState_of_Interleaved.find(':') + 1:]])
                     tempdict = {}
-                    tempdict[ComposedMsg] = QStateToExplore
+                    tempdict[ComposedMsg] = tuple([QStateToExplore[0].replace(':', '_', 1)])
                     
                     if StateNowExploring in TempMachine_1.keys():
                         TempMachine_1[StateNowExploring].update(tempdict)
@@ -120,32 +122,46 @@ for iter1 in range(1, len(proto_tran_rel)):
     for key in TempMachine_1.keys():
         newkey = key[0].replace(':', '_', 1)
         Interleaved_lts_machine[tuple([newkey])] = TempMachine_1[key]
+   
+    Interleaved_lts_machine_init = []
+    Interleaved_lts_machine_init.append(tuple([Initstate[0].replace(':', '_', 1)]))
+    print "\n"
+    print "Initial state of the Interleaved state machine now: ", Interleaved_lts_machine_init, '\n'
+    print '*' * 20, 'Iteration: ', (iter1 - 1), ' complete ', '*' * 20, '\n'
     
-
 Interleaved_lts_states = Interleaved_lts_machine.keys()
 
 print "\n\n"
-print '#' * 20
-print "Total number of states: ", len(Interleaved_lts_states)
-print "States in Interleaved LTS: ", Interleaved_lts_states
-print '#' * 20
-
 
 Interleaved_lockstep_lts_file.write('protocolnodes: ' + str(Interleaved_lts_states) + '\n')
 Interleaved_lockstep_lts_file.write('protocol: ' + str(Interleaved_lts_machine) + '\n')
-Interleaved_lockstep_lts_file.write('initstate: ' + str([Initstate]) + '\n')
+Interleaved_lockstep_lts_file.write('initstate: ' + str([Initstate[0].replace(':', '_', 1)]) + '\n')
 Interleaved_lockstep_lts_file.close()
 
-Interleaved_lts_graph = pd.Dot(graph_type = 'digraph')
-NodeDict = {}
-for i in Interleaved_lts_states:
-    if i[0] == Initstate[0].replace(':', '_', 1):
-        NodeDict[i] = pd.Node(i[0].replace(':', '_'), style="filled", fillcolor="green")
-    else:
-        NodeDict[i] = pd.Node(i[0].replace(':', '_'), style="filled", fillcolor="gray")
-    Interleaved_lts_graph.add_node(NodeDict[i])
+#Interleaved_lts_graph = pd.Dot(graph_type = 'digraph')
+#NodeDict = {}
+#for i in Interleaved_lts_states:
+#    if i[0] == Initstate[0].replace(':', '_', 1):
+#        NodeDict[i] = pd.Node(i[0].replace(':', '_'), style="filled", fillcolor="green")
+#    else:
+#        NodeDict[i] = pd.Node(i[0].replace(':', '_'), style="filled", fillcolor="gray")
+#    Interleaved_lts_graph.add_node(NodeDict[i])
+#
+##print "NodeDict Keys: ", NodeDict.keys()
+#
+#TotalNoEdges = 0
+#for state in Interleaved_lts_states:
+#    #print "state: ", state
+#    for j in Interleaved_lts_machine[state]:
+#        #print "j: ", j
+#        for k_ in Interleaved_lts_machine[state][j]:
+#            #print k_
+#            #k = k_.replace(':', '_')
+#            TotalNoEdges = TotalNoEdges + 1
+#            Interleaved_lts_graph.add_edge(pd.Edge(NodeDict[state], NodeDict[tuple([k_])], label = j))
 
-#print NodeDict
+Interleaved_lts_graph = open('Interleaved_lts_graph.dot', 'w') 
+Interleaved_lts_graph.write('digraph hraphme {\n')
 
 TotalNoEdges = 0
 for state in Interleaved_lts_states:
@@ -153,8 +169,15 @@ for state in Interleaved_lts_states:
     for j in Interleaved_lts_machine[state]:
         #print "j: ", j
         for k_ in Interleaved_lts_machine[state][j]:
-            k = k_.replace(':', '_', 1)
+            #print "k_: ", k_
             TotalNoEdges = TotalNoEdges + 1
-            Interleaved_lts_graph.add_edge(pd.Edge(NodeDict[state], NodeDict[tuple([k])], label = j))
+            Interleaved_lts_graph.write('\t\t' + state[0].replace(':', '_') + ' -> ' + k_.replace(':', '_') + '[label=\"' + j + '\"];\n')
+Interleaved_lts_graph.write('}')
             
-Interleaved_lts_graph.write_pdf('Interleaved_lockstep_lts.pdf')
+print '#' * 20
+print "Total number of states: ", len(Interleaved_lts_states)
+print "Total number of edges: ", TotalNoEdges
+#print "States in Interleaved LTS: ", Interleaved_lts_states
+print '#' * 20
+
+#Interleaved_lts_graph.write_png('Interleaved_lockstep_lts.png')

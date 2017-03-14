@@ -179,8 +179,7 @@ for iter1 in range(len(proto_nodes)):
                     TotalNoEdges = TotalNoEdges + 1
                     extended_state_machine_graph.add_edge(pd.Edge(NodeDict[i], NodeDict[k], label = j))
 
-    extended_state_machine_graph.write_pdf(Protocols[iter1]+".pdf")
-    extended_state_machine_graph.write_png(Protocols[iter1]+".png")
+    extended_state_machine_graph.write_pdf(Protocols[iter1].replace(':', '_')+".pdf")
     
     print "\n"
     print '#' * 20
