@@ -104,11 +104,19 @@ for i in ListClkNodes:
 
     clock_graph.add_node(NodeDict[i])
 
+#for i in ListClkNodes:
+#    for j in protocol_dict[tuple([i])]:
+#        for k in protocol_dict[tuple([i])][j]:
+#            clock_graph.add_edge(pd.Edge(NodeDict[i], NodeDict[k[0]], label=j ))
+
 for i in ListClkNodes:
-    for j in protocol_dict[tuple([i])]:
-        for k in protocol_dict[tuple([i])][j]:
-            clock_graph.add_edge(pd.Edge(NodeDict[i], NodeDict[k[0]], label=j ))
+    label_ = ", ".join(clk_name for clk_name in protocol_dict[tuple([i])].keys())
+    if protocol_dict[tuple([i])].keys():
+        k = protocol_dict[tuple([i])].keys()[0]
+        dest_state = protocol_dict[tuple([i])][k][0]
+        clock_graph.add_edge(pd.Edge(NodeDict[i], NodeDict[dest_state[0]], label=label_ ))
+    else:
+        clock_graph.add_edge(pd.Edge(NodeDict[i], NodeDict[dest_state[0]], label=label_ ))
 
 
 clock_graph.write_pdf("clock_state_machine.pdf")
-clock_graph.write_png("clock_state_machine.png")
