@@ -6,6 +6,7 @@ import pickle
 import networkx as nx
 from matplotlib import pyplot as plt
 import pydot as pd
+from generate_lockstep_state_machine import construct_protocol
 
 os.system('cls' if os.name == 'nt' else 'clear')
 
@@ -47,15 +48,24 @@ for key in Protocols.keys():
 
 Xtended_proto_cfg_file = open('Xtended_proto.cfg', 'w')
 Xtended_proto_cfg_file.write('[Configuration]\n')
-Xtended_proto_cfg_file.write('Protocols: ' + str(Protocols) + '\n')
+#Xtended_proto_cfg_file.write('Protocols: ' + str(Protocols) + '\n')
+Xtended_proto_cfg_file.write('Protocols: [' + ", ".join('\'' + key + '\'' for key in Protocols.keys()) + ']\n')
 Xtended_proto_cfg_file.write('Clock_Nodes: ' + str(len(clock_nodes[0])) + '\n\n')
 
 for key in Protocols.keys():
+
+    Xtended_proto_cfg_file.write('[' + key + ']\n')
+
+    Intermediate_proto_cfg_file = open('Intermediate_proto.cfg', 'w')
+    Intermediate_proto_cfg_file.write('[Configuration]\n')
+    Intermediate_proto_cfg_file.write('Protocols:['  + ", ".join('\'' + key + ':' + ele + '\'' for ele in Protocols[key]) + ']\n')
+    Intermediate_proto_cfg_file.write('Clock_Nodes: ' + str(len(clock_nodes[0])) + '\n\n')
+
     for comp in Protocols[key]:
         protocol_name = key + ':' + comp
-        print "Enhancing protocol state machine:", key
-        Xtended_proto_state_machine = {}
-        Xtended_proto_cfg_file.write('[' + protocol_name + ']\n')
+        print "Enhancing protocol state machine:", protocol_name
+        Intermediate_proto_state_machine = {}
+        Intermediate_proto_cfg_file.write('[' + protocol_name + ']\n')
         ListStateMachineNodes = []
         for j in range(len(clock_nodes[0])):
             for k in range(len(proto_nodes[protocol_name])):
@@ -96,10 +106,10 @@ for key in Protocols.keys():
                 QStateToExplore = tuple([StateNowExploring[0][:StateNowExploring[0].find(':')] + ':' + NextClockState])
                 tempdict['True'] = QStateToExplore
                 # Reconstructing the transition relation in the extended transition system
-                if StateNowExploring in Xtended_proto_state_machine.keys():
-                    Xtended_proto_state_machine[StateNowExploring].update(tempdict)
+                if StateNowExploring in Intermediate_proto_state_machine.keys():
+                    Intermediate_proto_state_machine[StateNowExploring].update(tempdict)
                 else:
-                    Xtended_proto_state_machine[StateNowExploring] = tempdict
+                    Intermediate_proto_state_machine[StateNowExploring] = tempdict
                 # A state just created can be in either of StatesExplored or in StatesYetToExplore but cannot be in both. If its not in both,
                 # then it needs to be explored to find out reachable states and should be pushed in the StatesYetToExplore queue
                 if QStateToExplore not in StatesExplored and QStateToExplore not in StatesYetToExplore:
@@ -129,10 +139,10 @@ for key in Protocols.keys():
                         #print "QStateToExplore:", QStateToExplore
                         #print "tempdict:", tempdict
                         # Reconstructing the transition relation in the extended transition system
-                        if StateNowExploring in Xtended_proto_state_machine.keys():
-                            Xtended_proto_state_machine[StateNowExploring].update(tempdict)
+                        if StateNowExploring in Intermediate_proto_state_machine.keys():
+                            Intermediate_proto_state_machine[StateNowExploring].update(tempdict)
                         else:
-                            Xtended_proto_state_machine[StateNowExploring] = tempdict
+                            Intermediate_proto_state_machine[StateNowExploring] = tempdict
 
                         if QStateToExplore not in StatesExplored and QStateToExplore not in StatesYetToExplore:
                             StatesYetToExplore.append(QStateToExplore)
@@ -147,31 +157,32 @@ for key in Protocols.keys():
                         tempdict['True'] = QStateToExplore
                         #print "Case 2a.2 QStateToExplore:", QStateToExplore
                         # Reconstructing the transition relation in the extended transition system
-                        if StateNowExploring in Xtended_proto_state_machine.keys():
-                            Xtended_proto_state_machine[StateNowExploring].update(tempdict)
+                        if StateNowExploring in Intermediate_proto_state_machine.keys():
+                            Intermediate_proto_state_machine[StateNowExploring].update(tempdict)
                         else:
-                            Xtended_proto_state_machine[StateNowExploring] = tempdict
+                            Intermediate_proto_state_machine[StateNowExploring] = tempdict
 
                         if QStateToExplore not in StatesExplored and QStateToExplore not in StatesYetToExplore:
                             StatesYetToExplore.append(QStateToExplore)
                                     #print "Ref 3: State Queued:", QStateToExplore, "\n\n"
 
         protocol_states = ", ".join(str(tuple([i])) for i in ListStateMachineNodes) 
-        Xtended_proto_cfg_file.write('protocolnodes: [' + protocol_states + ']\n')
-        Xtended_proto_cfg_file.write('protocol:' + str(Xtended_proto_state_machine) + '\n')
-        Xtended_proto_cfg_file.write('initstate: [' + str(tuple([InitState[0]])) + ']')
-        Xtended_proto_cfg_file.write("\n\n")
+        Intermediate_proto_cfg_file.write('protocolnodes: [' + protocol_states + ']\n')
+        Intermediate_proto_cfg_file.write('protocol:' + str(Intermediate_proto_state_machine) + '\n')
+        Intermediate_proto_cfg_file.write('initstate: [' + str(tuple([InitState[0]])) + ']')
+        Intermediate_proto_cfg_file.write("\n\n")
     
         #print Xtended_proto_state_machine.keys()
 
-        Xtended_state_machine_states = Xtended_proto_state_machine.keys()
+        Intermediate_state_machine_states = Intermediate_proto_state_machine.keys()
         extended_state_machine_graph = pd.Dot(graph_type = 'digraph')
         NodeDict = {}
         for i in ListStateMachineNodes:
             if i == InitState[0]:
+                print "In graph If statement\n"
                 NodeDict[i] = pd.Node(i.replace(':', '_'), style="filled", fillcolor="green")
             else:
-                if tuple([i]) in Xtended_state_machine_states:
+                if tuple([i]) in Intermediate_state_machine_states:
                     NodeDict[i] = pd.Node(i.replace(':', '_'), style="filled", fillcolor="gray")
                 else:
                     NodeDict[i] = pd.Node(i.replace(':', '_'), style="filled", fillcolor="red")
@@ -179,11 +190,11 @@ for key in Protocols.keys():
         #print NodeDict
         TotalNoEdges = 0 
         for i in ListStateMachineNodes:
-            if tuple([i]) in Xtended_state_machine_states:
+            if tuple([i]) in Intermediate_state_machine_states:
                 #print "i:", i
-                for j in Xtended_proto_state_machine[tuple([i])]:
+                for j in Intermediate_proto_state_machine[tuple([i])]:
                     #print "j:", j
-                    for k in Xtended_proto_state_machine[tuple([i])][j]:
+                    for k in Intermediate_proto_state_machine[tuple([i])][j]:
                         #print "k:", k
                         TotalNoEdges = TotalNoEdges + 1
                         extended_state_machine_graph.add_edge(pd.Edge(NodeDict[i], NodeDict[k], label = j))
@@ -193,10 +204,20 @@ for key in Protocols.keys():
         print "\n"
         print '#' * 20
         print "Total Number of Possible States in the Enhanced State Machine of Protocol ", protocol_name, ": ",len(ListStateMachineNodes)
-        print "Total Number of States in Enhanced State Machine of Protocol ", protocol_name, ": ", len(Xtended_state_machine_states)
+        print "Total Number of States in Enhanced State Machine of Protocol ", protocol_name, ": ", len(Intermediate_state_machine_states)
         print "Total Number of Edges  in Enhanced State Machine of Protocol ", protocol_name, ": ", TotalNoEdges
-        print "Total Number of Unreachable states in the Enhanced State Machine of Protocol ", protocol_name, ": ", len(ListStateMachineNodes) - len(Xtended_state_machine_states)
+        print "Total Number of Unreachable states in the Enhanced State Machine of Protocol ", protocol_name, ": ", len(ListStateMachineNodes) - len(Intermediate_state_machine_states)
         print '#' * 20
         print "\n"
-        
+    
+    Intermediate_proto_cfg_file.close() 
+    Xtended_lts_machine, Initstate = construct_protocol('Intermediate_proto.cfg')
+    Xtended_lts_states = Xtended_lts_machine.keys()
+    
+    print "\n\n"
+    
+    Xtended_proto_cfg_file.write('protocolnodes: ' + str(Xtended_lts_states) + '\n')
+    Xtended_proto_cfg_file.write('protocol: ' + str(Xtended_lts_machine) + '\n')
+    Xtended_proto_cfg_file.write('initstate: ' + str([Initstate[0].replace(':', '_', 1)]) + '\n\n')
+
 Xtended_proto_cfg_file.close()
