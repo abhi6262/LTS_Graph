@@ -6,7 +6,7 @@ import pickle
 import networkx as nx
 from matplotlib import pyplot as plt
 import pydot as pd
-from generate_lockstep_state_machine import construct_protocol
+from generate_lockstep_state_machine import *
 
 os.system('cls' if os.name == 'nt' else 'clear')
 
@@ -46,7 +46,7 @@ for key in Protocols.keys():
 #print proto_nodes
 #print proto_init_state
 
-Xtended_proto_cfg_file = open('Xtended_proto.cfg', 'w')
+Xtended_proto_cfg_file = open('./cfg/Xtended_proto.cfg', 'w')
 Xtended_proto_cfg_file.write('[Configuration]\n')
 #Xtended_proto_cfg_file.write('Protocols: ' + str(Protocols) + '\n')
 Xtended_proto_cfg_file.write('Protocols: [' + ", ".join('\'' + key + '\'' for key in Protocols.keys()) + ']\n')
@@ -56,7 +56,7 @@ for key in Protocols.keys():
 
     Xtended_proto_cfg_file.write('[' + key + ']\n')
 
-    Intermediate_proto_cfg_file = open('Intermediate_proto.cfg', 'w')
+    Intermediate_proto_cfg_file = open('./cfg/Intermediate_proto.cfg', 'w')
     Intermediate_proto_cfg_file.write('[Configuration]\n')
     Intermediate_proto_cfg_file.write('Protocols:['  + ", ".join('\'' + key + ':' + ele + '\'' for ele in Protocols[key]) + ']\n')
     Intermediate_proto_cfg_file.write('Clock_Nodes: ' + str(len(clock_nodes[0])) + '\n\n')
@@ -199,7 +199,7 @@ for key in Protocols.keys():
                         TotalNoEdges = TotalNoEdges + 1
                         extended_state_machine_graph.add_edge(pd.Edge(NodeDict[i], NodeDict[k], label = j))
 
-        extended_state_machine_graph.write_pdf(protocol_name.replace(':', '_')+".pdf")
+        extended_state_machine_graph.write_pdf("./pdf/" + protocol_name.replace(':', '_')+".pdf")
     
         print "\n"
         print '#' * 20
@@ -211,9 +211,12 @@ for key in Protocols.keys():
         print "\n"
     
     Intermediate_proto_cfg_file.close() 
-    Xtended_lts_machine, Initstate = construct_protocol('Intermediate_proto.cfg')
+    Xtended_lts_machine, Initstate = construct_protocol('./cfg/Intermediate_proto.cfg', key)
     Xtended_lts_states = Xtended_lts_machine.keys()
-    
+   
+    Xtended_lts_machine_init = []
+    Xtended_lts_machine_init.append(tuple([Initstate[0].replace(':', '_', 1)]))
+    draw_dot(Xtended_lts_machine, Xtended_lts_machine_init, 100, key)
     print "\n\n"
     
     Xtended_proto_cfg_file.write('protocolnodes: ' + str(Xtended_lts_states) + '\n')

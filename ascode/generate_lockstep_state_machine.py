@@ -9,8 +9,8 @@ import pydot as pd
 
 #os.system('cls' if os.name == 'nt' else 'clear')
 
-def draw_dot(Interleaved_lts_machine, Interleaved_lts_machine_init, iter1):
-    Interleaved_lts_graph = open('Interleaved_lts_graph_' + str(iter1) + '.dot', 'w') 
+def draw_dot(Interleaved_lts_machine, Interleaved_lts_machine_init, iter1, protocol_key):
+    Interleaved_lts_graph = open('./dot/Interleaved_lts_graph_' + str(iter1) + '_' + protocol_key +'.dot', 'w') 
     Interleaved_lts_graph.write('digraph graphme {\n')
     Interleaved_lts_states = Interleaved_lts_machine.keys()
     #print Interleaved_lts_states
@@ -27,15 +27,15 @@ def draw_dot(Interleaved_lts_machine, Interleaved_lts_machine_init, iter1):
                 TotalNoEdges = TotalNoEdges + 1
                 Interleaved_lts_graph.write('\t\t' + state[0].replace(':', '_') + ' -> ' + k_.replace(':', '_') + '[label=\"' + j + '\"];\n')
     Interleaved_lts_graph.write('}')
-            
-    print '#' * 20
-    print "Total number of states: ", len(Interleaved_lts_states)
-    print "Total number of edges: ", TotalNoEdges
-    #print "States in Interleaved LTS: ", Interleaved_lts_states
-    print '#' * 20
+    if iter1 == 100: 
+        print '#' * 20
+        print "Total number of states: ", len(Interleaved_lts_states)
+        print "Total number of edges: ", TotalNoEdges
+        #print "States in Interleaved LTS: ", Interleaved_lts_states
+        print '#' * 20
 
 
-def construct_protocol(protocol_config_file):
+def construct_protocol(protocol_config_file, protocol_key):
 
 	config_proto = ConfigParser.RawConfigParser()
 	#config_proto.read('Xtended_proto.cfg')
@@ -58,7 +58,7 @@ def construct_protocol(protocol_config_file):
 	    proto_tran_rel.append(ast.literal_eval(config_proto.get(Protocols[i], 'protocol')))
 	    proto_init_state.append(ast.literal_eval(config_proto.get(Protocols[i], 'initstate')))
 	
-	Interleaved_lockstep_lts_file = open('Interleaved_lockstep_lts.cfg', 'w')
+	Interleaved_lockstep_lts_file = open('./cfg/Interleaved_lockstep_lts.cfg', 'w')
 	Interleaved_lockstep_lts_file.write('[Configuration]\n')
 	
 	Interleaved_lts_machine = {}
@@ -157,7 +157,7 @@ def construct_protocol(protocol_config_file):
 	    print "\n"
 	    print "Initial state of the Interleaved state machine now: ", Interleaved_lts_machine_init, '\n'
 	    print '#' * 20, 'Iteration: ', (iter1 - 1), ' complete ', '#' * 20, '\n'
-	    draw_dot(Interleaved_lts_machine, Interleaved_lts_machine_init, iter1)
+	    draw_dot(Interleaved_lts_machine, Interleaved_lts_machine_init, iter1, protocol_key)
 	    
 	#Interleaved_lts_states = Interleaved_lts_machine.keys()
 	
