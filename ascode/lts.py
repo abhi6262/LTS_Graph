@@ -129,9 +129,9 @@ for x in range(1,len(Protocols)):
                         if (j+temp[len(temp)-1:]) not in tempsysnodes:
                             if (j+temp[len(temp)-1:]) not in queue:
                                 queue.append(j+temp[len(temp)-1:])
-                    else:
-                        if j+temp[len(temp)-1:] not in tempatom:
-                            tempatom.append(j+temp[len(temp)-1:])
+                        if j in atoms:
+                            if j+temp[len(temp)-1:] not in tempatom:
+                                tempatom.append(j+temp[len(temp)-1:])
             
         k = listsysdict[x].get(temp[len(temp)-1:]) #get the outgoing edges of a node in the tuple
         #print "From listsysdict:", k
@@ -148,12 +148,14 @@ for x in range(1,len(Protocols)):
                         if (temp[:len(temp)-1]+j) not in tempsysnodes:
                             if (temp[:len(temp)-1]+j) not in queue:
                                 queue.append(temp[:len(temp)-1]+j)
-                    else:
-                        if temp[:len(temp)-1]+j not in tempatom:
-                            tempatom.append(temp[:len(temp)-1]+j)
+                        if j in listsysatom[x]:
+                            if temp[:len(temp)-1]+j not in tempatom:
+                                tempatom.append(temp[:len(temp)-1]+j)
     sysnodes = tempsysnodes
     sys = tempsys
     atoms = tempatom
+    #print "Current set of atom states is: ", atoms
+    #print "\n"
     tempsysnodes = []
     tempatom = []
     tempsys = {}
@@ -168,14 +170,14 @@ for x in range(1,len(Protocols)):
 
 print "number of nodes:", len(sysnodes)
 print "\n"
-print "Sys at the end of for loop:", sys
-print "\n"
-print "SysNodes at the end of for loop:", sysnodes
-print "\n"
-print "Critical sysnodes excluded at the end of for loop:", atoms
-print "\n"
+#print "Sys at the end of for loop:", sys
+#print "\n"
+#print "SysNodes at the end of for loop:", sysnodes
+#print "\n"
+#print "Critical sysnodes at the end of for loop:", atoms
+#print "\n"
 
-ss.exit(0)
+#ss.exit(0)
 
 #print "sysnodes: ", sysnodes
 #print "\n"
@@ -239,6 +241,6 @@ plt.show()
 #    for j in sys[i]:
 #        for k in sys[i][j]:
 #            graph.add_edge(pd.Edge(NodeDict[i], NodeDict[k], label=j))
-
+#
 #graph.write_pdf("./pdf/lts.pdf")
 #graph.write_png("lts.png")
