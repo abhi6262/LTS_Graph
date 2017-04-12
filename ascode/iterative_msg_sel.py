@@ -424,6 +424,20 @@ if __name__ == "__main__":
     #MtraceFinal = {}
     #MtraceFinal['RxInfo'] = 1
     totalState = 0
+    msgGrid = []
+    for msg_ in MtraceFinal.keys():
+        searchRegEx = re.compile(r'[0-9]_' + re.escape(msg_)).search
+        xMsg = filterPick(listmsg, searchRegEx)
+        for xMsg_ in xMsg:
+            msgGrid.append(xMsg_)
+    print msgGrid
+    for state in x_y:
+        for msg in msgGrid:
+            if state[listmsg.index(msg)] != 0:
+                totalState = totalState + 1
+                break
+
+    '''
     for list_ in x_y:
         print "List_: ", list_
         for msg_ in MtraceFinal.keys():
@@ -434,6 +448,7 @@ if __name__ == "__main__":
                 if list_[listmsg.index(msg)] != 0:
                     totalState = totalState + 1
                     break
+    '''
     
     print "Total States: ", len(sysnodes)
     print "Total States Reachable: ", totalState
