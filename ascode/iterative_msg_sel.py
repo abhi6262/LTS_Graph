@@ -2,9 +2,10 @@ import os
 import sys as ss
 import itertools
 import math
-import ast, ast
+import ast
 import pickle as pk
 import ConfigParser
+import re
 from types import *
 
 global_dict = {}
@@ -37,13 +38,16 @@ def GrIncluded(Mtrace, message_group):
     GrIncluded = [item for item in MessageGrs if item in GrInTrace]
     return GrIncluded
 
-def MessageSel(buffer_width, listmsg, countlistmsg, epsilon, message_width, message_group, sys, x, x_y):
+def MessageSel(buffer_width, unique_message, listmsg, countlistmsg, epsilon, message_width, message_group, sys, x, x_y):
     # Mcomm : ListType
     Mcomm = FindCommonMsgSegments(message_group)
     print "Common Message Segments Mcomm: ", Mcomm, "\n"
     # Mtrace : DictType
     # Infocurr : FloatType
-    candidates = GetAllPossibleCandidates(listmsg, message_width, buffer_width)
+    
+    ## Need to change GetAllPossibleCandidates routine to handle the instances of the same flows
+    candidates = GetAllPossibleCandidates(unique_message, listmsg, message_width, buffer_width)
+    print "Candidates: ", candidates
     Mtrace, TotalBits, Infocurr = EvalMsgGroups(message_width, candidates, sysnodes, listmsg, countlistmsg, x, x_y)
     print "Current Messages To Trace: ", Mtrace, "Total Bit Width: ", TotalBits
     # Ginc : ListType
@@ -53,7 +57,8 @@ def MessageSel(buffer_width, listmsg, countlistmsg, epsilon, message_width, mess
     Gninc = [item for item in message_group.keys() if item not in Ginc]
     print "Group Not Included: ", Gninc
     # Mrem : ListType
-    Mrem = [item for item in listmsg if item not in Mtrace.keys()]
+    #Mrem = [item for item in listmsg if item not in Mtrace.keys()]
+    Mrem = [item for item in unique_message if item not in Mtrace.keys()]
     print "Message Set Remaining (Including any groups): ", Mrem
     # Bufrem : IntType
     Bufrem = buffer_width - TotalBits
@@ -63,6 +68,7 @@ def MessageSel(buffer_width, listmsg, countlistmsg, epsilon, message_width, mess
     
     Bufrem = buffer_width - TotalBits
     print "Remaining Buffer: ", Bufrem
+
     Mtrace, TotalBits, Infocurr = AddMsgInExistingGr(Mtrace, Bufrem, epsilon, Ginc, Mrem, Mcomm, TotalBits, message_width, sysnodes, listmsg, countlistmsg, x, x_y, Infocurr)
     print "Current Messages To Trace after AddMsgInExistingGr: ", Mtrace, "Total Bit Width: ", TotalBits
 
@@ -121,8 +127,17 @@ def NewGrMessageSel(Mtrace, Bufrem, epsilon, Gninc, Mrem, Mcomm, TotalBits, mess
 	                       currsize = message_group[msg][ele]
 	               del message_group[msg][ToDelEle]
 	       Mtemp.update(mp)
+               # This done to get the indexed messages following the Mtemp.
+               candidates = []
+               for k in Mtemp.keys():
+                   searchRegEx = re.compile(r'[0-9]_' + re.escape(k)).search
+                   x = filterPick(listmsg, searchRegEx)
+                   if x != []:
+                       for idx_msg in x:
+                           candidates.append(idx_msg)
                # M and T are placeholder here
-	       M, T, Infonew = EvalMsgGroups(message_width, [tuple(Mtemp.keys())], sysnodes, listmsg, countlistmsg, x, x_y)
+	       #M, T, Infonew = EvalMsgGroups(message_width, [tuple(Mtemp.keys())], sysnodes, listmsg, countlistmsg, x, x_y)
+	       M, T, Infonew = EvalMsgGroups(message_width, [tuple(candidates)], sysnodes, listmsg, countlistmsg, x, x_y)
 	       if Infonew < Infocurr:
                    Mtrace = Mtemp
                    TotalBits = TotalBits + mp[mp.keys()[0]]
@@ -151,7 +166,18 @@ def AddMsgInExistingGr(Mtrace, Bufrem, epsilon, Ginc, Mrem, Mcomm, TotalBits, me
                     if message_group[msg][key_] <= Bufrem and key_ in Mcomm:
                         mp[msg] = message_group[msg][key_]
                         Mtemp.update(mp)
-                    M, T, Infonew = EvalMsgGroups(message_width, [tuple(Mtemp.keys())], sysnodes, listmsg, countlistmsg, x, x_y)
+
+                    # This done to get the indexed messages following the Mtemp.
+                    candidates = []
+                    for k in Mtemp.keys():
+                        searchRegEx = re.compile(r'[0-9]_' + re.escape(k)).search
+                        x = filterPick(listmsg, searchRegEx)
+                        if x != []:
+                            for idx_msg in x:
+                                candidates.append(idx_msg)
+
+                    #M, T, Infonew = EvalMsgGroups(message_width, [tuple(Mtemp.keys())], sysnodes, listmsg, countlistmsg, x, x_y)
+                    M, T, Infonew = EvalMsgGroups(message_width, [tuple(candidates)], sysnodes, listmsg, countlistmsg, x, x_y)
                     if Infonew <= Infocurr:
                         Mtrace = Mtemp
                         TotalBits = TotalBits + mp[mp.keys()[0]]
@@ -170,7 +196,17 @@ def AddMsgInExistingGr(Mtrace, Bufrem, epsilon, Ginc, Mrem, Mcomm, TotalBits, me
                     if message_group[m][key_] <= Bufrem:
                         mp[msg] = message_group[m][key_]
                         Mtemp.update(mp)
-                    M, T, Infonew = EvalMsgGroups(message_width, [tuple(Mtemp.keys())], sysnodes, listmsg, countlistmsg, x, x_y)
+                    # This done to get the indexed messages following the Mtemp.
+                    candidates = []
+                    for k in Mtemp.keys():
+                        searchRegEx = re.compile(r'[0-9]_' + re.escape(k)).search
+                        x = filterPick(listmsg, searchRegEx)
+                        if x != []:
+                            for idx_msg in x:
+                                candidates.append(idx_msg)
+
+                    #M, T, Infonew = EvalMsgGroups(message_width, [tuple(Mtemp.keys())], sysnodes, listmsg, countlistmsg, x, x_y)
+                    M, T, Infonew = EvalMsgGroups(message_width, [tuple(candidates)], sysnodes, listmsg, countlistmsg, x, x_y)
                     if Infonew <= Infocurr:
                         Mtrace = Mtemp
                         TotalBits = TotalBits + mp[mp.keys()[0]]
@@ -190,7 +226,17 @@ def AddStandAloneMsgs(Mtrace, Bufrem, epsilon, Mrem, TotalBits, message_width, s
             if message_width[msg] <= Bufrem:
                 mp[msg] = Mrem[msg]
                 Mtemp.update(mp)
-                M, T, Infonew = EvalMsgGroups(message_width, [tuple(Mtemp.keys())], sysnodes, listmsg, countlistmsg, x, x_y)
+                # This done to get the indexed messages following the Mtemp.
+                candidates = []
+                for k in Mtemp.keys():
+                    searchRegEx = re.compile(r'[0-9]_' + re.escape(k)).search
+                    x = filterPick(listmsg, searchRegEx)
+                    if x != []:
+                        for idx_msg in x:
+                            candidates.append(idx_msg)
+
+                #M, T, Infonew = EvalMsgGroups(message_width, [tuple(Mtemp.keys())], sysnodes, listmsg, countlistmsg, x, x_y)
+                M, T, Infonew = EvalMsgGroups(message_width, [tuple(candidates)], sysnodes, listmsg, countlistmsg, x, x_y)
                 if Infonew <= Infocurr:
                     Mtrace= Mtemp
                     TotalBits = TotalBits + mp[mp.keys()[0]]
@@ -235,9 +281,13 @@ def CalculateStateMsgJointProb(sys, sysnodes, listmsg):
 
     return x_y
 
-def GetAllPossibleCandidates(listmsg, message_width, buffer_width):
+def filterPick(listmsg, searchRegEx):
+    return [ l for l in listmsg for m in (searchRegEx(l),) if m ]
+
+def GetAllPossibleCandidates(unique_message, listmsg, message_width, buffer_width):
     candidates = []
     msg_width_sum = 0
+    ''' 
     for j in range(2,len(listmsg)+1):
         for i in itertools.combinations(listmsg, j):
             for k in i:
@@ -245,6 +295,23 @@ def GetAllPossibleCandidates(listmsg, message_width, buffer_width):
             #print "i:", i, "Width: ", msg_width_sum, "\n"
             if (msg_width_sum <= buffer_width):
                 candidates.append(i)
+            msg_width_sum = 0
+    '''
+    for j in range(2, len(unique_message) + 1):
+        for i in itertools.combinations(unique_message, j):
+            print i
+            candidates_ = []
+            for k in i:
+                msg_width_sum += message_width[k]
+            if msg_width_sum <= buffer_width:
+                for k in i:
+                    searchRegEx = re.compile(r'[0-9]_' + re.escape(k)).search
+                    x = filterPick(listmsg, searchRegEx)
+                    if x != []:
+                        for idx_msg in x:
+                            candidates_.append(idx_msg)
+            if candidates_ != []:
+                candidates.append(tuple(candidates_))
             msg_width_sum = 0
     return candidates
 
@@ -285,14 +352,18 @@ def EvalMsgGroups(message_width, candidates, sysnodes, listmsg, countlistmsg, x,
     Infocurr = max_info[MaxEle]
     Mtrace = {}
     TotalBits = 0
+    MsgConsidered = []
     for msg in max_candidate[MaxEle]:
-        Mtrace[msg] = message_width[msg]
-        TotalBits = TotalBits + Mtrace[msg]
+        msg_ = msg[msg.find('_') + 1:]
+        if msg_ not in MsgConsidered:
+            Mtrace[msg_] = message_width[msg_]
+            TotalBits = TotalBits + Mtrace[msg_]
+            MsgConsidered.append(msg_)
 
     return Mtrace, TotalBits, Infocurr
             
 
-def ReadConfig(configfile, ldumpfile):
+def ReadConfig(configfile, ldumpfile, Elab_proto):
     os.system('cls' if os.name == 'nt' else 'clear')
     config = ConfigParser.RawConfigParser()
     config.read(configfile)
@@ -304,28 +375,39 @@ def ReadConfig(configfile, ldumpfile):
         sysnodes = pk.load(f)
         sys = pk.load(f)
     f.close()
+    
+    config_elab = ConfigParser.RawConfigParser()
+    config_elab.read(Elab_proto)
+    unique_message = ast.literal_eval(config_elab.get('Messages', 'UniqueMsg'))
 
-    return message_width, buffer_width, message_group, sys, sysnodes
+    return message_width, buffer_width, message_group, unique_message, sys, sysnodes
 
 
 if __name__ == "__main__":
     
-    message_width, buffer_width, message_group, sys, sysnodes = ReadConfig('../config.cfg', 'ltsdump')
-    print "Message Width: ", message_width, "\n\n", "Buffer Width: ", buffer_width, "\n\n", "Message Group: ", message_group, "\n\n"
+    message_width, buffer_width, message_group, unique_message, sys, sysnodes = ReadConfig('../config.cfg', 'ltsdump', './cfg/Elab_proto.cfg')
+    print "Message Width: ", message_width, "\n\n", "Buffer Width: ", buffer_width, "\n\n", "Message Group: ", message_group, "\n\n", "Unique Messages: ", unique_message, "\n\n"
     x = CalculateStateProb(sysnodes)
+    #print x
     listmsg, countlistmsg = CalcMessageInLTS(sys, sysnodes)
+    print listmsg,countlistmsg
     x_y = CalculateStateMsgJointProb(sys, sysnodes, listmsg)
-    MtraceFinal = MessageSel(buffer_width, listmsg, countlistmsg, 0, message_width, message_group, sys, x, x_y) 
-    print global_dict
+    print x_y
+    MtraceFinal = MessageSel(buffer_width, unique_message, listmsg, countlistmsg, 0, message_width, message_group, sys, x, x_y) 
+    print MtraceFinal
+    #print global_dict
 
-    MtraceFinal = {}
-    MtraceFinal['RxInfo'] = 1
+    #MtraceFinal = {}
+    #MtraceFinal['RxInfo'] = 1
     totalState = 0
     for list_ in x_y:
         for msg_ in MtraceFinal.keys():
-            if list_[listmsg.index(msg_)] != 0:
-                totalState = totalState + 1
-                break
+            searchRegEx = re.compile(r'[0-9]_' + re.escape(msg_)).search
+            x = filterPick(listmsg, searchRegEx)
+            for msg in x:
+                if list_[listmsg.index(msg)] != 0:
+                    totalState = totalState + 1
+                    break
 
     print "Total States Reachable: ", totalState
     print "Total Space Coverage: ", float(totalState)/float(len(sysnodes))

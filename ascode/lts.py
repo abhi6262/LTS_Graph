@@ -38,6 +38,7 @@ for i in range(len(Protocols)):
 Elab_proto_cfg_file = open('./cfg/Elab_proto.cfg', 'w')
 Elab_proto_cfg_file.write('[Configuration]\n')
 Elab_proto_cfg_file.write('Protocols: [')
+unique_messages = []
 for i in range(len(Protocols)):
     Elab_proto_cfg_file.write(", ".join('\'' + str(j) + '_' + Protocols[i] + '\'' for j in range(listsysinstance_[i])))
     if i < len(Protocols) - 1:
@@ -65,6 +66,8 @@ for i in range(len(Protocols)):
             transition = protocol_delta[key]
             idx_transition = {}
             for msg in transition.keys():
+                if msg not in unique_messages:
+                    unique_messages.append(msg)
                 nxt_state = transition[msg]
                 idx_msg = str(j) + '_' + msg
                 idx_nxt_state = tuple([str(j) + '_' + nxt_state[0][0]])
@@ -76,6 +79,8 @@ for i in range(len(Protocols)):
         
         Elab_proto_cfg_file.write('\n')
 
+Elab_proto_cfg_file.write('[Messages]\n')
+Elab_proto_cfg_file.write('UniqueMsg: ' + str(unique_messages) + '\n')
 Elab_proto_cfg_file.close()
 
 config_elab = ConfigParser.RawConfigParser()
