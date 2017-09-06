@@ -229,23 +229,23 @@ nx.draw_networkx_edge_labels(G, pos, labels = edge_labels)
 plt.savefig('lts.png')
 plt.show()
 '''
-#graph =  pd.Dot(graph_type = 'digraph')
-### Add all nodes in the graph
-#NodeDict = {}
-#nodeNumber = 0
-#node_file_name = open('node_mapping.txt', 'w')
-#for i in sysnodes:
-#    nodeNumber = nodeNumber + 1
-#    NodeDict[i] = pd.Node(str(nodeNumber), style="filled", fillcolor="blue")
-#    graph.add_node(NodeDict[i])
-#    node_file_name.write(str(i) + " : " + str(nodeNumber) + "\n")
-#
-#node_file_name.close()
-#
-#for i in sysnodes:
-#    for j in sys[i]:
-#        for k in sys[i][j]:
-#            graph.add_edge(pd.Edge(NodeDict[i], NodeDict[k], label=j))
-#
-#graph.write_pdf("./pdf/lts.pdf")
-#graph.write_png("lts.png")
+graph =  pd.Dot(graph_type = 'digraph')
+## Add all nodes in the graph
+NodeDict = {}
+nodeNumber = 0
+node_file_name = open('node_mapping.txt', 'w')
+for i in sysnodes:
+    nodeNumber = nodeNumber + 1
+    NodeDict[i] = pd.Node(str(nodeNumber), style="filled", fillcolor="blue")
+    graph.add_node(NodeDict[i])
+    node_file_name.write(str(i) + " : " + str(nodeNumber) + "\n")
+
+node_file_name.close()
+
+for i in sysnodes:
+    for j in sys[i]:
+        for k in sys[i][j]:
+            graph.add_edge(pd.Edge(NodeDict[i], NodeDict[k], label=j))
+
+graph.write_pdf("./pdf/lts.pdf")
+graph.write_png("lts.png")

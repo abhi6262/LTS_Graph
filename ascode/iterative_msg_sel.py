@@ -318,7 +318,7 @@ def GetAllPossibleCandidates(unique_message, listmsg, message_width, buffer_widt
                 candidates.append(i)
             msg_width_sum = 0
     '''
-    for j in range(2, len(unique_message) + 1):
+    for j in range(1, len(unique_message) + 1):
         for i in itertools.combinations(unique_message, j):
             #print i
             candidates_ = []
@@ -342,10 +342,12 @@ def EvalMsgGroups(message_width, candidates, sysnodes, listmsg, countlistmsg, x,
     '''
     max_info = {}
     max_candidate = {}
+    max_candidate_cov = {}
     info_candidates = {}
     totaledges = 0
     for ele in range(len(countlistmsg)):
         totaledges = totaledges + countlistmsg[ele]
+    print "Total edges: ", totaledges
     for c in candidates:
         #print c
         if len(c) not in max_info:
@@ -369,12 +371,21 @@ def EvalMsgGroups(message_width, candidates, sysnodes, listmsg, countlistmsg, x,
 
         #print "x: ", x
         info_candidates[c] = mut_info(x, y, xy)
+        print "Candidate: ", c, " Info Gain: ", info_candidates[c]
         #print info_candidates[c]
         #print "info_candidate:", info_candidates[c], "\n"
         if (info_candidates[c] > max_info[len(c)]):
             max_info[len(c)] = info_candidates[c]
             max_candidate[len(c)] = c
-        
+            totalState = 0
+            for state in x_y:
+                for msg in c:
+                    if state[listmsg.index(msg)] != 0:
+                        totalState = totalState + 1
+                        break
+
+            max_candidate_cov[len(c)] = float(totalState)/float(len(sysnodes))
+
     MaxEle = max(max_candidate.keys())
     #print "MaxEle: ", MaxEle
     Infocurr = max_info[MaxEle]
@@ -389,6 +400,11 @@ def EvalMsgGroups(message_width, candidates, sysnodes, listmsg, countlistmsg, x,
             TotalBits = TotalBits + Mtrace[msg_]
             MsgConsidered.append(msg_)
 
+    print "\n\n"
+    print max_info
+    print "\n\n"
+    print max_candidate_cov
+    print "\n\n"
     return Mtrace, TotalBits, Infocurr
             
 
