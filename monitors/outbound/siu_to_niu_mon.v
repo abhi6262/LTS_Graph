@@ -46,12 +46,14 @@ always @(posedge (iol2clk && enabled))
 begin
     if(sio_niu_hdr_vld)
     begin
-        `PR_ALWAYS("sio_to_niu_mon", `ALWAYS, "SIU sending packet to NIU sio_niu_hdr_vld = %b", sio_niu_hdr_vld);
+        `PR_ALWAYS("sio_to_niu_mon", `ALWAYS, "<sio,niu,,sioniuhdrvld,{%x}>::SIU sending packet to NIU", sio_niu_hdr_vld);
         if (sio_niu_datareq)
-            `PR_ALWAYS("sio_to_niu_mon", `ALWAYS, "Four Cycle Payload follows with 64 bytes of data from SIU to NIU sio_niu_datareq = %b", sio_niu_datareq);
+            `PR_ALWAYS("sio_to_niu_mon", `ALWAYS, "<sio,niu,,sioniu64bpayload,{%x}>::Four Cycle Payload follows with 64 bytes of data from SIU to NIU", sio_niu_datareq);
         else
-            `PR_ALWAYS("sio_to_niu_mon", `ALWAYS, "Write Acknowledge and No Data Payload follows sio_niu_hdr_vld = %b", sio_niu_hdr_vld);
-        `PR_INFO("sio_to_niu_mon", `INFO, "Header Bits = %x", sio_niu_data);
+            `PR_ALWAYS("sio_to_niu_mon", `ALWAYS, "<sio,niu,,sioniu64bpayload,{%x}>::Write Acknowledge and No Data Payload follows", sio_niu_hdr_vld);
+        `PR_ALWAYS("sio_to_niu_mon", `ALWAYS, "<sio,niu,,siodmures,{%x}>::SIO to NIU Read / Write Response", sio_niu_data[127:122]);
+        `PR_ALWAYS("sio_to_niu_mon", `ALWAYS, "<sio,niu,,niutagid,{%x}>::SIO to NIU Read Tag", sio_niu_data[79:64]);
+        /* For Responses SIO does not return the address and hence sio_niu_data[39:0] has been neglected here. Manual 1 Page 6-59 and 6-50 */
     end
 end
 
@@ -62,8 +64,10 @@ always @(posedge (iol2clk & enabled))
 begin
     if (sio_niu_datareq_d)
     begin
-        `PR_ALWAYS("sio_to_niu_mon", `ALWAYS, "Payload cycle initiated");
-        repeat (4) @(posedge iol2clk)
+        `PR_ALWAYS("sio_to_niu_mon", `ALWAYS, "<sio,niu,,dmapayload>::SIO to DMU Return Data Payload Cycle");
+        `PR_INFO("sio_to_niu_mon", `INFO, "DMA Response Payload = %x", sio_niu_data);
+        `PR_INFO("sio_to_niu_mon", `INFO, "DMA Response Parity = %x", sio_niu_parity);
+        repeat (3) @(posedge iol2clk)
         begin
             `PR_INFO("sio_to_niu_mon", `INFO, "DMA Response Payload = %x", sio_niu_data);
             `PR_INFO("sio_to_niu_mon", `INFO, "DMA Response Parity = %x", sio_niu_parity);

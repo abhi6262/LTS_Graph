@@ -283,16 +283,16 @@ always @(posedge (cmp_clk && enabled))
 begin
     if(l2t0_mcu0_rd_req)
     begin
-        `PR_ALWAYS("l2_proto_mon", `ALWAYS, "L2T0 Read Request to MCU0");
-        `PR_INFO("l2_proto_mon", `INFO, "L2T0 to MCU0 Read Request Address = %x", l2t0_mcu0_addr);
-        `PR_INFO("l2_proto_mon", `INFO, "L2T0 to MCU0 Read Request ID = %x", l2t0_mcu0_rd_req_id);
+        `PR_ALWAYS("l2_proto_mon", `ALWAYS, "<l2t0,mcu0,,l2tmcureadreq,{%x}>::L2T0 Read Request to MCU0", l2t0_mcu0_rd_req);
+        `PR_ALWAYS("l2_proto_mon", `ALWAYS, "<l2t0,mcu0,,l2tmcureadreqid,{%x}>::L2T0 to MCU0 Read Request ID", l2t0_mcu0_rd_req_id);
+        `PR_ALWAYS("l2_proto_mon", `ALWAYS, "<l2t0,mcu0,,l2tmcureadaddr,{%x}>::L2T0 to MCU0 Read Request Address", l2t0_mcu0_addr);
     end
 end
 
 always @(posedge (cmp_clk && enabled))
 begin
     if(mcu0_l2t0_rd_ack)
-        `PR_ALWAYS("l2_proto_mon", `ALWAYS, "MCU0 to L2T0 Read Request Acknowledgement");
+        `PR_ALWAYS("l2_proto_mon", `ALWAYS, "<mcu0,l2t0,,mcul2treadack,{%x}>::MCU0 to L2T0 Read Request Acknowledgement", mcu0_l2t0_rd_ack);
 end
 
 always @(posedge (cmp_clk && enabled))
@@ -305,21 +305,22 @@ begin
     end
 end
 
+////////////////////////////////////////////////////////////////
 
 always @(posedge (cmp_clk && enabled))
 begin
     if(l2t1_mcu0_rd_req)
     begin
-        `PR_ALWAYS("l2_proto_mon", `ALWAYS, "L2T1 Read Request to MCU0");
-        `PR_INFO("l2_proto_mon", `INFO, "L2T1 to MCU0 Read Request Address = %x", l2t1_mcu0_addr);
-        `PR_INFO("l2_proto_mon", `INFO, "L2T1 to MCU0 Read Request ID = %x", l2t1_mcu0_rd_req_id);
+        `PR_ALWAYS("l2_proto_mon", `ALWAYS, "<l2t1,mcu0,,l2tmcureadreq,{%x}>::L2T1 Read Request to MCU0", l2t1_mcu0_rd_req);
+        `PR_ALWAYS("l2_proto_mon", `ALWAYS, "<l2t1,mcu0,,l2tmcureadreqid,{%x}>::L2T1 to MCU0 Read Request ID", l2t1_mcu0_rd_req_id);
+        `PR_ALWAYS("l2_proto_mon", `ALWAYS, "<l2t1,mcu0,,l2tmcureadaddr,{%x}>::L2T1 to MCU0 Read Request Address", l2t1_mcu0_addr);
     end
 end
 
 always @(posedge (cmp_clk && enabled))
 begin
     if(mcu0_l2t1_rd_ack)
-        `PR_ALWAYS("l2_proto_mon", `ALWAYS, "MCU0 to L2T1 Read Request Acknowledgement");
+        `PR_ALWAYS("l2_proto_mon", `ALWAYS, "<mcu0,l2t1,,mcul2treadack,{%x}>::MCU0 to L2T1 Read Request Acknowledgement", mcu0_l2t1_rd_ack);
 end
 
 always @(posedge (cmp_clk && enabled))
@@ -332,21 +333,22 @@ begin
     end
 end
 
+/////////////////////////////////////////////////////////////////
 
 always @(posedge (cmp_clk && enabled))
 begin
     if(l2t2_mcu1_rd_req)
     begin
-        `PR_ALWAYS("l2_proto_mon", `ALWAYS, "L2T2 Read Request to MCU1");
-        `PR_INFO("l2_proto_mon", `INFO, "L2T2 to MCU1 Read Request Address = %x", l2t2_mcu1_addr);
-        `PR_INFO("l2_proto_mon", `INFO, "L2T2 to MCU1 Read Request ID = %x", l2t2_mcu1_rd_req_id);
+        `PR_ALWAYS("l2_proto_mon", `ALWAYS, "<l2t2,mcu1,,l2tmcureadreq,{%x}>::L2T2 Read Request to MCU1", l2t2_mcu1_rd_req);
+        `PR_ALWAYS("l2_proto_mon", `ALWAYS, "<l2t2,mcu1,,l2tmcureadreqid,{%x}>::L2T2 to MCU1 Read Request ID", l2t2_mcu1_rd_req_id);
+        `PR_ALWAYS("l2_proto_mon", `ALWAYS, "<l2t2,mcu1,,l2tmcureadaddr,{%x}>::L2T2 to MCU1 Read Request Address", l2t2_mcu1_addr);
     end
 end
 
 always @(posedge (cmp_clk && enabled))
 begin
     if(mcu1_l2t2_rd_ack)
-        `PR_ALWAYS("l2_proto_mon", `ALWAYS, "MCU1 to L2T2 Read Request Acknowledgement");
+        `PR_ALWAYS("l2_proto_mon", `ALWAYS, "<mcu1,l2t2,,mcul2treadack,{%x}>::MCU1 to L2T2 Read Request Acknowledgement", mcu1_l2t2_rd_ack);
 end
 
 always @(posedge (cmp_clk && enabled))
@@ -359,22 +361,22 @@ begin
     end
 end
 
-
+//////////////////////////////////////////////////////////////////
 
 always @(posedge (cmp_clk && enabled))
 begin
     if(l2t3_mcu1_rd_req)
     begin
-        `PR_ALWAYS("l2_proto_mon", `ALWAYS, "L2T3 Read Request to MCU1");
-        `PR_INFO("l2_proto_mon", `INFO, "L2T3 to MCU1 Read Request Address = %x", l2t3_mcu1_addr);
-        `PR_INFO("l2_proto_mon", `INFO, "L2T3 to MCU1 Read Request ID = %x", l2t3_mcu1_rd_req_id);
+        `PR_ALWAYS("l2_proto_mon", `ALWAYS, "<l2t3,mcu1,,l2tmcureadreq,{%x}>::L2T3 Read Request to MCU1", l2t3_mcu1_rd_req);
+        `PR_ALWAYS("l2_proto_mon", `ALWAYS, "<l2t3,mcu1,,l2tmcureadreqid,{%x}>::L2T3 to MCU1 Read Request ID", l2t3_mcu1_rd_req_id);
+        `PR_ALWAYS("l2_proto_mon", `ALWAYS, "<l2t3,mcu1,,l2tmcureadaddr,{%x}>::L2T3 to MCU1 Read Request Address", l2t3_mcu1_addr);
     end
 end
 
 always @(posedge (cmp_clk && enabled))
 begin
     if(mcu1_l2t3_rd_ack)
-        `PR_ALWAYS("l2_proto_mon", `ALWAYS, "MCU1 to L2T3 Read Request Acknowledgement");
+        `PR_ALWAYS("l2_proto_mon", `ALWAYS, "<mcu1,l2t3,,mcul2treadack,{%x}>::MCU1 to L2T3 Read Request Acknowledgement", mcu1_l2t3_rd_ack);
 end
 
 always @(posedge (cmp_clk && enabled))
@@ -387,21 +389,22 @@ begin
     end
 end
 
+//////////////////////////////////////////////////////////////////
 
 always @(posedge (cmp_clk && enabled))
 begin
     if(l2t4_mcu2_rd_req)
     begin
-        `PR_ALWAYS("l2_proto_mon", `ALWAYS, "L2T4 Read Request to MCU2");
-        `PR_INFO("l2_proto_mon", `INFO, "L2T4 to MCU2 Read Request Address = %x", l2t4_mcu2_addr);
-        `PR_INFO("l2_proto_mon", `INFO, "L2T4 to MCU2 Read Request ID = %x", l2t4_mcu2_rd_req_id);
+        `PR_ALWAYS("l2_proto_mon", `ALWAYS, "<l2t4,mcu2,,l2tmcureadreq,{%x}>::L2T4 Read Request to MCU2", l2t4_mcu2_rd_req);
+        `PR_ALWAYS("l2_proto_mon", `ALWAYS, "<l2t4,mcu2,,l2tmcureadreqid,{%x}>::L2T4 to MCU2 Read Request ID", l2t4_mcu2_rd_req_id);
+        `PR_ALWAYS("l2_proto_mon", `ALWAYS, "<l2t4,mcu2,,l2tmcureadaddr,{%x}>::L2T4 to MCU2 Read Request Address", l2t4_mcu2_addr);
     end
 end
 
 always @(posedge (cmp_clk && enabled))
 begin
     if(mcu2_l2t4_rd_ack)
-        `PR_ALWAYS("l2_proto_mon", `ALWAYS, "MCU2 to L2T4 Read Request Acknowledgement");
+        `PR_ALWAYS("l2_proto_mon", `ALWAYS, "<mcu2,l2t4,,mcul2treadack,{%x}>::MCU2 to L2T4 Read Request Acknowledgement", mcu2_l2t4_rd_ack);
 end
 
 always @(posedge (cmp_clk && enabled))
@@ -414,21 +417,22 @@ begin
     end
 end
 
+//////////////////////////////////////////////////////////////////
 
 always @(posedge (cmp_clk && enabled))
 begin
     if(l2t5_mcu2_rd_req)
     begin
-        `PR_ALWAYS("l2_proto_mon", `ALWAYS, "L2T5 Read Request to MCU2");
-        `PR_INFO("l2_proto_mon", `INFO, "L2T5 to MCU2 Read Request Address = %x", l2t5_mcu2_addr);
-        `PR_INFO("l2_proto_mon", `INFO, "L2T5 to MCU2 Read Request ID = %x", l2t5_mcu2_rd_req_id);
+        `PR_ALWAYS("l2_proto_mon", `ALWAYS, "<l2t5,mcu2,,l2tmcureadreq,{%x}>::L2T5 Read Request to MCU2", l2t5_mcu2_rd_req);
+        `PR_ALWAYS("l2_proto_mon", `ALWAYS, "<l2t5,mcu2,,l2tmcureadreqid,{%x}>::L2T5 to MCU2 Read Request ID", l2t5_mcu2_rd_req_id);
+        `PR_ALWAYS("l2_proto_mon", `ALWAYS, "<l2t5,mcu2,,l2tmcureadaddr,{%x}>::L2T5 to MCU2 Read Request Address", l2t5_mcu2_addr);
     end
 end
 
 always @(posedge (cmp_clk && enabled))
 begin
     if(mcu2_l2t5_rd_ack)
-        `PR_ALWAYS("l2_proto_mon", `ALWAYS, "MCU2 to L2T5 Read Request Acknowledgement");
+        `PR_ALWAYS("l2_proto_mon", `ALWAYS, "<mcu2,l2t5,,mcul2treadack,{%x}>::MCU2 to L2T5 Read Request Acknowledgement", mcu2_l2t5_rd_ack);
 end
 
 always @(posedge (cmp_clk && enabled))
@@ -441,21 +445,22 @@ begin
     end
 end
 
+//////////////////////////////////////////////////////////////////
 
 always @(posedge (cmp_clk && enabled))
 begin
     if(l2t6_mcu3_rd_req)
     begin
-        `PR_ALWAYS("l2_proto_mon", `ALWAYS, "L2T6 Read Request to MCU3");
-        `PR_INFO("l2_proto_mon", `INFO, "L2T6 to MCU3 Read Request Address = %x", l2t6_mcu3_addr);
-        `PR_INFO("l2_proto_mon", `INFO, "L2T6 to MCU3 Read Request ID = %x", l2t6_mcu3_rd_req_id);
+        `PR_ALWAYS("l2_proto_mon", `ALWAYS, "<l2t6,mcu3,,l2tmcureadreq,{%x}>::L2T6 Read Request to MCU3", l2t6_mcu3_rd_req);
+        `PR_ALWAYS("l2_proto_mon", `ALWAYS, "<l2t6,mcu3,,l2tmcureadreqid,{%x}>::L2T6 to MCU3 Read Request ID", l2t6_mcu3_rd_req_id);
+        `PR_ALWAYS("l2_proto_mon", `ALWAYS, "<l2t6,mcu3,,l2tmcureadaddr,{%x}>::L2T6 to MCU3 Read Request Address", l2t6_mcu3_addr);
     end
 end
 
 always @(posedge (cmp_clk && enabled))
 begin
     if(mcu3_l2t6_rd_ack)
-        `PR_ALWAYS("l2_proto_mon", `ALWAYS, "MCU3 to L2T6 Read Request Acknowledgement");
+        `PR_ALWAYS("l2_proto_mon", `ALWAYS, "<mcu3,l2t6,,mcul2treadack,{%x}>::MCU3 to L2T6 Read Request Acknowledgement", mcu3_l2t6_rd_ack);
 end
 
 always @(posedge (cmp_clk && enabled))
@@ -468,22 +473,22 @@ begin
     end
 end
 
-
+//////////////////////////////////////////////////////////////////
 
 always @(posedge (cmp_clk && enabled))
 begin
     if(l2t7_mcu3_rd_req)
     begin
-        `PR_ALWAYS("l2_proto_mon", `ALWAYS, "L2T7 Read Request to MCU3");
-        `PR_INFO("l2_proto_mon", `INFO, "L2T7 to MCU3 Read Request Address = %x", l2t7_mcu3_addr);
-        `PR_INFO("l2_proto_mon", `INFO, "L2T7 to MCU3 Read Request ID = %x", l2t7_mcu3_rd_req_id);
+        `PR_ALWAYS("l2_proto_mon", `ALWAYS, "<l2t7,mcu3,,l2tmcureadreq,{%x}>::L2T7 Read Request to MCU3", l2t7_mcu3_rd_req);
+        `PR_ALWAYS("l2_proto_mon", `ALWAYS, "<l2t7,mcu3,,l2tmcureadreqid,{%x}>::L2T7 to MCU3 Read Request ID", l2t7_mcu3_rd_req_id);
+        `PR_ALWAYS("l2_proto_mon", `ALWAYS, "<l2t7,mcu3,,l2tmcureadaddr,{%x}>::L2T7 to MCU3 Read Request Address", l2t7_mcu3_addr);
     end
 end
 
 always @(posedge (cmp_clk && enabled))
 begin
     if(mcu3_l2t7_rd_ack)
-        `PR_ALWAYS("l2_proto_mon", `ALWAYS, "MCU3 to L2T7 Read Request Acknowledgement");
+        `PR_ALWAYS("l2_proto_mon", `ALWAYS, "<mcu3,l2t7,,mcul2treadack,{%x}>::MCU3 to L2T7 Read Request Acknowledgement", mcu3_l2t7_rd_ack);
 end
 
 always @(posedge (cmp_clk && enabled))
@@ -503,8 +508,8 @@ always @(posedge (cmp_clk && enabled))
 begin
     if(l2t0_mcu0_wr_req)
     begin
-        `PR_ALWAYS("l2_proto_mon", `ALWAYS, "L2T0 Write Request to MCU0");
-        `PR_INFO("l2_proto_mon", `INFO, "L2T0 to MCU0 Write Request Address = %x", l2t0_mcu0_addr);
+        `PR_ALWAYS("l2_proto_mon", `ALWAYS, "<l2t0,mcu0,,l2tmcuwritereq,{%x}>::L2T0 Write Request to MCU0", l2t0_mcu0_wr_req);
+        `PR_ALWAYS("l2_proto_mon", `ALWAYS, "<l2t0,mcu0,,l2tmcuwriteaddr,{%x}>::L2T0 to MCU0 Write Request Address", l2t0_mcu0_addr);
     end
 end
 
@@ -512,12 +517,13 @@ always @(posedge (cmp_clk && enabled))
 begin
     if(mcu0_l2t0_wr_ack)
     begin
-        `PR_ALWAYS("l2_proto_mon", `ALWAYS, "MCU0 to L2T0 Write Request Acknowledgement");
+        `PR_ALWAYS("l2_proto_mon", `ALWAYS, "<mcu0,l2t0,,mcul2twriteack,{%x}>::MCU0 to L2T0 Write Request Acknowledgement", mcu0_l2t0_wr_ack);
         repeat(5) @(posedge cmp_clk);
         if(l2b0_mcu0_data_vld_r5)
         begin
-            `PR_ALWAYS("l2_proto_mon", `ALWAYS, "L2B0 to MCU0 Data Valid and Write Data Cycle");
-            repeat (8) @(posedge cmp_clk)
+            `PR_ALWAYS("l2_proto_mon", `ALWAYS, "<l2b0,mcu0,,l2bmcudatavld,{%x}>::L2B0 to MCU0 Data Valid and Write Data Cycle", l2b0_mcu0_data_vld_r5);
+            `PR_INFO("l2_proto_mon", `INFO, "L2B0 to MCU0 Write Data = %x", l2b0_mcu0_wr_data_r5);
+            repeat (7) @(posedge cmp_clk)
             begin
                 `PR_INFO("l2_proto_mon", `INFO, "L2B0 to MCU0 Write Data = %x", l2b0_mcu0_wr_data_r5);
             end
@@ -525,13 +531,14 @@ begin
     end
 end
 
+//////////////////////////////////////////////////////////////////
 
 always @(posedge (cmp_clk && enabled))
 begin
     if(l2t1_mcu0_wr_req)
     begin
-        `PR_ALWAYS("l2_proto_mon", `ALWAYS, "L2T1 Write Request to MCU0");
-        `PR_INFO("l2_proto_mon", `INFO, "L2T1 to MCU0 Write Request Address = %x", l2t1_mcu0_addr);
+        `PR_ALWAYS("l2_proto_mon", `ALWAYS, "<l2t1,mcu0,,l2tmcuwritereq,{%x}>::L2T1 Write Request to MCU0", l2t1_mcu0_wr_req);
+        `PR_ALWAYS("l2_proto_mon", `ALWAYS, "<l2t1,mcu0,,l2tmcuwriteaddr,{%x}>::L2T1 to MCU0 Write Request Address", l2t1_mcu0_addr);
     end
 end
 
@@ -539,12 +546,13 @@ always @(posedge (cmp_clk && enabled))
 begin
     if(mcu0_l2t1_wr_ack)
     begin
-        `PR_ALWAYS("l2_proto_mon", `ALWAYS, "MCU0 to L2T1 Write Request Acknowledgement");
+        `PR_ALWAYS("l2_proto_mon", `ALWAYS, "<mcu0,l2t1,,mcul2twriteack,{%x}>::MCU0 to L2T1 Write Request Acknowledgement", mcu0_l2t1_wr_ack);
         repeat(5) @(posedge cmp_clk);
         if(l2b1_mcu0_data_vld_r5)
         begin
-            `PR_ALWAYS("l2_proto_mon", `ALWAYS, "L2B1 to MCU0 Data Valid and Write Data Cycle");
-            repeat (8) @(posedge cmp_clk)
+            `PR_ALWAYS("l2_proto_mon", `ALWAYS, "<l2b1,mcu0,,l2bmcudatavld,{%x}>::L2B1 to MCU0 Data Valid and Write Data Cycle", l2b1_mcu0_data_vld_r5);
+            `PR_INFO("l2_proto_mon", `INFO, "L2B1 to MCU0 Write Data = %x", l2b1_mcu0_wr_data_r5);
+            repeat (7) @(posedge cmp_clk)
             begin
                 `PR_INFO("l2_proto_mon", `INFO, "L2B1 to MCU0 Write Data = %x", l2b1_mcu0_wr_data_r5);
             end
@@ -553,12 +561,14 @@ begin
 end
 
 
+//////////////////////////////////////////////////////////////////
+
 always @(posedge (cmp_clk && enabled))
 begin
     if(l2t2_mcu1_wr_req)
     begin
-        `PR_ALWAYS("l2_proto_mon", `ALWAYS, "L2T2 Write Request to MCU1");
-        `PR_INFO("l2_proto_mon", `INFO, "L2T2 to MCU1 Write Request Address = %x", l2t2_mcu1_addr);
+        `PR_ALWAYS("l2_proto_mon", `ALWAYS, "<l2t2,mcu1,,l2tmcuwritereq,{%x}>::L2T2 Write Request to MCU1", l2t2_mcu1_wr_req);
+        `PR_ALWAYS("l2_proto_mon", `ALWAYS, "<l2t2,mcu1,,l2tmcuwriteaddr,{%x}>::L2T2 to MCU1 Write Request Address", l2t2_mcu1_addr);
     end
 end
 
@@ -566,12 +576,13 @@ always @(posedge (cmp_clk && enabled))
 begin
     if(mcu1_l2t2_wr_ack)
     begin
-        `PR_ALWAYS("l2_proto_mon", `ALWAYS, "MCU1 to L2T2 Write Request Acknowledgement");
+        `PR_ALWAYS("l2_proto_mon", `ALWAYS, "<mcu1,l2t2,,mcul2twriteack,{%x}>::MCU1 to L2T2 Write Request Acknowledgement", mcu1_l2t2_wr_ack);
         repeat(5) @(posedge cmp_clk);
         if(l2b2_mcu1_data_vld_r5)
         begin
-            `PR_ALWAYS("l2_proto_mon", `ALWAYS, "L2B2 to MCU1 Data Valid and Write Data Cycle");
-            repeat (8) @(posedge cmp_clk)
+            `PR_ALWAYS("l2_proto_mon", `ALWAYS, "<l2b2,mcu1,,l2bmcudatavld,{%x}>::L2B2 to MCU1 Data Valid and Write Data Cycle", l2b2_mcu1_data_vld_r5);
+            `PR_INFO("l2_proto_mon", `INFO, "L2B2 to MCU1 Write Data = %x", l2b2_mcu1_wr_data_r5);
+            repeat (7) @(posedge cmp_clk)
             begin
                 `PR_INFO("l2_proto_mon", `INFO, "L2B2 to MCU1 Write Data = %x", l2b2_mcu1_wr_data_r5);
             end
@@ -580,12 +591,14 @@ begin
 end
 
 
+//////////////////////////////////////////////////////////////////
+
 always @(posedge (cmp_clk && enabled))
 begin
     if(l2t3_mcu1_wr_req)
     begin
-        `PR_ALWAYS("l2_proto_mon", `ALWAYS, "L2T3 Write Request to MCU1");
-        `PR_INFO("l2_proto_mon", `INFO, "L2T3 to MCU1 Write Request Address = %x", l2t3_mcu1_addr);
+        `PR_ALWAYS("l2_proto_mon", `ALWAYS, "<l2t3,mcu1,,l2tmcuwritereq,{%x}>::L2T3 Write Request to MCU1", l2t3_mcu1_wr_req);
+        `PR_ALWAYS("l2_proto_mon", `ALWAYS, "<l2t3,mcu1,,l2tmcuwriteaddr,{%x}>::L2T3 to MCU1 Write Request Address", l2t3_mcu1_addr);
     end
 end
 
@@ -593,12 +606,13 @@ always @(posedge (cmp_clk && enabled))
 begin
     if(mcu1_l2t3_wr_ack)
     begin
-        `PR_ALWAYS("l2_proto_mon", `ALWAYS, "MCU1 to L2T3 Write Request Acknowledgement");
+        `PR_ALWAYS("l2_proto_mon", `ALWAYS, "<mcu1,l2t3,,mcul2twriteack,{%x}>::MCU1 to L2T3 Write Request Acknowledgement", mcu1_l2t3_wr_ack);
         repeat(5) @(posedge cmp_clk);
         if(l2b3_mcu1_data_vld_r5)
         begin
-            `PR_ALWAYS("l2_proto_mon", `ALWAYS, "L2B3 to MCU1 Data Valid and Write Data Cycle");
-            repeat (8) @(posedge cmp_clk)
+            `PR_ALWAYS("l2_proto_mon", `ALWAYS, "<l2b3,mcu1,,l2bmcudatavld,{%x}>::L2B3 to MCU1 Data Valid and Write Data Cycle", l2b3_mcu1_data_vld_r5);
+            `PR_INFO("l2_proto_mon", `INFO, "L2B3 to MCU1 Write Data = %x", l2b3_mcu1_wr_data_r5);
+            repeat (7) @(posedge cmp_clk)
             begin
                 `PR_INFO("l2_proto_mon", `INFO, "L2B3 to MCU1 Write Data = %x", l2b3_mcu1_wr_data_r5);
             end
@@ -606,14 +620,14 @@ begin
     end
 end
 
-
+//////////////////////////////////////////////////////////////////
 
 always @(posedge (cmp_clk && enabled))
 begin
     if(l2t4_mcu2_wr_req)
     begin
-        `PR_ALWAYS("l2_proto_mon", `ALWAYS, "L2T4 Write Request to MCU2");
-        `PR_INFO("l2_proto_mon", `INFO, "L2T4 to MCU2 Write Request Address = %x", l2t4_mcu2_addr);
+        `PR_ALWAYS("l2_proto_mon", `ALWAYS, "<l2t4,mcu2,,l2tmcuwritereq,{%x}>::L2T4 Write Request to MCU2", l2t4_mcu2_wr_req);
+        `PR_ALWAYS("l2_proto_mon", `ALWAYS, "<l2t4,mcu2,,l2tmcuwriteaddr,{%x}>::L2T4 to MCU2 Write Request Address", l2t4_mcu2_addr);
     end
 end
 
@@ -621,12 +635,13 @@ always @(posedge (cmp_clk && enabled))
 begin
     if(mcu2_l2t4_wr_ack)
     begin
-        `PR_ALWAYS("l2_proto_mon", `ALWAYS, "MCU2 to L2T4 Write Request Acknowledgement");
+        `PR_ALWAYS("l2_proto_mon", `ALWAYS, "<mcu2,l2t4,,mcul2twriteack,{%x}>::MCU2 to L2T4 Write Request Acknowledgement", mcu2_l2t4_wr_ack);
         repeat(5) @(posedge cmp_clk);
         if(l2b4_mcu2_data_vld_r5)
         begin
-            `PR_ALWAYS("l2_proto_mon", `ALWAYS, "L2B4 to MCU2 Data Valid and Write Data Cycle");
-            repeat (8) @(posedge cmp_clk)
+            `PR_ALWAYS("l2_proto_mon", `ALWAYS, "<l2b4,mcu2,,l2bmcudatavld,{%x}>::L2B4 to MCU2 Data Valid and Write Data Cycle", l2b4_mcu2_data_vld_r5);
+            `PR_INFO("l2_proto_mon", `INFO, "L2B4 to MCU2 Write Data = %x", l2b4_mcu2_wr_data_r5);
+            repeat (7) @(posedge cmp_clk)
             begin
                 `PR_INFO("l2_proto_mon", `INFO, "L2B4 to MCU2 Write Data = %x", l2b4_mcu2_wr_data_r5);
             end
@@ -634,13 +649,14 @@ begin
     end
 end
 
+//////////////////////////////////////////////////////////////////
 
 always @(posedge (cmp_clk && enabled))
 begin
     if(l2t5_mcu2_wr_req)
     begin
-        `PR_ALWAYS("l2_proto_mon", `ALWAYS, "L2T5 Write Request to MCU2");
-        `PR_INFO("l2_proto_mon", `INFO, "L2T5 to MCU2 Write Request Address = %x", l2t5_mcu2_addr);
+        `PR_ALWAYS("l2_proto_mon", `ALWAYS, "<l2t5,mcu2,,l2tmcuwritereq,{%x}>::L2T5 Write Request to MCU2", l2t5_mcu2_wr_req);
+        `PR_ALWAYS("l2_proto_mon", `ALWAYS, "<l2t5,mcu2,,l2tmcuwriteaddr,{%x}>::L2T5 to MCU2 Write Request Address", l2t5_mcu2_addr);
     end
 end
 
@@ -648,12 +664,13 @@ always @(posedge (cmp_clk && enabled))
 begin
     if(mcu2_l2t5_wr_ack)
     begin
-        `PR_ALWAYS("l2_proto_mon", `ALWAYS, "MCU2 to L2T5 Write Request Acknowledgement");
+        `PR_ALWAYS("l2_proto_mon", `ALWAYS, "<mcu2,l2t5,,mcul2twriteack,{%x}>::MCU2 to L2T5 Write Request Acknowledgement", mcu2_l2t5_wr_ack);
         repeat(5) @(posedge cmp_clk);
         if(l2b5_mcu2_data_vld_r5)
         begin
-            `PR_ALWAYS("l2_proto_mon", `ALWAYS, "L2B5 to MCU2 Data Valid and Write Data Cycle");
-            repeat (8) @(posedge cmp_clk)
+            `PR_ALWAYS("l2_proto_mon", `ALWAYS, "<l2b5,mcu2,,l2bmcudatavld,{%x}>::L2B5 to MCU2 Data Valid and Write Data Cycle", l2b5_mcu2_data_vld_r5);
+            `PR_INFO("l2_proto_mon", `INFO, "L2B5 to MCU2 Write Data = %x", l2b5_mcu2_wr_data_r5);
+            repeat (7) @(posedge cmp_clk)
             begin
                 `PR_INFO("l2_proto_mon", `INFO, "L2B5 to MCU2 Write Data = %x", l2b5_mcu2_wr_data_r5);
             end
@@ -661,14 +678,14 @@ begin
     end
 end
 
-
+//////////////////////////////////////////////////////////////////
 
 always @(posedge (cmp_clk && enabled))
 begin
     if(l2t6_mcu3_wr_req)
     begin
-        `PR_ALWAYS("l2_proto_mon", `ALWAYS, "L2T6 Write Request to MCU3");
-        `PR_INFO("l2_proto_mon", `INFO, "L2T6 to MCU3 Write Request Address = %x", l2t6_mcu3_addr);
+        `PR_ALWAYS("l2_proto_mon", `ALWAYS, "<l2t6,mcu3,,l2tmcuwritereq,{%x}>::L2T6 Write Request to MCU3", l2t6_mcu3_wr_req);
+        `PR_ALWAYS("l2_proto_mon", `ALWAYS, "<l2t6,mcu3,,l2tmcuwriteaddr,{%x}>::L2T6 to MCU3 Write Request Address", l2t6_mcu3_addr);
     end
 end
 
@@ -676,12 +693,13 @@ always @(posedge (cmp_clk && enabled))
 begin
     if(mcu3_l2t6_wr_ack)
     begin
-        `PR_ALWAYS("l2_proto_mon", `ALWAYS, "MCU3 to L2T6 Write Request Acknowledgement");
+        `PR_ALWAYS("l2_proto_mon", `ALWAYS, "<mcu3,l2t6,,mcul2twriteack,{%x}>::MCU3 to L2T6 Write Request Acknowledgement", mcu3_l2t6_wr_ack);
         repeat(5) @(posedge cmp_clk);
         if(l2b6_mcu3_data_vld_r5)
         begin
-            `PR_ALWAYS("l2_proto_mon", `ALWAYS, "L2B6 to MCU3 Data Valid and Write Data Cycle");
-            repeat (8) @(posedge cmp_clk)
+            `PR_ALWAYS("l2_proto_mon", `ALWAYS, "<l2b6,mcu3,,l2bmcudatavld,{%x}>::L2B6 to MCU3 Data Valid and Write Data Cycle", l2b6_mcu3_data_vld_r5);
+            `PR_INFO("l2_proto_mon", `INFO, "L2B6 to MCU3 Write Data = %x", l2b6_mcu3_wr_data_r5);
+            repeat (7) @(posedge cmp_clk)
             begin
                 `PR_INFO("l2_proto_mon", `INFO, "L2B6 to MCU3 Write Data = %x", l2b6_mcu3_wr_data_r5);
             end
@@ -689,13 +707,14 @@ begin
     end
 end
 
+//////////////////////////////////////////////////////////////////
 
 always @(posedge (cmp_clk && enabled))
 begin
     if(l2t7_mcu3_wr_req)
     begin
-        `PR_ALWAYS("l2_proto_mon", `ALWAYS, "L2T7 Write Request to MCU3");
-        `PR_INFO("l2_proto_mon", `INFO, "L2T7 to MCU3 Write Request Address = %x", l2t7_mcu3_addr);
+        `PR_ALWAYS("l2_proto_mon", `ALWAYS, "<l2t7,mcu3,,l2tmcuwritereq,{%x}>::L2T7 Write Request to MCU3", l2t7_mcu3_wr_req);
+        `PR_ALWAYS("l2_proto_mon", `ALWAYS, "<l2t7,mcu3,,l2tmcuwriteaddr,{%x}>::L2T7 to MCU3 Write Request Address", l2t7_mcu3_addr);
     end
 end
 
@@ -703,12 +722,13 @@ always @(posedge (cmp_clk && enabled))
 begin
     if(mcu3_l2t7_wr_ack)
     begin
-        `PR_ALWAYS("l2_proto_mon", `ALWAYS, "MCU3 to L2T7 Write Request Acknowledgement");
+        `PR_ALWAYS("l2_proto_mon", `ALWAYS, "<mcu3,l2t7,,mcul2twriteack,{%x}>::MCU3 to L2T7 Write Request Acknowledgement", mcu3_l2t7_wr_ack);
         repeat(5) @(posedge cmp_clk);
         if(l2b7_mcu3_data_vld_r5)
         begin
-            `PR_ALWAYS("l2_proto_mon", `ALWAYS, "L2B7 to MCU3 Data Valid and Write Data Cycle");
-            repeat (8) @(posedge cmp_clk)
+            `PR_ALWAYS("l2_proto_mon", `ALWAYS, "<l2b7,mcu3,,l2bmcudatavld,{%x}>::L2B7 to MCU3 Data Valid and Write Data Cycle", l2b7_mcu3_data_vld_r5);
+            `PR_INFO("l2_proto_mon", `INFO, "L2B7 to MCU3 Write Data = %x", l2b7_mcu3_wr_data_r5);
+            repeat (7) @(posedge cmp_clk)
             begin
                 `PR_INFO("l2_proto_mon", `INFO, "L2B7 to MCU3 Write Data = %x", l2b7_mcu3_wr_data_r5);
             end
@@ -724,135 +744,173 @@ always @(posedge (cmp_clk && enabled))
 begin
     pcx_l2t0_data_rdy_px1_d <= pcx_l2t0_data_rdy_px1;
     if(pcx_l2t0_data_rdy_px1)
-        `PR_ALWAYS("l2_proto_mon", `ALWAYS, "L2T0 receiving a Request from PCX");
+    begin
+        `PR_ALWAYS("l2_proto_mon", `ALWAYS, "<pcx,l2t0,,pcxl2tdatavld,{%x}>::L2T0 receiving a Request from PCX", pcx_l2t0_data_rdy_px1);
         if(pcx_l2t0_atm_px1)
-            `PR_INFO("l2_proto_mon", `INFO, "Atomic Request Received at L2T0 from PCX");
+            `PR_ALWAYS("l2_proto_mon", `ALWAYS, "<pcx,l2t0,,pcxl2tatminst,{%x}>::Atomic Request Received at L2T0 from PCX", pcx_l2t0_atm_px1);
         else
-            `PR_INFO("l2_proto_mon", `INFO, "Non-Atomic Request Received at L2T0 from PCX");
+            `PR_ALWAYS("l2_proto_mon", `ALWAYS, "<pcx,l2t0,,pcxl2tatminst,{%x}>::Non-Atomic Request Received at L2T0 from PCX", pcx_l2t0_atm_px1);
+    end
 end
+
 always @(posedge (cmp_clk && enabled))
 begin
     if(pcx_l2t0_data_rdy_px1_d)
-        `PR_ALWAYS("l2_proto_mon", `ALWAYS, "DATA Cycle started at L2T0 from PCX");
+        `PR_ALWAYS("l2_proto_mon", `ALWAYS, "<pcx,l2t0,,pcxl2tdata>::DATA Cycle started at L2T0 from PCX");
 end
+
+//////////////////////////////////////////////////////////////////
 
 reg pcx_l2t1_data_rdy_px1_d;
 always @(posedge (cmp_clk && enabled))
 begin
     pcx_l2t1_data_rdy_px1_d <= pcx_l2t1_data_rdy_px1;
     if(pcx_l2t1_data_rdy_px1)
-        `PR_ALWAYS("l2_proto_mon", `ALWAYS, "L2T1 receiving a Request from PCX");
+    begin
+        `PR_ALWAYS("l2_proto_mon", `ALWAYS, "<pcx,l2t1,,pcxl2tdatavld,{%x}>::L2T1 receiving a Request from PCX", pcx_l2t1_data_rdy_px1);
         if(pcx_l2t1_atm_px1)
-            `PR_INFO("l2_proto_mon", `INFO, "Atomic Request Received at L2T1 from PCX");
+            `PR_ALWAYS("l2_proto_mon", `ALWAYS, "<pcx,l2t1,,pcxl2tatminst,{%x}>::Atomic Request Received at L2T1 from PCX", pcx_l2t1_atm_px1);
         else
-            `PR_INFO("l2_proto_mon", `INFO, "Non-Atomic Request Received at L2T1 from PCX");
+            `PR_ALWAYS("l2_proto_mon", `ALWAYS, "<pcx,l2t1,,pcxl2tatminst,{%x}>::Non-Atomic Request Received at L2T1 from PCX", pcx_l2t1_atm_px1);
+    end
 end
+
 always @(posedge (cmp_clk && enabled))
 begin
     if(pcx_l2t1_data_rdy_px1_d)
-        `PR_ALWAYS("l2_proto_mon", `ALWAYS, "DATA Cycle started at L2T1 from PCX");
+        `PR_ALWAYS("l2_proto_mon", `ALWAYS, "<pcx,l2t1,,pcxl2tdata>::DATA Cycle started at L2T1 from PCX");
 end
+
+//////////////////////////////////////////////////////////////////
 
 reg pcx_l2t2_data_rdy_px1_d;
 always @(posedge (cmp_clk && enabled))
 begin
     pcx_l2t2_data_rdy_px1_d <= pcx_l2t2_data_rdy_px1;
     if(pcx_l2t2_data_rdy_px1)
-        `PR_ALWAYS("l2_proto_mon", `ALWAYS, "L2T2 receiving a Request from PCX");
+    begin
+        `PR_ALWAYS("l2_proto_mon", `ALWAYS, "<pcx,l2t2,,pcxl2tdatavld,{%x}>::L2T2 receiving a Request from PCX", pcx_l2t2_data_rdy_px1);
         if(pcx_l2t2_atm_px1)
-            `PR_INFO("l2_proto_mon", `INFO, "Atomic Request Received at L2T2 from PCX");
+            `PR_ALWAYS("l2_proto_mon", `ALWAYS, "<pcx,l2t2,,pcxl2tatminst,{%x}>::Atomic Request Received at L2T2 from PCX", pcx_l2t2_atm_px1);
         else
-            `PR_INFO("l2_proto_mon", `INFO, "Non-Atomic Request Received at L2T2 from PCX");
+            `PR_ALWAYS("l2_proto_mon", `ALWAYS, "<pcx,l2t2,,pcxl2tatminst,{%x}>::Non-Atomic Request Received at L2T2 from PCX", pcx_l2t2_atm_px1);
+    end
 end
+
 always @(posedge (cmp_clk && enabled))
 begin
     if(pcx_l2t2_data_rdy_px1_d)
-        `PR_ALWAYS("l2_proto_mon", `ALWAYS, "DATA Cycle started at L2T2 from PCX");
+        `PR_ALWAYS("l2_proto_mon", `ALWAYS, "<pcx,l2t2,,pcxl2tdata>::DATA Cycle started at L2T2 from PCX");
 end
+
+//////////////////////////////////////////////////////////////////
 
 reg pcx_l2t3_data_rdy_px1_d;
 always @(posedge (cmp_clk && enabled))
 begin
     pcx_l2t3_data_rdy_px1_d <= pcx_l2t3_data_rdy_px1;
     if(pcx_l2t3_data_rdy_px1)
-        `PR_ALWAYS("l2_proto_mon", `ALWAYS, "L2T3 receiving a Request from PCX");
+    begin
+        `PR_ALWAYS("l2_proto_mon", `ALWAYS, "<pcx,l2t3,,pcxl2tdatavld,{%x}>::L2T3 receiving a Request from PCX", pcx_l2t3_data_rdy_px1);
         if(pcx_l2t3_atm_px1)
-            `PR_INFO("l2_proto_mon", `INFO, "Atomic Request Received at L2T3 from PCX");
+            `PR_ALWAYS("l2_proto_mon", `ALWAYS, "<pcx,l2t3,,pcxl2tatminst,{%x}>::Atomic Request Received at L2T3 from PCX", pcx_l2t3_atm_px1);
         else
-            `PR_INFO("l2_proto_mon", `INFO, "Non-Atomic Request Received at L2T3 from PCX");
+            `PR_ALWAYS("l2_proto_mon", `ALWAYS, "<pcx,l2t3,,pcxl2tatminst,{%x}>::Non-Atomic Request Received at L2T3 from PCX", pcx_l2t3_atm_px1);
+    end
 end
+
 always @(posedge (cmp_clk && enabled))
 begin
     if(pcx_l2t3_data_rdy_px1_d)
-        `PR_ALWAYS("l2_proto_mon", `ALWAYS, "DATA Cycle started at L2T3 from PCX");
+        `PR_ALWAYS("l2_proto_mon", `ALWAYS, "<pcx,l2t3,,pcxl2tdata>::DATA Cycle started at L2T3 from PCX");
 end
+
+//////////////////////////////////////////////////////////////////
 
 reg pcx_l2t4_data_rdy_px1_d;
 always @(posedge (cmp_clk && enabled))
 begin
     pcx_l2t4_data_rdy_px1_d <= pcx_l2t4_data_rdy_px1;
     if(pcx_l2t4_data_rdy_px1)
-        `PR_ALWAYS("l2_proto_mon", `ALWAYS, "L2T4 receiving a Request from PCX");
+    begin
+        `PR_ALWAYS("l2_proto_mon", `ALWAYS, "<pcx,l2t4,,pcxl2tdatavld,{%x}>::L2T4 receiving a Request from PCX", pcx_l2t4_data_rdy_px1);
         if(pcx_l2t4_atm_px1)
-            `PR_INFO("l2_proto_mon", `INFO, "Atomic Request Received at L2T4 from PCX");
+            `PR_ALWAYS("l2_proto_mon", `ALWAYS, "<pcx,l2t4,,pcxl2tatminst,{%x}>::Atomic Request Received at L2T4 from PCX", pcx_l2t4_atm_px1);
         else
-            `PR_INFO("l2_proto_mon", `INFO, "Non-Atomic Request Received at L2T4 from PCX");
+            `PR_ALWAYS("l2_proto_mon", `ALWAYS, "<pcx,l2t4,,pcxl2tatminst,{%x}>::Non-Atomic Request Received at L2T4 from PCX", pcx_l2t4_atm_px1);
+    end
 end
+
 always @(posedge (cmp_clk && enabled))
 begin
     if(pcx_l2t4_data_rdy_px1_d)
-        `PR_ALWAYS("l2_proto_mon", `ALWAYS, "DATA Cycle started at L2T4 from PCX");
+        `PR_ALWAYS("l2_proto_mon", `ALWAYS, "<pcx,l2t4,,pcxl2tdata>::DATA Cycle started at L2T4 from PCX");
 end
+
+//////////////////////////////////////////////////////////////////
 
 reg pcx_l2t5_data_rdy_px1_d;
 always @(posedge (cmp_clk && enabled))
 begin
     pcx_l2t5_data_rdy_px1_d <= pcx_l2t5_data_rdy_px1;
     if(pcx_l2t5_data_rdy_px1)
-        `PR_ALWAYS("l2_proto_mon", `ALWAYS, "L2T5 receiving a Request from PCX");
+    begin
+        `PR_ALWAYS("l2_proto_mon", `ALWAYS, "<pcx,l2t5,,pcxl2tdatavld,{%x}>::L2T5 receiving a Request from PCX", pcx_l2t5_data_rdy_px1);
         if(pcx_l2t5_atm_px1)
-            `PR_INFO("l2_proto_mon", `INFO, "Atomic Request Received at L2T5 from PCX");
+            `PR_ALWAYS("l2_proto_mon", `ALWAYS, "<pcx,l2t5,,pcxl2tatminst,{%x}>::Atomic Request Received at L2T5 from PCX", pcx_l2t5_atm_px1);
         else
-            `PR_INFO("l2_proto_mon", `INFO, "Non-Atomic Request Received at L2T5 from PCX");
+            `PR_ALWAYS("l2_proto_mon", `ALWAYS, "<pcx,l2t5,,pcxl2tatminst,{%x}>::Non-Atomic Request Received at L2T5 from PCX", pcx_l2t5_atm_px1);
+    end
 end
+
 always @(posedge (cmp_clk && enabled))
 begin
     if(pcx_l2t5_data_rdy_px1_d)
-        `PR_ALWAYS("l2_proto_mon", `ALWAYS, "DATA Cycle started at L2T5 from PCX");
+        `PR_ALWAYS("l2_proto_mon", `ALWAYS, "<pcx,l2t5,,pcxl2tdata>::DATA Cycle started at L2T5 from PCX");
 end
+
+//////////////////////////////////////////////////////////////////
 
 reg pcx_l2t6_data_rdy_px1_d;
 always @(posedge (cmp_clk && enabled))
 begin
     pcx_l2t6_data_rdy_px1_d <= pcx_l2t6_data_rdy_px1;
     if(pcx_l2t6_data_rdy_px1)
-        `PR_ALWAYS("l2_proto_mon", `ALWAYS, "L2T6 receiving a Request from PCX");
+    begin
+        `PR_ALWAYS("l2_proto_mon", `ALWAYS, "<pcx,l2t6,,pcxl2tdatavld,{%x}>::L2T6 receiving a Request from PCX", pcx_l2t6_data_rdy_px1);
         if(pcx_l2t6_atm_px1)
-            `PR_INFO("l2_proto_mon", `INFO, "Atomic Request Received at L2T6 from PCX");
+            `PR_ALWAYS("l2_proto_mon", `ALWAYS, "<pcx,l2t6,,pcxl2tatminst,{%x}>::Atomic Request Received at L2T6 from PCX", pcx_l2t6_atm_px1);
         else
-            `PR_INFO("l2_proto_mon", `INFO, "Non-Atomic Request Received at L2T6 from PCX");
+            `PR_ALWAYS("l2_proto_mon", `ALWAYS, "<pcx,l2t6,,pcxl2tatminst,{%x}>::Non-Atomic Request Received at L2T6 from PCX", pcx_l2t6_atm_px1);
+    end
 end
+
 always @(posedge (cmp_clk && enabled))
 begin
     if(pcx_l2t6_data_rdy_px1_d)
-        `PR_ALWAYS("l2_proto_mon", `ALWAYS, "DATA Cycle started at L2T6 from PCX");
+        `PR_ALWAYS("l2_proto_mon", `ALWAYS, "<pcx,l2t6,,pcxl2tdata>::DATA Cycle started at L2T6 from PCX");
 end
+
+//////////////////////////////////////////////////////////////////
 
 reg pcx_l2t7_data_rdy_px1_d;
 always @(posedge (cmp_clk && enabled))
 begin
     pcx_l2t7_data_rdy_px1_d <= pcx_l2t7_data_rdy_px1;
     if(pcx_l2t7_data_rdy_px1)
-        `PR_ALWAYS("l2_proto_mon", `ALWAYS, "L2T7 receiving a Request from PCX");
+    begin
+        `PR_ALWAYS("l2_proto_mon", `ALWAYS, "<pcx,l2t7,,pcxl2tdatavld,{%x}>::L2T7 receiving a Request from PCX", pcx_l2t7_data_rdy_px1);
         if(pcx_l2t7_atm_px1)
-            `PR_INFO("l2_proto_mon", `INFO, "Atomic Request Received at L2T7 from PCX");
+            `PR_ALWAYS("l2_proto_mon", `ALWAYS, "<pcx,l2t7,,pcxl2tatminst,{%x}>::Atomic Request Received at L2T7 from PCX", pcx_l2t7_atm_px1);
         else
-            `PR_INFO("l2_proto_mon", `INFO, "Non-Atomic Request Received at L2T7 from PCX");
+            `PR_ALWAYS("l2_proto_mon", `ALWAYS, "<pcx,l2t7,,pcxl2tatminst,{%x}>::Non-Atomic Request Received at L2T7 from PCX", pcx_l2t7_atm_px1);
+    end
 end
+
 always @(posedge (cmp_clk && enabled))
 begin
     if(pcx_l2t7_data_rdy_px1_d)
-        `PR_ALWAYS("l2_proto_mon", `ALWAYS, "DATA Cycle started at L2T7 from PCX");
+        `PR_ALWAYS("l2_proto_mon", `ALWAYS, "<pcx,l2t7,,pcxl2tdata>::DATA Cycle started at L2T7 from PCX");
 end
 
 
@@ -868,7 +926,7 @@ begin
     /* l2t0_cpx_req_cq is a low enabled signal from Figure 2-4 Manual Vol 1 */
     if(l2t0_cpx_req_cq)
     begin
-        `PR_ALWAYS("l2_proto_mon", `ALWAYS, "L2T0 sending request to CPX");
+        `PR_ALWAYS("l2_proto_mon", `ALWAYS, "<l2t0,cpx,,l2tcpxreq,{%x}>::L2T0 sending request to CPX", l2t0_cpx_req_cq);
     end
 end
 
@@ -876,18 +934,19 @@ always @(posedge (cmp_clk && enabled))
 begin
     if(l2t0_cpx_req_cq_d)
     begin
-        `PR_ALWAYS("l2_proto_mon", `ALWAYS, "Data Cycle started from L2T0 to CPX");
+        `PR_ALWAYS("l2_proto_mon", `ALWAYS, "<l2t0,cpx,,l2tcpxdata>::Data Cycle started from L2T0 to CPX");
         repeat(2) @(posedge (cmp_clk && l2t0_detected))
         begin
             if(cpx_l2t0_grant_cx_d != cpx_l2t0_grant_cx)
             begin
-                `PR_ALWAYS("l2_proto_mon", `ALWAYS, "ACKNOWLEDGE from CPX Detected");
+                `PR_ALWAYS("l2_proto_mon", `ALWAYS, "<cpx,l2t0,,cpxl2tack,{%x}>::ACKNOWLEDGE from CPX Detected", cpx_l2t0_grant_cx);
                 l2t0_detected = 1'b0;
             end
         end
     end
 end
 
+//////////////////////////////////////////////////////////////////
 
 reg l2t1_cpx_req_cq_d;
 reg cpx_l2t1_grant_cx_d;
@@ -899,7 +958,7 @@ begin
     /* l2t1_cpx_req_cq is a low enabled signal from Figure 2-4 Manual Vol 1 */
     if(l2t1_cpx_req_cq)
     begin
-        `PR_ALWAYS("l2_proto_mon", `ALWAYS, "L2T1 sending request to CPX");
+        `PR_ALWAYS("l2_proto_mon", `ALWAYS, "<l2t1,cpx,,l2tcpxreq,{%x}>::L2T1 sending request to CPX", l2t1_cpx_req_cq);
     end
 end
 
@@ -907,18 +966,19 @@ always @(posedge (cmp_clk && enabled))
 begin
     if(l2t1_cpx_req_cq_d)
     begin
-        `PR_ALWAYS("l2_proto_mon", `ALWAYS, "Data Cycle started from L2T1 to CPX");
+        `PR_ALWAYS("l2_proto_mon", `ALWAYS, "<l2t1,cpx,,l2tcpxdata>::Data Cycle started from L2T1 to CPX");
         repeat(2) @(posedge (cmp_clk && l2t1_detected))
         begin
             if(cpx_l2t1_grant_cx_d != cpx_l2t1_grant_cx)
             begin
-                `PR_ALWAYS("l2_proto_mon", `ALWAYS, "ACKNOWLEDGE from CPX Detected");
+                `PR_ALWAYS("l2_proto_mon", `ALWAYS, "<cpx,l2t1,,cpxl2tack,{%x}>::ACKNOWLEDGE from CPX Detected", cpx_l2t1_grant_cx);
                 l2t1_detected = 1'b0;
             end
         end
     end
 end
 
+//////////////////////////////////////////////////////////////////
 
 reg l2t2_cpx_req_cq_d;
 reg cpx_l2t2_grant_cx_d;
@@ -930,7 +990,7 @@ begin
     /* l2t2_cpx_req_cq is a low enabled signal from Figure 2-4 Manual Vol 1 */
     if(l2t2_cpx_req_cq)
     begin
-        `PR_ALWAYS("l2_proto_mon", `ALWAYS, "L2T2 sending request to CPX");
+        `PR_ALWAYS("l2_proto_mon", `ALWAYS, "<l2t2,cpx,,l2tcpxreq,{%x}>::L2T2 sending request to CPX", l2t2_cpx_req_cq);
     end
 end
 
@@ -939,19 +999,19 @@ always @(posedge (cmp_clk && enabled))
 begin
     if(l2t2_cpx_req_cq_d)
     begin
-        `PR_ALWAYS("l2_proto_mon", `ALWAYS, "Data Cycle started from L2T2 to CPX");
+        `PR_ALWAYS("l2_proto_mon", `ALWAYS, "<l2t2,cpx,,l2tcpxdata>::Data Cycle started from L2T2 to CPX");
         repeat(2) @(posedge (cmp_clk && l2t2_detected))
         begin
             if(cpx_l2t2_grant_cx_d != cpx_l2t2_grant_cx)
             begin
-                `PR_ALWAYS("l2_proto_mon", `ALWAYS, "ACKNOWLEDGE from CPX Detected");
+                `PR_ALWAYS("l2_proto_mon", `ALWAYS, "<cpx,l2t2,,cpxl2tack,{%x}>::ACKNOWLEDGE from CPX Detected", cpx_l2t2_grant_cx);
                 l2t2_detected = 1'b0;
             end
         end
     end
 end
 
-
+//////////////////////////////////////////////////////////////////
 
 reg l2t3_cpx_req_cq_d;
 reg cpx_l2t3_grant_cx_d;
@@ -963,7 +1023,7 @@ begin
     /* l2t3_cpx_req_cq is a low enabled signal from Figure 2-4 Manual Vol 1 */
     if(l2t3_cpx_req_cq)
     begin
-        `PR_ALWAYS("l2_proto_mon", `ALWAYS, "L2T3 sending request to CPX");
+        `PR_ALWAYS("l2_proto_mon", `ALWAYS, "<l2t3,cpx,,l2tcpxreq,{%x}>::L2T3 sending request to CPX", l2t3_cpx_req_cq);
     end
 end
 
@@ -971,18 +1031,19 @@ always @(posedge (cmp_clk && enabled))
 begin
     if(l2t3_cpx_req_cq_d)
     begin
-        `PR_ALWAYS("l2_proto_mon", `ALWAYS, "Data Cycle started from L2T3 to CPX");
+        `PR_ALWAYS("l2_proto_mon", `ALWAYS, "<l2t3,cpx,,l2tcpxdata>::Data Cycle started from L2T3 to CPX");
         repeat(2) @(posedge (cmp_clk && l2t3_detected))
         begin
             if(cpx_l2t3_grant_cx_d != cpx_l2t3_grant_cx)
             begin
-                `PR_ALWAYS("l2_proto_mon", `ALWAYS, "ACKNOWLEDGE from CPX Detected");
+                `PR_ALWAYS("l2_proto_mon", `ALWAYS, "<cpx,l2t3,,cpxl2tack,{%x}>::ACKNOWLEDGE from CPX Detected", cpx_l2t3_grant_cx);
                 l2t3_detected = 1'b0;
             end
         end
     end
 end
 
+//////////////////////////////////////////////////////////////////
 
 reg l2t4_cpx_req_cq_d;
 reg cpx_l2t4_grant_cx_d;
@@ -994,7 +1055,7 @@ begin
     /* l2t4_cpx_req_cq is a low enabled signal from Figure 2-4 Manual Vol 1 */
     if(l2t4_cpx_req_cq)
     begin
-        `PR_ALWAYS("l2_proto_mon", `ALWAYS, "L2T4 sending request to CPX");
+        `PR_ALWAYS("l2_proto_mon", `ALWAYS, "<l2t4,cpx,,l2tcpxreq,{%x}>::L2T4 sending request to CPX", l2t4_cpx_req_cq);
     end
 end
 
@@ -1002,18 +1063,19 @@ always @(posedge (cmp_clk && enabled))
 begin
     if(l2t4_cpx_req_cq_d)
     begin
-        `PR_ALWAYS("l2_proto_mon", `ALWAYS, "Data Cycle started from L2T4 to CPX");
+        `PR_ALWAYS("l2_proto_mon", `ALWAYS, "<l2t4,cpx,,l2tcpxdata>::Data Cycle started from L2T4 to CPX");
         repeat(2) @(posedge (cmp_clk && l2t4_detected))
         begin
             if(cpx_l2t4_grant_cx_d != cpx_l2t4_grant_cx)
             begin
-                `PR_ALWAYS("l2_proto_mon", `ALWAYS, "ACKNOWLEDGE from CPX Detected");
+                `PR_ALWAYS("l2_proto_mon", `ALWAYS, "<cpx,l2t4,,cpxl2tack,{%x}>::ACKNOWLEDGE from CPX Detected", cpx_l2t4_grant_cx);
                 l2t4_detected = 1'b0;
             end
         end
     end
 end
 
+//////////////////////////////////////////////////////////////////
 
 reg l2t5_cpx_req_cq_d;
 reg cpx_l2t5_grant_cx_d;
@@ -1025,7 +1087,7 @@ begin
     /* l2t5_cpx_req_cq is a low enabled signal from Figure 2-4 Manual Vol 1 */
     if(l2t5_cpx_req_cq)
     begin
-        `PR_ALWAYS("l2_proto_mon", `ALWAYS, "L2T5 sending request to CPX");
+        `PR_ALWAYS("l2_proto_mon", `ALWAYS, "<l2t5,cpx,,l2tcpxreq,{%x}>::L2T5 sending request to CPX", l2t5_cpx_req_cq);
     end
 end
 
@@ -1033,12 +1095,12 @@ always @(posedge (cmp_clk && enabled))
 begin
     if(l2t5_cpx_req_cq_d)
     begin
-        `PR_ALWAYS("l2_proto_mon", `ALWAYS, "Data Cycle started from L2T5 to CPX");
+        `PR_ALWAYS("l2_proto_mon", `ALWAYS, "<l2t5,cpx,,l2tcpxdata>::Data Cycle started from L2T5 to CPX");
         repeat(2) @(posedge (cmp_clk && l2t5_detected))
         begin
             if(cpx_l2t5_grant_cx_d != cpx_l2t5_grant_cx)
             begin
-                `PR_ALWAYS("l2_proto_mon", `ALWAYS, "ACKNOWLEDGE from CPX Detected");
+                `PR_ALWAYS("l2_proto_mon", `ALWAYS, "<cpx,l2t5,,cpxl2tack,{%x}>::ACKNOWLEDGE from CPX Detected", cpx_l2t5_grant_cx);
                 l2t5_detected = 1'b0;
             end
         end
@@ -1046,6 +1108,7 @@ begin
 end
 
 
+//////////////////////////////////////////////////////////////////
 
 reg l2t6_cpx_req_cq_d;
 reg cpx_l2t6_grant_cx_d;
@@ -1057,7 +1120,7 @@ begin
     /* l2t6_cpx_req_cq is a low enabled signal from Figure 2-4 Manual Vol 1 */
     if(l2t6_cpx_req_cq)
     begin
-        `PR_ALWAYS("l2_proto_mon", `ALWAYS, "L2T6 sending request to CPX");
+        `PR_ALWAYS("l2_proto_mon", `ALWAYS, "<l2t6,cpx,,l2tcpxreq,{%x}>::L2T6 sending request to CPX", l2t6_cpx_req_cq);
     end
 end
 
@@ -1065,19 +1128,19 @@ always @(posedge (cmp_clk && enabled))
 begin
     if(l2t6_cpx_req_cq_d)
     begin
-        `PR_ALWAYS("l2_proto_mon", `ALWAYS, "Data Cycle started from L2T6 to CPX");
+        `PR_ALWAYS("l2_proto_mon", `ALWAYS, "<l2t6,cpx,,l2tcpxdata>::Data Cycle started from L2T6 to CPX");
         repeat(2) @(posedge (cmp_clk && l2t6_detected))
         begin
             if(cpx_l2t6_grant_cx_d != cpx_l2t6_grant_cx)
             begin
-                `PR_ALWAYS("l2_proto_mon", `ALWAYS, "ACKNOWLEDGE from CPX Detected");
+                `PR_ALWAYS("l2_proto_mon", `ALWAYS, "<cpx,l2t6,,cpxl2tack,{%x}>::ACKNOWLEDGE from CPX Detected", cpx_l2t6_grant_cx);
                 l2t6_detected = 1'b0;
             end
         end
     end
 end
 
-
+//////////////////////////////////////////////////////////////////
 
 reg l2t7_cpx_req_cq_d;
 reg cpx_l2t7_grant_cx_d;
@@ -1089,7 +1152,7 @@ begin
     /* l2t7_cpx_req_cq is a low enabled signal from Figure 2-4 Manual Vol 1 */
     if(l2t7_cpx_req_cq)
     begin
-        `PR_ALWAYS("l2_proto_mon", `ALWAYS, "L2T7 sending request to CPX");
+        `PR_ALWAYS("l2_proto_mon", `ALWAYS, "<l2t7,cpx,,l2tcpxreq,{%x}>::L2T7 sending request to CPX", l2t7_cpx_req_cq);
     end
 end
 
@@ -1097,12 +1160,12 @@ always @(posedge (cmp_clk && enabled))
 begin
     if(l2t7_cpx_req_cq_d)
     begin
-        `PR_ALWAYS("l2_proto_mon", `ALWAYS, "Data Cycle started from L2T7 to CPX");
+        `PR_ALWAYS("l2_proto_mon", `ALWAYS, "<l2t7,cpx,,l2tcpxdata>::Data Cycle started from L2T7 to CPX");
         repeat(2) @(posedge (cmp_clk && l2t7_detected))
         begin
             if(cpx_l2t7_grant_cx_d != cpx_l2t7_grant_cx)
             begin
-                `PR_ALWAYS("l2_proto_mon", `ALWAYS, "ACKNOWLEDGE from CPX Detected");
+                `PR_ALWAYS("l2_proto_mon", `ALWAYS, "<cpx,l2t7,,cpxl2tack,{%x}>::ACKNOWLEDGE from CPX Detected", cpx_l2t7_grant_cx);
                 l2t7_detected = 1'b0;
             end
         end

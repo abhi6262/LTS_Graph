@@ -41,7 +41,7 @@ always @(posedge (iol2clk && enabled && sii_ncu_req))
 begin
 	if (sii_ncu_req && !sii_ncu_req_asserted)
 	begin
-		`PR_ALWAYS("siu_to_ncu_mon", `ALWAYS, "SIU Signalling a Transfer to NCU");
+		`PR_ALWAYS("siu_to_ncu_mon", `ALWAYS, "<sii,ncu,,siincureq,{%x}>::SIU initiating a Transfer to NCU", sii_ncu_req);
 		sii_ncu_req_asserted = 1'b1;
 	end
 end
@@ -52,13 +52,13 @@ begin
         sii_ncu_req_asserted = 1'b0;
 end
 
-/* Detecting NCU is ready to serice SIU request */
+/* Detecting NCU is ready to service SIU request */
 
-always @(posedge (iol2clk && enabled && ncu_sii_gnt))
+always @(posedge (iol2clk && enabled))
 begin
 	if(ncu_sii_gnt)
 	begin
-		`PR_ALWAYS("siu_to_ncu_mon", `ALWAYS, "NCU Granting SIU for Transfer");
+		`PR_ALWAYS("siu_to_ncu_mon", `ALWAYS, "<ncu,sii,,ncusiignt,{%x}>::NCU is ready to accept SIU transfer", ncu_sii_gnt);
 	end
 end
 
@@ -71,14 +71,12 @@ end
 
 always @(posedge (iol2clk && enabled && ncu_sii_gnt_d))
 begin
-    `PR_ALWAYS("siu_to_ncu_mon", `ALWAYS, "SIU to NCU Header and Payload Cycle");
-    /* One cycle of Header */
-    repeat(1) @(posedge iol2clk)
-    begin
-        `PR_INFO("siu_to_ncu_mon", `INFO, "SIU to NCU Header = %x", sii_ncu_data);
-    end
+    //`PR_ALWAYS("siu_to_ncu_mon", `ALWAYS, "<sii,ncu,,siincuheader,{%x,%x,%x}>::SIU to NCU Header and Payload Cycle", sii_ncu_data[15:13], sii_ncu_data[12:9], sii_ncu_data[8:0]);
+    `PR_ALWAYS("siu_to_ncu_mon", `ALWAYS, "<sii,ncu,,siincuheader,{%x}>::SIU to NCU Header and Payload Cycle", sii_ncu_data[15:0]);
     /* Four cycles of Payload and Parity */
-    repeat(4) @(posedge iol2clk)
+    `PR_INFO("siu_to_ncu_mon", `INFO, "SIU to NCU Payload = %x", sii_ncu_data);
+    `PR_INFO("siu_to_ncu_mon", `INFO, "SIU to NCU Payload Parity = %x", sii_ncu_dparity);
+    repeat(3) @(posedge iol2clk)
     begin
         `PR_INFO("siu_to_ncu_mon", `INFO, "SIU to NCU Payload = %x", sii_ncu_data);
         `PR_INFO("siu_to_ncu_mon", `INFO, "SIU to NCU Payload Parity = %x", sii_ncu_dparity);

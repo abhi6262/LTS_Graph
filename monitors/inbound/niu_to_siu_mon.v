@@ -34,6 +34,7 @@ wire [127:0] niu_sii_data = `SII.niu_sii_data;
 wire [7:0] niu_sii_parity = `SII.niu_sii_parity;
 wire [15:0] niu_sii_be = `SII.niu_sii_be;
 
+reg [1:0] rwm;
 
 /* Section 6.4.3 and Section 6.4.4.1 Manual Vol 1 */
 
@@ -44,28 +45,34 @@ always @(posedge (iol2clk && enabled))
 begin
     if(niu_sii_hdr_vld)
     begin
-        `PR_INFO("niu_to_siu_mon", `INFO, "NIU_SIU_HDR niu_sii_hdr_vld = %b", niu_sii_hdr_vld);
+        rwm = {niu_sii_datareq, niu_sii_datareq16};
         /* Single and Back-to-Back DMA Read Request from NIU to SIU */
         if(!niu_sii_datareq && !niu_sii_datareq16)
         begin
-            `PR_ALWAYS("niu_to_siu_mon", `ALWAYS, "NIU to SIU DMA Read Request Header Cycle");
+            `PR_ALWAYS("niu_to_siu_mon", `ALWAYS, "<niu,sii,rheadercycle,niuheader,{%x}>::NIU to SIU DMA Read Request Header Cycle", niu_sii_hdr_vld);
+            `PR_ALWAYS("niu_to_siu_mon", `ALWAYS, "<niu,sii,rheadercycle,dmarw,{%x}>::NIU to SIU DMA Read Request", rwm);
             if (niu_sii_reqbypass)
-                `PR_INFO("niu_to_siu_mon", `INFO, "Read Request Sent to SIU Bypass Queue");
+                `PR_ALWAYS("niu_to_siu_mon", `ALWAYS, "<niu,sii,rheadercycle,niudestq,{%x}>::Read Request Sent to SIU Bypass Queue", niu_sii_reqbypass);
             else
-                `PR_INFO("niu_to_siu_mon", `INFO, "Read Request Sent to SIU Ordered Queue");
+                `PR_ALWAYS("niu_to_siu_mon", `ALWAYS, "<niu,sii,rheadercycle,niudestq,{%x}>::Read Request Sent to SIU Ordered Queue", niu_sii_reqbypass);
             `PR_INFO("niu_to_siu_mon", `INFO, "Header Bits = %x", niu_sii_data);
             `PR_INFO("niu_to_siu_mon", `INFO, "Header Cycle Parity = %x", niu_sii_parity);
+            `PR_ALWAYS("niu_to_siu_mon", `ALWAYS, "<niu,sii,rheadercycle,niutagid,{%x}>::Read Request NIU Tag ID", niu_sii_data[79:64]);
+            `PR_ALWAYS("niu_to_siu_mon", `ALWAYS, "<niu,sii,rheadercycle,niupa,{%x}>::Read Request NIU PA", niu_sii_data[39:0]);
         end
         /* Single and Back-to-Back DMA Write Request from NIU to SIU */
         else if (niu_sii_datareq && !niu_sii_datareq16)
         begin
-            `PR_ALWAYS("niu_to_siu_mon", `ALWAYS, "NIU to SIU DMA Write Request Header Cycle");
+            `PR_ALWAYS("niu_to_siu_mon", `ALWAYS, "<niu,sii,wheadercycle,niuheader,{%x}>::NIU to SIU DMA Write Request Header Cycle", niu_sii_hdr_vld);
+            `PR_ALWAYS("niu_to_siu_mon", `ALWAYS, "<niu,sii,wheadercycle,dmarw,{%x}>::NIU to SIU DMA Write Request", rwm);
             if (niu_sii_reqbypass)
-                `PR_INFO("niu_to_siu_mon", `INFO, "Write Request Sent to SIU Bypass Queue");
+                `PR_ALWAYS("niu_to_siu_mon", `ALWAYS, "<niu,sii,wheadercycle,niudestq,{%x}>::Write Request Sent to SIU Bypass Queue", niu_sii_reqbypass);
             else
-                `PR_INFO("niu_to_siu_mon", `INFO, "Write Request Sent to SIU Orderded Queue");
+                `PR_ALWAYS("niu_to_siu_mon", `ALWAYS, "<niu,sii,wheadercycle,niudestq,{%x}>::Write Request Sent to SIU Orderded Queue", niu_sii_reqbypass);
             `PR_INFO("niu_to_siu_mon", `INFO, "Header Bits = %x", niu_sii_data);
             `PR_INFO("niu_to_siu_mon", `INFO, "Header Cycle Parity = %b", niu_sii_parity);
+            `PR_ALWAYS("niu_to_siu_mon", `ALWAYS, "<niu,sii,wheadercycle,niutagid,{%x}>::Write Request NIU Tag ID", niu_sii_data[79:64]);
+            `PR_ALWAYS("niu_to_siu_mon", `ALWAYS, "<niu,sii,wheadercycle,niupa,{%x}>::Write Request NIU PA", niu_sii_data[39:0]);
         end
     end
 end
@@ -79,8 +86,10 @@ end
 
 always @(posedge (iol2clk && enabled && write_payload_cycle_detected))
 begin
-    `PR_ALWAYS("niu_to_siu_mon", `ALWAYS, "NIU TO SIU DMA Write Request Payload Cycle");
-    repeat (4) @(posedge iol2clk)
+    `PR_ALWAYS("niu_to_siu_mon", `ALWAYS, "<niu,sii,wpayloadcycle,dmawritepayload>::NIU TO SIU DMA Write Request Payload Cycle");
+    `PR_INFO("niu_to_siu_mon", `INFO, "DMA Write Payload = %x", niu_sii_data);
+    `PR_INFO("niu_to_siu_mon", `INFO, "Write Payload Parity = %x", niu_sii_parity);
+    repeat (3) @(posedge iol2clk)
     begin
         `PR_INFO("niu_to_siu_mon", `INFO, "DMA Write Payload = %x", niu_sii_data);
         `PR_INFO("niu_to_siu_mon", `INFO, "Write Payload Parity = %x", niu_sii_parity);
