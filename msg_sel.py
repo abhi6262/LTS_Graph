@@ -17,7 +17,7 @@ import math
 os.system('cls' if os.name == 'nt' else 'clear')
 
 config = ConfigParser.RawConfigParser()
-config.read('../config.cfg')
+config.read('config.cfg')
 message_width = ast.literal_eval(config.get('Configuration','Message_width'))
 buffer_width = config.getint('Configuration','Buffer_width')
 print "message width:", message_width, "\n"
@@ -29,7 +29,8 @@ with open('ltsdump', 'rb') as f:
 
 f.close()
 
-print "sysnodes: ", sysnodes, "\n", "lensysnodes: ", len(sysnodes), "\n"
+#print "sysnodes: ", sysnodes, "\n", "lensysnodes: ", len(sysnodes), "\n"
+print "lensysnodes: ", len(sysnodes), "\n"
 #for i in sysnodes:
 #    print i, ":", sys[i]
 #    print "\n"
@@ -48,7 +49,7 @@ def mut_info(x_dis, y_dis, xy_dis):
 #######################################################################
 
 x = [float(1)/len(sysnodes)] * len(sysnodes)
-print "x:", x, "\n"
+#print "x:", x, "\n"
 
 listmsg = []
 countlistmsg = []
@@ -81,7 +82,7 @@ msg_width_sum = 0
 
 for j in range(2,len(listmsg)+1):
     for i in itertools.combinations(listmsg, j):
-        print "i:", i, "\n"
+#        print "i:", i, "\n"
         for k in i:
             msg_width_sum += message_width[k]
         if (msg_width_sum <= buffer_width):
@@ -106,7 +107,7 @@ for c in candidates:
         tempsum += y[c.index(m)]
     for m in c:
         y[c.index(m)] = y[c.index(m)]/float(tempsum)
-    print "y:", y, "\n"
+#    print "y:", y, "\n"
     for i in range(len(sysnodes)):
         for m in c:
 #            print i
@@ -117,7 +118,7 @@ for c in candidates:
 #            print x_y[i][listmsg.index(m)]
             xy[i][c.index(m)] = (x_y[i][listmsg.index(m)]/float(countlistmsg[listmsg.index(m)])) * y[c.index(m)]
 
-    print "xy:", xy, "\n"
+#    print "xy:", xy, "\n"
 
     info_candidates[c] = mut_info(x, y, xy)
     print "info_candidate:", info_candidates[c], "\n"

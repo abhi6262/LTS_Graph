@@ -17,7 +17,7 @@ import networkx as nx
 os.system('cls' if os.name == 'nt' else 'clear')
 
 config = ConfigParser.RawConfigParser()
-config.read('../config.cfg')
+config.read('config.cfg')
 listsysdict = [] #list of all dictionaries, where each sys dictionary corresponds to one protocol
 listsysnodes = []
 Protocols = ast.literal_eval(config.get('Configuration','Protocols')) #list of protocols, user input
@@ -69,7 +69,7 @@ for x in range(1,len(Protocols)):
     tempsys = {}
 
 print "number of nodes:", len(sysnodes)
-print "sysnodes: ", sysnodes
+#print "sysnodes: ", sysnodes
 print "\n"
 for i in sysnodes:
     if i in sys:
@@ -84,7 +84,7 @@ for i in sysnodes:
         for l in sys[i].get(j):
             adj[sysnodes.index(i)][sysnodes.index(l)] = 1
 
-print "adj:", adj, "\n"    
+#print "adj:", adj, "\n"    
 
 with open('ltsdump', 'wb') as f:
     pickle.dump(sysnodes, f)
